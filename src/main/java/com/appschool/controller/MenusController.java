@@ -14,10 +14,6 @@ import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-/**
- *
- * @author said
- */
 @Named
 @ViewScoped
 public class MenusController implements Serializable {

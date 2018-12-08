@@ -14,10 +14,7 @@ import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-/**
- *
- * @author said
- */
+
 @ViewScoped
 @Named
 public class PeriodosController implements Serializable {
