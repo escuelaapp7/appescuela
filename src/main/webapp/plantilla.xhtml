@@ -20,9 +20,19 @@
                     <p:growl id="messages"/>
 
                     <p:menubar>
-                        <p:submenu label="Catalogos" icon="pi pi-file">
+                        <p:submenu label="Administracion" icon="fa-archive">
+                            <p:menuitem value="Registrar Menu" url="/administracion/menus.xhtml" />
+                            <p:menuitem value="Registrar Roles de Usuario" url="/administracion/roles.xhtml" />
+
+
+                        </p:submenu>
+                        <p:submenu label="Catalogos" icon="fa-archive">
+                            <p:menuitem value="Asignaturas" url="/catalogos/asignaturas.xhtml" />
+                            <p:menuitem value="Evaluaciones" url="/catalogos/evaluaciones.xhtml" />
                             <p:menuitem value="Grados" url="/catalogos/grados.xhtml" />
-                            <p:menuitem value="Secciones" url="" />
+                            <p:menuitem value="Parentezcos" url="/catalogos/parentezcos.xhtml" />
+                            <p:menuitem value="Periodos de Evaluacion" url="/catalogos/periodosEvaluacion.xhtml" />
+                            <p:menuitem value="Secciones" url="/catalogos/secciones.xhtml" />
                         </p:submenu>
                     </p:menubar>
                 </h:form>

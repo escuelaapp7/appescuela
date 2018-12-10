@@ -49,13 +49,7 @@ public class ParentezcoController implements Serializable {
         }
     }
 
-    public ParentezcosFacadeLocal getParentezcoEJB() {
-        return parentezcoEJB;
-    }
 
-    public void setParentezcoEJB(ParentezcosFacadeLocal parentezcoEJB) {
-        this.parentezcoEJB = parentezcoEJB;
-    }
 
     public List<Parentezcos> getLstParentezcos() {
         return lstParentezcos;
@@ -65,4 +59,13 @@ public class ParentezcoController implements Serializable {
         this.lstParentezcos = lstParentezcos;
     }
 
+    public Parentezcos getParentezco() {
+        return parentezco;
+    }
+
+    public void setParentezco(Parentezcos parentezco) {
+        this.parentezco = parentezco;
+    }
+
+    
 }
