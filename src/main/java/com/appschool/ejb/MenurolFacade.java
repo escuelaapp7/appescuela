@@ -10,10 +10,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-/**
- *
- * @author said
- */
+
 @Stateless
 public class MenurolFacade extends AbstractFacade<Menurol> implements MenurolFacadeLocal {
 

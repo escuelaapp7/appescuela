@@ -10,10 +10,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-/**
- *
- * @author said
- */
+
 @Stateless
 public class ParentezcosFacade extends AbstractFacade<Parentezcos> implements ParentezcosFacadeLocal {
 

@@ -9,10 +9,7 @@ import com.appschool.model.Menus;
 import java.util.List;
 import javax.ejb.Local;
 
-/**
- *
- * @author said
- */
+
 @Local
 public interface MenusFacadeLocal {
 

@@ -10,10 +10,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-/**
- *
- * @author said
- */
+
 @Stateless
 public class UsuariosFacade extends AbstractFacade<Usuarios> implements UsuariosFacadeLocal {
 

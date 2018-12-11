@@ -18,10 +18,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- *
- * @author said
- */
+
 @Entity
 @Table(name = "calificaciones")
 @XmlRootElement
