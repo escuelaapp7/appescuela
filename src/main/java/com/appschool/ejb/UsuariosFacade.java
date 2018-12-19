@@ -6,9 +6,11 @@
 package com.appschool.ejb;
 
 import com.appschool.model.Usuarios;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -28,5 +30,25 @@ public class UsuariosFacade extends AbstractFacade<Usuarios> implements Usuarios
     public UsuariosFacade() {
         super(Usuarios.class);
     }
-    
+
+    @Override
+    public Usuarios iniciarSesion(Usuarios us) {
+        Usuarios usuario = null;
+        try {
+            String consulta = "FROM Usuario u WHERE u.usuario = ?1 and u.clave=?2";
+            Query q = em.createQuery(consulta);
+            q.setParameter(1, us.getUsuario());
+            q.setParameter(2, us.getPassword());
+
+            List<Usuarios> lista = q.getResultList();
+            if (!lista.isEmpty()) {
+                usuario = lista.get(0);
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+
+        return usuario;
+    }
+
 }

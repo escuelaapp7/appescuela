@@ -28,6 +28,8 @@ public interface UsuariosFacadeLocal {
 
     List<Usuarios> findRange(int[] range);
 
+    public Usuarios iniciarSesion(Usuarios us);
+
     int count();
-    
+
 }
