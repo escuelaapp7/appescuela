@@ -12,10 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-/**
- *
- * @author said
- */
+
 @Stateless
 public class UsuariosFacade extends AbstractFacade<Usuarios> implements UsuariosFacadeLocal {
 

@@ -9,10 +9,7 @@ import com.appschool.model.Impartir;
 import java.util.List;
 import javax.ejb.Local;
 
-/**
- *
- * @author said
- */
+
 @Local
 public interface ImpartirFacadeLocal {
 

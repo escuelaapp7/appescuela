@@ -42,4 +42,6 @@
     </jdbc-connection-pool>
     <jdbc-resource enabled="true" jndi-name="java:app/gh" object-type="user" pool-name="mysql_escuela_rootPool_1"/>
     <jdbc-resource enabled="true" jndi-name="java:app/dbCPG" object-type="user" pool-name="post-gre-sql_escuela_postgresPool"/>
+    <jdbc-resource enabled="true" jndi-name="java:app/escuela" object-type="user" pool-name="mysql_escuela_rootPool"/>
+    <jdbc-resource enabled="true" jndi-name="java:app/CNSchool" object-type="user" pool-name="mysql_escuela_rootPool"/>
 </resources>

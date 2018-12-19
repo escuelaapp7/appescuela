@@ -9,10 +9,7 @@ import com.appschool.model.Secciones;
 import java.util.List;
 import javax.ejb.Local;
 
-/**
- *
- * @author said
- */
+
 @Local
 public interface SeccionesFacadeLocal {
 

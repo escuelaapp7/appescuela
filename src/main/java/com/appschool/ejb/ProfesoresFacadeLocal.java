@@ -9,10 +9,7 @@ import com.appschool.model.Profesores;
 import java.util.List;
 import javax.ejb.Local;
 
-/**
- *
- * @author said
- */
+
 @Local
 public interface ProfesoresFacadeLocal {
 
