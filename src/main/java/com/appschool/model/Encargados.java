@@ -11,6 +11,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -18,38 +20,35 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-
+/**
+ *
+ * @author said
+ */
 @Entity
 @Table(name = "Encargados")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Encargados.findAll", query = "SELECT e FROM Encargados e")
-    , @NamedQuery(name = "Encargados.findByIdEncargado", query = "SELECT e FROM Encargados e WHERE e.idEncargado = :idEncargado")
-    , @NamedQuery(name = "Encargados.findByDui", query = "SELECT e FROM Encargados e WHERE e.dui = :dui")})
+    @NamedQuery(name = "Encargados.findAll", query = "SELECT e FROM Encargados e")})
 public class Encargados implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
-    @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_encargado")
     private Integer idEncargado;
     @Size(max = 10)
     @Column(name = "dui")
     private String dui;
-    @JoinColumn(name = "id_parentezco", referencedColumnName = "id_parentezco")
-    @ManyToOne(optional = false)
-    private Parentezcos idParentezco;
+    @Size(max = 45)
+    @Column(name = "estado_civil")
+    private String estadoCivil;
     @JoinColumn(name = "id_persona", referencedColumnName = "id_persona")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
     private Personas idPersona;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEncargado")
-    private List<Alumnos> alumnosList;
+
 
     public Encargados() {
     }
@@ -74,12 +73,12 @@ public class Encargados implements Serializable {
         this.dui = dui;
     }
 
-    public Parentezcos getIdParentezco() {
-        return idParentezco;
+    public String getEstadoCivil() {
+        return estadoCivil;
     }
 
-    public void setIdParentezco(Parentezcos idParentezco) {
-        this.idParentezco = idParentezco;
+    public void setEstadoCivil(String estadoCivil) {
+        this.estadoCivil = estadoCivil;
     }
 
     public Personas getIdPersona() {
@@ -90,14 +89,6 @@ public class Encargados implements Serializable {
         this.idPersona = idPersona;
     }
 
-    @XmlTransient
-    public List<Alumnos> getAlumnosList() {
-        return alumnosList;
-    }
-
-    public void setAlumnosList(List<Alumnos> alumnosList) {
-        this.alumnosList = alumnosList;
-    }
 
     @Override
     public int hashCode() {

@@ -12,6 +12,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -19,30 +21,21 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-
+/**
+ *
+ * @author said
+ */
 @Entity
 @Table(name = "Personas")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Personas.findAll", query = "SELECT p FROM Personas p")
-    , @NamedQuery(name = "Personas.findByIdPersona", query = "SELECT p FROM Personas p WHERE p.idPersona = :idPersona")
-    , @NamedQuery(name = "Personas.findByNombres", query = "SELECT p FROM Personas p WHERE p.nombres = :nombres")
-    , @NamedQuery(name = "Personas.findByApellidos", query = "SELECT p FROM Personas p WHERE p.apellidos = :apellidos")
-    , @NamedQuery(name = "Personas.findBySexo", query = "SELECT p FROM Personas p WHERE p.sexo = :sexo")
-    , @NamedQuery(name = "Personas.findByFechaNacimiento", query = "SELECT p FROM Personas p WHERE p.fechaNacimiento = :fechaNacimiento")
-    , @NamedQuery(name = "Personas.findByDireccion", query = "SELECT p FROM Personas p WHERE p.direccion = :direccion")
-    , @NamedQuery(name = "Personas.findByTelefono", query = "SELECT p FROM Personas p WHERE p.telefono = :telefono")})
+
 public class Personas implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
-    @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_persona")
     private Integer idPersona;
     @Size(max = 45)
@@ -63,14 +56,7 @@ public class Personas implements Serializable {
     @Size(max = 9)
     @Column(name = "telefono")
     private String telefono;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPersona")
-    private List<Encargados> encargadosList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPersona")
-    private List<Usuarios> usuariosList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPersona")
-    private List<Alumnos> alumnosList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPersona")
-    private List<Profesores> profesoresList;
+
 
     public Personas() {
     }
@@ -135,41 +121,7 @@ public class Personas implements Serializable {
         this.telefono = telefono;
     }
 
-    @XmlTransient
-    public List<Encargados> getEncargadosList() {
-        return encargadosList;
-    }
 
-    public void setEncargadosList(List<Encargados> encargadosList) {
-        this.encargadosList = encargadosList;
-    }
-
-    @XmlTransient
-    public List<Usuarios> getUsuariosList() {
-        return usuariosList;
-    }
-
-    public void setUsuariosList(List<Usuarios> usuariosList) {
-        this.usuariosList = usuariosList;
-    }
-
-    @XmlTransient
-    public List<Alumnos> getAlumnosList() {
-        return alumnosList;
-    }
-
-    public void setAlumnosList(List<Alumnos> alumnosList) {
-        this.alumnosList = alumnosList;
-    }
-
-    @XmlTransient
-    public List<Profesores> getProfesoresList() {
-        return profesoresList;
-    }
-
-    public void setProfesoresList(List<Profesores> profesoresList) {
-        this.profesoresList = profesoresList;
-    }
 
     @Override
     public int hashCode() {

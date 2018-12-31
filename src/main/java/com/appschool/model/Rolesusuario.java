@@ -19,13 +19,15 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
-
+/**
+ *
+ * @author said
+ */
 @Entity
 @Table(name = "Roles_usuario")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Rolesusuario.findAll", query = "SELECT r FROM Rolesusuario r")
-    , @NamedQuery(name = "Rolesusuario.findByIdRolUsuario", query = "SELECT r FROM Rolesusuario r WHERE r.idRolUsuario = :idRolUsuario")})
+    @NamedQuery(name = "Rolesusuario.findAll", query = "SELECT r FROM Rolesusuario r")})
 public class Rolesusuario implements Serializable {
 
     private static final long serialVersionUID = 1L;

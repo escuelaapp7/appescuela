@@ -22,17 +22,15 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-
+/**
+ *
+ * @author said
+ */
 @Entity
 @Table(name = "Grados")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Grados.findAll", query = "SELECT g FROM Grados g")
-    , @NamedQuery(name = "Grados.findByIdGrado", query = "SELECT g FROM Grados g WHERE g.idGrado = :idGrado")
-    , @NamedQuery(name = "Grados.findByNombre", query = "SELECT g FROM Grados g WHERE g.nombre = :nombre")})
+
 public class Grados implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_grado")
@@ -40,8 +38,7 @@ public class Grados implements Serializable {
     @Size(max = 25)
     @Column(name = "nombre")
     private String nombre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idGrado")
-    private List<Matriculas> matriculasList;
+
 
     public Grados() {
     }
@@ -66,14 +63,7 @@ public class Grados implements Serializable {
         this.nombre = nombre;
     }
 
-    @XmlTransient
-    public List<Matriculas> getMatriculasList() {
-        return matriculasList;
-    }
 
-    public void setMatriculasList(List<Matriculas> matriculasList) {
-        this.matriculasList = matriculasList;
-    }
 
     @Override
     public int hashCode() {

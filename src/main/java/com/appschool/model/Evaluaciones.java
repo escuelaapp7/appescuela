@@ -18,22 +18,19 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-
+/**
+ *
+ * @author said
+ */
 @Entity
 @Table(name = "Evaluaciones")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Evaluaciones.findAll", query = "SELECT e FROM Evaluaciones e")
-    , @NamedQuery(name = "Evaluaciones.findByIdEvaluacion", query = "SELECT e FROM Evaluaciones e WHERE e.idEvaluacion = :idEvaluacion")
-    , @NamedQuery(name = "Evaluaciones.findByDescripcion", query = "SELECT e FROM Evaluaciones e WHERE e.descripcion = :descripcion")})
+
 public class Evaluaciones implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_evaluacion")
@@ -66,6 +63,7 @@ public class Evaluaciones implements Serializable {
         this.descripcion = descripcion;
     }
 
+   
 
     @Override
     public int hashCode() {

@@ -37,7 +37,8 @@ public class LoginController implements Serializable {
     private RolesusuarioFacadeLocal rolesUsuarioEJB;
     private List<Usuarios> lstUsuarios;
     private Personas persona;
-
+    
+    
     @PostConstruct
     public void init() {
         rol = new Roles();
@@ -131,4 +132,48 @@ public class LoginController implements Serializable {
         }
     }
 
+    public Rolesusuario getRolUsuario() {
+        return rolUsuario;
+    }
+
+    public void setRolUsuario(Rolesusuario rolUsuario) {
+        this.rolUsuario = rolUsuario;
+    }
+
+    public Usuarios getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuarios usuario) {
+        this.usuario = usuario;
+    }
+
+    public Roles getRol() {
+        return rol;
+    }
+
+    public void setRol(Roles rol) {
+        this.rol = rol;
+    }
+
+    public List<Usuarios> getLstUsuarios() {
+        return lstUsuarios;
+    }
+
+    public void setLstUsuarios(List<Usuarios> lstUsuarios) {
+        this.lstUsuarios = lstUsuarios;
+    }
+
+    public Personas getPersona() {
+        return persona;
+    }
+
+    public void setPersona(Personas persona) {
+        this.persona = persona;
+    }
+
+    
+    
+    
+    
 }

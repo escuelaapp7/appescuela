@@ -33,6 +33,7 @@ public class EncargadosController implements Serializable {
  
     @PostConstruct
     public void init() {
+        persona= new Personas();
         encargado = new Encargados();
         parentezco =  new Parentezcos();
         lstEncargados = encargadoEJB.findAll();

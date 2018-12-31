@@ -12,6 +12,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -21,25 +23,20 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-
+/**
+ *
+ * @author said
+ */
 @Entity
 @Table(name = "Matriculas")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Matriculas.findAll", query = "SELECT m FROM Matriculas m")
-    , @NamedQuery(name = "Matriculas.findByIdMatricula", query = "SELECT m FROM Matriculas m WHERE m.idMatricula = :idMatricula")
-    , @NamedQuery(name = "Matriculas.findByAnio", query = "SELECT m FROM Matriculas m WHERE m.anio = :anio")
-    , @NamedQuery(name = "Matriculas.findByFechaMatricula", query = "SELECT m FROM Matriculas m WHERE m.fechaMatricula = :fechaMatricula")})
+
 public class Matriculas implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
-    @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_matricula")
     private Integer idMatricula;
     @Column(name = "anio")
@@ -53,18 +50,15 @@ public class Matriculas implements Serializable {
     @JoinColumn(name = "id_alumno", referencedColumnName = "id_alumno")
     @ManyToOne(optional = false)
     private Alumnos idAlumno;
-    @JoinColumn(name = "id_grado", referencedColumnName = "id_grado")
+    @JoinColumn(name = "id_coordinador_grado", referencedColumnName = "id_coordinador_grado")
     @ManyToOne(optional = false)
-    private Grados idGrado;
-    @JoinColumn(name = "id_jornada", referencedColumnName = "id_jornada")
+    private Coordinadorgrado idCoordinadorGrado;
+    @JoinColumn(name = "id_encargado", referencedColumnName = "id_encargado")
     @ManyToOne(optional = false)
-    private Jornadas idJornada;
-    @JoinColumn(name = "id_profesor", referencedColumnName = "id_profesor")
+    private Encargados idEncargado;
+    @JoinColumn(name = "id_parentezco", referencedColumnName = "id_parentezco")
     @ManyToOne(optional = false)
-    private Profesores idProfesor;
-    @JoinColumn(name = "id_seccion", referencedColumnName = "id_seccion")
-    @ManyToOne(optional = false)
-    private Secciones idSeccion;
+    private Parentezcos idParentezco;
 
     public Matriculas() {
     }
@@ -114,36 +108,28 @@ public class Matriculas implements Serializable {
         this.idAlumno = idAlumno;
     }
 
-    public Grados getIdGrado() {
-        return idGrado;
+    public Coordinadorgrado getIdCoordinadorGrado() {
+        return idCoordinadorGrado;
     }
 
-    public void setIdGrado(Grados idGrado) {
-        this.idGrado = idGrado;
+    public void setIdCoordinadorGrado(Coordinadorgrado idCoordinadorGrado) {
+        this.idCoordinadorGrado = idCoordinadorGrado;
     }
 
-    public Jornadas getIdJornada() {
-        return idJornada;
+    public Encargados getIdEncargado() {
+        return idEncargado;
     }
 
-    public void setIdJornada(Jornadas idJornada) {
-        this.idJornada = idJornada;
+    public void setIdEncargado(Encargados idEncargado) {
+        this.idEncargado = idEncargado;
     }
 
-    public Profesores getIdProfesor() {
-        return idProfesor;
+    public Parentezcos getIdParentezco() {
+        return idParentezco;
     }
 
-    public void setIdProfesor(Profesores idProfesor) {
-        this.idProfesor = idProfesor;
-    }
-
-    public Secciones getIdSeccion() {
-        return idSeccion;
-    }
-
-    public void setIdSeccion(Secciones idSeccion) {
-        this.idSeccion = idSeccion;
+    public void setIdParentezco(Parentezcos idParentezco) {
+        this.idParentezco = idParentezco;
     }
 
     @Override

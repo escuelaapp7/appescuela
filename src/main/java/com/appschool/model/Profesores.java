@@ -24,15 +24,13 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-
+/**
+ *
+ * @author said
+ */
 @Entity
 @Table(name = "Profesores")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Profesores.findAll", query = "SELECT p FROM Profesores p")
-    , @NamedQuery(name = "Profesores.findByIdProfesor", query = "SELECT p FROM Profesores p WHERE p.idProfesor = :idProfesor")
-    , @NamedQuery(name = "Profesores.findByEscalafon", query = "SELECT p FROM Profesores p WHERE p.escalafon = :escalafon")
-    , @NamedQuery(name = "Profesores.findByDui", query = "SELECT p FROM Profesores p WHERE p.dui = :dui")})
+
 public class Profesores implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -47,13 +45,16 @@ public class Profesores implements Serializable {
     @Size(max = 10)
     @Column(name = "dui")
     private String dui;
+    @Size(max = 45)
+    @Column(name = "estado_civil")
+    private String estadoCivil;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProfesor")
+    private List<Coordinadorgrado> coordinadorgradoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProfesor")
     private List<Impartir> impartirList;
     @JoinColumn(name = "id_persona", referencedColumnName = "id_persona")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
     private Personas idPersona;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProfesor")
-    private List<Matriculas> matriculasList;
 
     public Profesores() {
     }
@@ -86,6 +87,23 @@ public class Profesores implements Serializable {
         this.dui = dui;
     }
 
+    public String getEstadoCivil() {
+        return estadoCivil;
+    }
+
+    public void setEstadoCivil(String estadoCivil) {
+        this.estadoCivil = estadoCivil;
+    }
+
+    @XmlTransient
+    public List<Coordinadorgrado> getCoordinadorgradoList() {
+        return coordinadorgradoList;
+    }
+
+    public void setCoordinadorgradoList(List<Coordinadorgrado> coordinadorgradoList) {
+        this.coordinadorgradoList = coordinadorgradoList;
+    }
+
     @XmlTransient
     public List<Impartir> getImpartirList() {
         return impartirList;
@@ -101,15 +119,6 @@ public class Profesores implements Serializable {
 
     public void setIdPersona(Personas idPersona) {
         this.idPersona = idPersona;
-    }
-
-    @XmlTransient
-    public List<Matriculas> getMatriculasList() {
-        return matriculasList;
-    }
-
-    public void setMatriculasList(List<Matriculas> matriculasList) {
-        this.matriculasList = matriculasList;
     }
 
     @Override

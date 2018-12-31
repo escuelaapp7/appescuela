@@ -1,0 +1,334 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../plantilla.xhtml">
+
+
+
+            <ui:define name="content">
+                <p:panel header="Registros de Matriculas"  id="panel"
+                         style="width: 80%;margin: 0 auto; text-align:center;align-self: center ;
+                         padding: 5px; text-align: justify;font-size: 14px">
+
+
+                    <p:growl  globalOnly="true" showDetail="true"/>
+                    <br/>
+                    <p:separator/>
+                    <br/>
+                    <p:panel header="Matricular Alumno">
+                        <h:form id="frmMatri">
+                            <h2 style="padding-left: 40%">Datos de Alumno a Matricular</h2>
+
+                            <p:panelGrid columns="3" layout="grid"  style="width: 60%;margin: 0 auto; " >
+                                <p:outputLabel value="Seleccione el Alumno a matricular"/>
+                                <p:commandButton value="Seleccionar"  oncomplete="PF('dlgAlumnos').show();"  />
+                                <p:commandButton value="Registrar Nuevo Alumno"  action="alumnos.xhtml?faces-redirect=true" />
+
+                                <p:outputLabel value="Nombre completo: "/>
+                                <p:outputLabel value="#{matriculaController.alumno.idPersona.nombres} #{matriculaController.alumno.idPersona.apellidos}" />
+                                <p:column/>
+                                <p:outputLabel value="Fecha de Nacimiento: "/>
+                                <p:outputLabel value="#{matriculaController.alumno.idPersona.fechaNacimiento}">
+                                    <f:convertDateTime type="date"  pattern = "dd-M-yyyy"/> 
+                                </p:outputLabel>
+                                <p:column/>
+
+                                <p:outputLabel value="Direccion de residencia: "/>
+                                <p:outputLabel value="#{matriculaController.alumno.idPersona.direccion}"/>
+                                <p:column/>
+
+                                <p:outputLabel value="Telefono de Alumno: "/>
+                                <p:outputLabel value="#{matriculaController.alumno.idPersona.telefono}"/>
+                                <p:column/>
+
+                            </p:panelGrid>
+
+                            <p:separator/>                            
+                            <h2 style="padding-left: 40%">Datos de Encargado</h2>
+
+                            <p:panelGrid columns="3" layout="grid"  style="width: 60%;margin: 0 auto; " >
+                                <p:outputLabel value="Seleccionar Encargado de Alumno a Matricular "/>
+                                <p:commandButton value="Seleccionar"  oncomplete="PF('dlgEncargado').show();"  />
+                                <p:commandButton value="Registrar Nuevo Encargado"  action="encargados.xhtml?faces-redirect=true" />
+
+                                <p:outputLabel value="DUI: "/>
+                                <p:outputLabel value="#{matriculaController.encargado.dui}"/>
+                                <p:column/>
+                                <p:outputLabel value="Nombre completo de Encargado: "/>
+                                <p:outputLabel value="#{matriculaController.encargado.idPersona.nombres} #{matriculaController.encargado.idPersona.apellidos}" />
+                                <p:column/>
+                                <p:outputLabel value="Fecha de Nacimiento: "/>
+                                <p:outputLabel value="#{matriculaController.encargado.idPersona.fechaNacimiento}">
+                                    <f:convertDateTime type="date"  pattern = "dd-M-yyyy"/> 
+                                </p:outputLabel>
+                                <p:column/>
+                                <p:outputLabel value="Estado Civil: "/>
+                                <p:outputLabel value="#{matriculaController.encargado.estadoCivil}"/>
+                                <p:column/>
+                                <p:outputLabel value="Direccion de residencia: "/>
+                                <p:outputLabel value="#{matriculaController.encargado.idPersona.direccion}"/>
+                                <p:column/>
+                                <p:outputLabel value="Telefono de Encargado: "/>
+                                <p:outputLabel value="#{matriculaController.encargado.idPersona.telefono}"/>
+                                <p:column/>
+                                <p:outputLabel for="cboParentezco" value="Parentezco que tiene el encargado con el alumno: "/>
+                                <p:selectOneMenu id="cboParentezco" value="#{matriculaController.parentezco}"  
+                                                 effect="bounce" filterMatchMode="contains" converter="entityConverter" filter="true" >
+                                    <f:selectItem itemLabel="-- Seleccione --" noSelectionOption="true"/>
+                                    <f:selectItems value="#{matriculaController.lstParentezcos}" var="parentezco" 
+                                                   itemValue="#{parentezco}" itemLabel="#{parentezco.descripcion}"/>
+                                </p:selectOneMenu>
+                                <p:message for="cboParentezco" display="icon"/>
+                                <p:column/>
+                            </p:panelGrid>
+
+
+                            <p:separator/>                            
+                            <h2 style="padding-left: 40%">Informacion de Grado a Matricular</h2>
+
+                            <p:panelGrid columns="2" layout="grid"  style="width: 50%;margin: 0 auto; " >
+                                <p:outputLabel value="Seleccione grado a matricular"  />
+                                <p:commandButton value="Seleccionar" oncomplete="PF('dlgCoordinadores').show();"/>
+                                <p:outputLabel value="Grado:"/>
+                                <p:outputLabel value="#{matriculaController.coordinador.idGrado.nombre}"/>
+                                <p:outputLabel value="Seccion: "/>
+                                <p:outputLabel value="#{matriculaController.coordinador.idSeccion.descripcion}"/>
+                                <p:outputLabel value="Jornada "/>
+                                <p:outputLabel value="#{matriculaController.coordinador.idJornada.descripcion}"/>
+                                <p:outputLabel value="Coordinador: "/>
+                                <p:outputLabel value="#{matriculaController.coordinador.idProfesor.idPersona.nombres} #{matriculaController.coordinador.idProfesor.idPersona.apellidos}"/>
+                            </p:panelGrid>
+
+                            <p:commandButton value="Registrar Matricula" actionListener="#{matriculaController.matricularOperar()}"
+                                             action="matricula.xhtml?faces-redirect=true" 
+                                             update="frmMatri"/>                        
+                        </h:form>
+                    </p:panel>
+                    <br/>
+                    <p:separator/>
+                    <br/>
+                    <h:form id="frmMostrar" >
+                        <p:dataTable id="tblMatriculas"  value="#{matriculaController.lstMatriculas}"
+                                     var="matricula" style="width: 100%;margin: 0 auto; text-align:center;
+                                     padding: 5px; text-align: justify;font-size: 14px" 
+                                     emptyMessage="No hay registros en la base de datos"
+                                     paginator="true" rows="5" paginatorPosition="bottom"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                     {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15" reflow="true" resizeMode="expand"  widgetVar="data" >
+
+
+                            <p:column headerText="Año" filterBy="#{matricula.anio}" filterMatchMode="contains" style="width: 15%; text-align:  center">
+                                <p:outputLabel value="#{matricula.anio}"/>
+                            </p:column>
+
+                            <p:column headerText="Fecha de Matricula" filterBy="#{matricula.fechaMatricula}" filterMatchMode="contains"  style="width: 15%; text-align:  center">
+                                <p:outputLabel value="#{matricula.fechaMatricula}">
+                                    <f:convertDateTime type="date"  pattern = "dd-M-yyyy"/> 
+                                </p:outputLabel>
+                            </p:column>
+
+                            <p:column headerText="Nombre del Encargado"  filterMatchMode="contains" style="width: 50%; text-align:  center">
+                                <p:outputLabel value="#{matricula.idEncargado.idPersona.nombres} #{matricula.idEncargado.idPersona.apellidos}"/>
+                            </p:column>
+                            <p:column headerText="Parentezco"   style="width: 15%; text-align:  center">
+                                <p:outputLabel value="#{matricula.idParentezco.descripcion}" /> 
+                            </p:column>
+                            <p:column headerText="Nombre del Alumno" filterBy="#{matricula.idAlumno.idPersona.nombres} #{matricula.idAlumno.idPersona.apellidos}" filterMatchMode="contains" style="width: 50%; text-align:  center">
+                                <p:outputLabel value="#{matricula.idAlumno.idPersona.nombres} #{matricula.idAlumno.idPersona.apellidos}"/>
+                            </p:column>
+                            <p:column headerText="Grado"  style="width: 15%; text-align:  center">
+                                <p:outputLabel value="#{matricula.idCoordinadorGrado.idGrado.nombre} "/>
+                            </p:column>
+                            <p:column headerText="Seccion"   style="width: 15%; text-align:  center">
+                                <p:outputLabel value="#{matricula.idCoordinadorGrado.idSeccion.descripcion}" /> 
+                            </p:column>
+
+                            <p:column headerText="Jornada" style="width: 15%; text-align:  center">
+                                <p:outputLabel value="#{matricula.idCoordinadorGrado.idJornada.descripcion} "/>
+                            </p:column>
+
+                            <p:column headerText="Nombre del coordinador" style="width: 45%; text-align:  center">
+                                <p:outputLabel value="#{matricula.idCoordinadorGrado.idProfesor.idPersona.nombres} #{matricula.idCoordinadorGrado.idProfesor.idPersona.apellidos}"/>
+                            </p:column>
+
+
+                            <p:column headerText="Operaciones" style=" width: 30%;text-align: center; padding-right: 10px">
+
+                                <p:commandButton title="Eliminar Matricula" icon="ui-icon-close" oncomplete="PF('dlgEliminar').show();" >
+                                    <f:setPropertyActionListener target="#{matriculaController.matricula}" value="#{matricula}"  />
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                </p:panel>
+
+                <p:dialog id="dlgAlumnos" header="Seleccionar Alumno" showEffect="fade" hideEffect="explode"
+                          widgetVar="dlgAlumnos" modal="true" draggable="false" resizable="false" minWidth="800" width="80%" >
+                    <h:form>
+                        <p:dataTable id="tblAlumnos"  value="#{alumnosController.lstAlumnos}"
+                                     var="alumno" style="width: 80%;margin: 0 auto; text-align:center;
+                                     padding: 5px; text-align: justify;font-size: 14px" 
+                                     emptyMessage="No hay registros en la base de datos"
+                                     paginator="true" rows="5" paginatorPosition="bottom"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                     {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15" reflow="true" resizeMode="expand"  widgetVar="data" >
+
+
+
+
+                            <p:column headerText="Nombre del alumno" filterBy="#{alumno.idPersona.nombres} #{alumno.idPersona.apellidos}" filterMatchMode="contains" style="width: 50%; text-align:  center">
+                                <p:outputLabel value="#{alumno.idPersona.nombres} #{alumno.idPersona.apellidos} "/>
+                            </p:column>
+                            <p:column headerText="Sexo" filterBy="#{alumno.idPersona.sexo}" filterMatchMode="contains" style="width: 15%; text-align:  center">
+                                <p:outputLabel value="#{alumno.idPersona.sexo} "/>
+                            </p:column>
+                            <p:column headerText="Fecha de Nacimiento" style="width: 15%; text-align:  center">
+                                <p:outputLabel value="#{alumno.idPersona.fechaNacimiento}" >
+                                    <f:convertDateTime type="date"  pattern = "dd-M-yyyy"/> 
+                                </p:outputLabel>
+                            </p:column>
+                            <p:column headerText="Direccion" style="width: 50%; text-align:  center">
+                                <p:outputLabel value="#{alumno.idPersona.direccion} "/>
+                            </p:column>
+                            <p:column headerText="Telefono" style="width: 15%; text-align:  center">
+                                <p:outputLabel value="#{alumno.idPersona.telefono} "/>
+                            </p:column>
+                            <p:column headerText="Partida de nacimiento" style="width: 15%; text-align:  center">
+                                <p:outputLabel value="#{alumno.partidaNacimiento} "/>
+                            </p:column>                            
+                            <p:column headerText="Operaciones" style=" width: 25%;text-align: center; padding-right: 10px">
+
+                                <p:commandButton value="Seleccionar" icon="ui-icon-pencil"
+                                                 oncomplete="PF('dlgAlumnos').hide();"  
+                                                 update="frmMatri"  >
+                                    <f:setPropertyActionListener target="#{matriculaController.alumno}" value="#{alumno}"  />
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+
+                    </h:form>
+                </p:dialog>
+
+                <p:dialog id="dlgCoordinadores" header="Seleccionar Grado a Matricularse" showEffect="fade" hideEffect="explode"
+                          widgetVar="dlgCoordinadores" modal="true" draggable="false" resizable="false" minWidth="800" width="80%" >
+                    <h:form>
+                        <p:dataTable id="tblCoordinadores"  value="#{coordinadoresController.lstCoordinadores}"
+                                     var="coordinador" style="width: 80%;margin: 0 auto; text-align:center;
+                                     padding: 5px; text-align: justify;font-size: 14px" 
+                                     emptyMessage="No hay registros en la base de datos"
+                                     paginator="true" rows="5" paginatorPosition="bottom"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                     {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15" reflow="true" resizeMode="expand"  widgetVar="data" >
+
+
+                            <p:column headerText="Año" filterBy="#{coordinador.anio}" filterMatchMode="contains"  style="width: 15%; text-align:  center">
+                                <p:outputLabel value="#{coordinador.anio} "/>
+                            </p:column>
+
+                            <p:column headerText="Grado" filterBy="#{coordinador.idGrado.nombre}" filterMatchMode="contains"  style="width: 20%; text-align:  center">
+                                <p:outputLabel value="#{coordinador.idGrado.nombre} "/>
+                            </p:column>
+
+                            <p:column headerText="Seccion" style="width: 15%; text-align:  center">
+                                <p:outputLabel value="#{coordinador.idSeccion.descripcion}"/>
+                            </p:column>
+                            <p:column headerText="Nombre del Coordinador" filterBy="#{coordinador.idProfesor.idPersona.nombres} #{coordinador.idProfesor.idPersona.apellidos}" filterMatchMode="contains" style="width: 50%; text-align:  center">
+                                <p:outputLabel value="#{coordinador.idProfesor.idPersona.nombres} #{coordinador.idProfesor.idPersona.apellidos}"/>
+                            </p:column>
+                            <p:column headerText="Jornada" filterBy="#{coordinador.idJornada.descripcion}" filterMatchMode="contains" style="width: 25%; text-align:  center">
+                                <p:outputLabel value="#{coordinador.idJornada.descripcion}"/>
+                            </p:column>
+
+                            <p:column headerText="Operaciones" style=" width: 30%;text-align: center; padding-right: 10px">
+
+                                <p:commandButton title="Seleccionar" icon="ui-icon-close" oncomplete="PF('dlgCoordinadores').hide();" update="frmMatri">
+                                    <f:setPropertyActionListener target="#{matriculaController.coordinador}" value="#{coordinador}"  />
+                                </p:commandButton>
+                            </p:column>
+
+                        </p:dataTable>
+                    </h:form>
+                </p:dialog>
+
+                <p:dialog id="dlgEncargado" header="Seleccionar Encargado de Alumno" showEffect="fade" hideEffect="explode"
+                          widgetVar="dlgEncargado" modal="true" draggable="false" resizable="false" minWidth="800" width="80%" >
+                    <h:form>
+                        <p:dataTable id="tblEncargados"  value="#{encargadosController.lstEncargados}"
+                                     var="encargado" style="width: 100%;margin: 0 auto; text-align:center;
+                                     padding: 5px; text-align: justify;font-size: 14px" 
+                                     emptyMessage="No hay registros en la base de datos"
+                                     paginator="true" rows="5" paginatorPosition="bottom"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                     {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15" reflow="true" resizeMode="expand"  widgetVar="data" >
+
+
+                            <p:column headerText="DUI" filterBy="#{encargado.dui}" filterMatchMode="contains" style="width: 30%; text-align:  center">
+                                <p:outputLabel value="#{encargado.dui} "/>
+                            </p:column>
+
+                            <p:column headerText="Nombre del Encargado" filterBy="#{encargado.idPersona.nombres} #{encargado.idPersona.apellidos}" filterMatchMode="contains" style="width: 65%; text-align:  center">
+                                <p:outputLabel value="#{encargado.idPersona.nombres} #{encargado.idPersona.apellidos}"/>
+                            </p:column>
+
+                            <p:column headerText="Estado Civil"  style="width: 30%; text-align:  center">
+                                <p:outputLabel value="#{encargado.estadoCivil} "/>
+                            </p:column>
+
+                            <p:column headerText="Sexo"  style="width: 25%; text-align:  center">
+                                <p:outputLabel value="#{encargado.idPersona.sexo} "/>
+                            </p:column>
+                            <p:column headerText="Fecha de Nacimiento"  filterMatchMode="contains" style="width: 30%; text-align:  center">
+                                <p:outputLabel value="#{encargado.idPersona.fechaNacimiento}" > 
+                                    <f:convertDateTime type="date"  pattern = "dd-M-yyyy"/> 
+                                </p:outputLabel>
+
+                            </p:column>
+
+                            <p:column headerText="Direccion" style="width: 50%; text-align:  center">
+                                <p:outputLabel value="#{encargado.idPersona.direccion} "/>
+                            </p:column>
+                            <p:column headerText="Telefono" style="width: 25%; text-align:  center">
+                                <p:outputLabel value="#{encargado.idPersona.telefono} "/>
+                            </p:column>
+
+                            <p:column headerText="Operaciones" style=" width: 30%;text-align: center; padding-right: 10px">
+                                <p:commandButton title="Seleccionar" value="Seleccionar" icon="ui-icon-close" oncomplete="PF('dlgEncargado').hide();" update="frmMatri" >
+                                    <f:setPropertyActionListener target="#{matriculaController.encargado}" value="#{encargado}"  />
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                </p:dialog>
+
+                <p:dialog  header="Eliminar Matricula"
+                           showEffect="explode" hideEffect="explode"
+                           widgetVar="dlgEliminar" modal="true" resizable="false" minWidth="200">
+                    <h:form id="formEliminar">
+                        <h:outputText value="¿Desea eliminar el registro de esta Matricula?"/>
+                        <p:commandButton value="Si" actionListener="#{matriculaController.eliminarMatricula()}"
+                                         action="matricula.xhtml?faces-redirect=true"
+                                         oncomplete="PF('dlgeliminar').hide();"/>
+                        <p:commandButton value="No" onclick="PF('dlgEliminar').hide()"/>
+                    </h:form>
+                </p:dialog> 
+            </ui:define>
+
+            <ui:define name="bottom">
+                bottom
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

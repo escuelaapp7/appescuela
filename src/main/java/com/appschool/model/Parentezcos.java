@@ -6,6 +6,9 @@
 package com.appschool.model;
 
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,22 +16,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
-
-
+/**
+ *
+ * @author said
+ */
 @Entity
 @Table(name = "Parentezcos")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Parentezcos.findAll", query = "SELECT p FROM Parentezcos p")
-    , @NamedQuery(name = "Parentezcos.findByIdParentezco", query = "SELECT p FROM Parentezcos p WHERE p.idParentezco = :idParentezco")
-    , @NamedQuery(name = "Parentezcos.findByDescripcion", query = "SELECT p FROM Parentezcos p WHERE p.descripcion = :descripcion")})
+
 public class Parentezcos implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_parentezco")
@@ -36,7 +38,8 @@ public class Parentezcos implements Serializable {
     @Size(max = 45)
     @Column(name = "descripcion")
     private String descripcion;
-
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idParentezco")
+    private List<Matriculas> matriculasList;
 
     public Parentezcos() {
     }
@@ -61,7 +64,14 @@ public class Parentezcos implements Serializable {
         this.descripcion = descripcion;
     }
 
+    @XmlTransient
+    public List<Matriculas> getMatriculasList() {
+        return matriculasList;
+    }
 
+    public void setMatriculasList(List<Matriculas> matriculasList) {
+        this.matriculasList = matriculasList;
+    }
 
     @Override
     public int hashCode() {

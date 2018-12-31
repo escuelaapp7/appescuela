@@ -22,16 +22,13 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-
+/**
+ *
+ * @author said
+ */
 @Entity
 @Table(name = "Menus")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Menus.findAll", query = "SELECT m FROM Menus m")
-    , @NamedQuery(name = "Menus.findByIdMenu", query = "SELECT m FROM Menus m WHERE m.idMenu = :idMenu")
-    , @NamedQuery(name = "Menus.findByIcono", query = "SELECT m FROM Menus m WHERE m.icono = :icono")
-    , @NamedQuery(name = "Menus.findByNombre", query = "SELECT m FROM Menus m WHERE m.nombre = :nombre")
-    , @NamedQuery(name = "Menus.findByUrl", query = "SELECT m FROM Menus m WHERE m.url = :url")})
+
 public class Menus implements Serializable {
 
     @Id
@@ -47,6 +44,8 @@ public class Menus implements Serializable {
     @Size(max = 50)
     @Column(name = "url")
     private String url;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMenu")
+    private List<Menurol> menurolList;
 
     public Menus() {
     }
@@ -87,6 +86,15 @@ public class Menus implements Serializable {
         this.url = url;
     }
 
+    @XmlTransient
+    public List<Menurol> getMenurolList() {
+        return menurolList;
+    }
+
+    public void setMenurolList(List<Menurol> menurolList) {
+        this.menurolList = menurolList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -111,5 +119,5 @@ public class Menus implements Serializable {
     public String toString() {
         return "com.appschool.model.Menus[ idMenu=" + idMenu + " ]";
     }
-
+    
 }

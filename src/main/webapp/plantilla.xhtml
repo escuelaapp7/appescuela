@@ -9,7 +9,16 @@
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-        <title>Aplicacion escuela</title>
+        <title>Aplicacion Escuela</title>
+        <style type="text/css">
+            i {
+                margin-right: 10px;
+            }
+
+            .ui-grid-col-3 {
+                padding: 4px 10px;
+            }
+        </style>
     </h:head>
 
     <h:body>
@@ -20,11 +29,12 @@
                     <p:growl id="messages"/>
 
                     <p:menubar>
-                        <p:submenu label="Administracion" icon="fa-archive">
+                        <p:submenu label="Administracion" >
+                            <p:menuitem value="Registro de Usuarios" url="/administracion/usuarios.xhtml" />
+                            <p:menuitem value="Creacion de Roles para Usuario" url="/administracion/roles.xhtml"  />
+                            <p:menuitem value="Asignar Rol a Usuarios" url="/administracion/asignarRoles.xhtml" />
                             <p:menuitem value="Registrar Menu" url="/administracion/menus.xhtml" />
-                            <p:menuitem value="Registrar Roles de Usuario" url="/administracion/roles.xhtml" />
-
-
+                            <p:menuitem value="Asignar Accesos por roles" url="/administracion/asignarAccesos.xhtml" />
                         </p:submenu>
                         <p:submenu label="Catalogos" icon="fa-archive">
                             <p:menuitem value="Asignaturas" url="/catalogos/asignaturas.xhtml" />
@@ -33,7 +43,18 @@
                             <p:menuitem value="Parentezcos" url="/catalogos/parentezcos.xhtml" />
                             <p:menuitem value="Periodos de Evaluacion" url="/catalogos/periodosEvaluacion.xhtml" />
                             <p:menuitem value="Secciones" url="/catalogos/secciones.xhtml" />
+                            <p:menuitem value="Jornadas" url="/catalogos/jornadas.xhtml" />
+
                         </p:submenu>
+
+                        <p:submenu label="Registro" icon="fa-archive">
+                            <p:menuitem value="Registro de Profesores" url="/registro/profesores.xhtml"/>
+                            <p:menuitem value="Registro de Alumnos" url="/registro/alumnos.xhtml"/>
+                            <p:menuitem value="Registro de Coordinadores" url="/registro/coordinadores.xhtml"/>
+                            <p:menuitem value="Matricula" url="/registro/matricula.xhtml"/>
+
+                        </p:submenu>
+
                     </p:menubar>
                 </h:form>
             </ui:insert>

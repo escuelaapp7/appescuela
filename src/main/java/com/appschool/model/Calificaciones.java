@@ -9,30 +9,27 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
-
+/**
+ *
+ * @author said
+ */
 @Entity
 @Table(name = "calificaciones")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Calificaciones.findAll", query = "SELECT c FROM Calificaciones c")
-    , @NamedQuery(name = "Calificaciones.findByIdCalificacion", query = "SELECT c FROM Calificaciones c WHERE c.idCalificacion = :idCalificacion")
-    , @NamedQuery(name = "Calificaciones.findByPorcentaje", query = "SELECT c FROM Calificaciones c WHERE c.porcentaje = :porcentaje")
-    , @NamedQuery(name = "Calificaciones.findByNota", query = "SELECT c FROM Calificaciones c WHERE c.nota = :nota")})
+
 public class Calificaciones implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
-    @Basic(optional = false)
-    @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_calificacion")
     private Integer idCalificacion;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation

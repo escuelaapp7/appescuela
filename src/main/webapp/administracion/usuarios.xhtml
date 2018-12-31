@@ -1,0 +1,191 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../plantilla.xhtml">
+
+
+            <ui:define name="content">
+                <p:panel header="Registros de Usuarios" 
+                         style="width: 80%;margin: 0 auto; text-align:center;align-self: center ;
+                         padding: 5px; text-align: justify;font-size: 14px">
+                    <p:layout  style="width: 80%; padding-left: 10%">
+                        <p:layoutUnit position="center" 
+                                      style="padding: 5px; text-align: justify;font-size: 14px; align-content: center" 
+                                      >
+                            <h:form id="frmProfesor">
+                                <h:panelGrid id="gridBuscarDatosProveedor" style="layout" columns="2" title="Datos Generales">
+
+                                    <p:outputLabel value="Seleccione al profesor a quien desee crear usuario: " />
+                                    <p:commandButton value="Seleccionar" oncomplete="PF('dlgProfesores').show();"/>
+
+                                    <p:outputLabel value="Nombre del profesor: "/>
+                                    <p:outputLabel style="font-size: 16px; font-style: italic" value="- #{usuarioController.usuario.idPersona.nombres} #{usuarioController.usuario.idPersona.apellidos}"/>
+                                </h:panelGrid>
+
+                            </h:form>
+
+                            <p:separator/>
+                            <h:form>
+                                <h:panelGrid columns="2">
+                                    <p:outputLabel value="Nombre de usaurio:"/>
+                                    <p:inputText value="#{usuarioController.usuario.usuario}"/>
+                                    <p:commandButton value="Crear Usuario" actionListener="#{usuarioController.operarUsuario()}" action="usuarios.xhtml?faces-redirect=true"/>
+                                </h:panelGrid>
+                            </h:form>
+                        </p:layoutUnit>
+                    </p:layout>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <h:form id="frmMostrar" >
+                        <p:growl  globalOnly="true" showDetail="true"/>
+                        <p:dataTable id="tblUsuarios"  value="#{usuarioController.lstUsuarios}"
+                                     var="usuario" style="width: 80%;margin: 0 auto; text-align:center;
+                                     padding: 5px; text-align: justify;font-size: 14px" 
+                                     emptyMessage="No hay registros en la base de datos"
+                                     paginator="true" rows="5" paginatorPosition="bottom"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                     {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15" reflow="true" resizeMode="expand"  widgetVar="data" >
+
+
+                            <f:facet name="header" >
+                                <p:outputPanel style="height: available">
+                                    <h:outputText value="Usuarios Registrados" style="padding-right: 20px"/>
+                                </p:outputPanel>
+                                <p:separator/>
+                            </f:facet>
+
+                            <p:column headerText="Nombre del usuario" filterBy="#{usuario.idPersona.nombres} #{usuario.idPersona.apellidos}" filterMatchMode="contains" style="width: 15%; text-align:  center">
+                                <p:outputLabel value="#{usuario.idPersona.nombres} #{usuario.idPersona.apellidos}"/>
+                            </p:column>
+
+                            <p:column headerText="Usuario"  style="width: 15%; text-align:  center">
+                                <p:outputLabel value="#{usuario.usuario}"/>
+                            </p:column>
+                            <p:column headerText="Operaciones" style="width: 15%">
+                                <p:commandButton value="Restablecer Clave" title="Restablecer" oncomplete="PF('dlgRestablecer').show();" update="dlgRestablecer" >
+                                    <f:setPropertyActionListener target="#{usuarioController.usuario}" value="#{usuario}"  />
+
+                                </p:commandButton>
+                                <p:commandButton title="Modificar Usuario" icon="ui-icon-pencil" value="Modificar"
+                                                 oncomplete="PF('dlgModificar').show();"  
+                                                 update="dlgModificar"  >
+                                    <f:setPropertyActionListener target="#{usuarioController.usuario}" value="#{usuario}"  />
+                                </p:commandButton>
+
+                                <p:commandButton title="Eliminar Usuario" value="Eliminar" icon="ui-icon-close" oncomplete="PF('dlgEliminar').show();">
+                                    <f:setPropertyActionListener target="#{usuarioController.usuario}" value="#{usuario}"  />
+                                </p:commandButton>
+                            </p:column>
+
+                        </p:dataTable>
+
+                    </h:form>
+
+                </p:panel>
+
+                <p:dialog id="dlgProfesores" widgetVar="dlgProfesores" modal="true" 
+                          resizable="false" showEffect="explode" hideEffect="explode" width="60%"> 
+
+
+                    <p:panel header="Profesores sin usuario Registrado"  id="panelProfesores"
+                             style="width: 90%;margin: 0 auto; text-align:center;align-self: center ;
+                             padding: 5px; text-align: justify;font-size: 14px">
+                        <h:form id="frmMostrarProfesores" >
+                            <p:growl  globalOnly="true" showDetail="true"/>
+                            <p:dataTable id="tblProfesores"  value="#{profesorController.lstProfesores}"
+                                         var="profesor" style="width: 90%;margin: 0 auto; text-align:center;
+                                         padding: 5px; text-align: justify;font-size: 14px" 
+                                         emptyMessage="No hay registros en la base de datos"
+                                         paginator="true" rows="5" paginatorPosition="bottom"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                         {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15" reflow="true" resizeMode="expand"  widgetVar="data" >
+
+
+
+
+                                <p:column headerText="DUI" filterBy="#{profesor.dui}" filterMatchMode="contains" style="width: 30%; text-align:  center">
+                                    <p:outputLabel value="#{profesor.dui} "/>
+                                </p:column>
+
+                                <p:column headerText="Escalafon(NIP)" filterBy="#{profesor.escalafon}" filterMatchMode="contains"  style="width: 30%; text-align:  center">
+                                    <p:outputLabel value="#{profesor.escalafon} "/>
+                                </p:column>
+
+                                <p:column headerText="Nombre del Profesor" filterBy="#{profesor.idPersona.nombres} #{profesor.idPersona.apellidos}" filterMatchMode="contains" style="width: 65%; text-align:  center">
+                                    <p:outputLabel value="#{profesor.idPersona.nombres} #{profesor.idPersona.apellidos}"/>
+                                </p:column>
+
+                                <p:column headerText="Operaciones" style=" width: 30%;text-align: center; padding-right: 10px">
+
+                                    <p:commandButton value="Seleccionar" oncomplete="PF('dlgProfesores').hide();" update=":frmProfesor">
+                                        <f:setPropertyActionListener target="#{usuarioController.usuario.idPersona}" value="#{profesor.idPersona}"/>
+                                    </p:commandButton>
+                                </p:column>
+
+                            </p:dataTable>
+
+                        </h:form>
+
+                    </p:panel>
+
+                </p:dialog>
+
+                <p:dialog id="dlgModificar" widgetVar="dlgModificar" modal="true" 
+                          resizable="false" showEffect="explode" hideEffect="explode" width="60%"> 
+
+
+                </p:dialog>
+
+                <p:dialog  header="Eliminar Usuario"
+                           showEffect="explode" hideEffect="explode"
+                           widgetVar="dlgEliminar" modal="true" resizable="false" minWidth="200">
+                    <h:form id="formEliminar">
+                        <h:outputText value="¿Desea eliminar el registro de este usuario?"/>
+                        <p:commandButton value="Si" actionListener="#{usuarioController.eliminarUsuario()}"
+                                         action="usuarios.xhtml?faces-redirect=true"
+                                         oncomplete="PF('dlgeliminar').hide();"/>
+                        <p:commandButton value="No" onclick="PF('dlgeliminar').hide()"/>
+                    </h:form>
+                </p:dialog> 
+
+
+                <p:dialog  header="Restablecer Contraseña" id="dlgRestablecer"
+                           showEffect="explode" hideEffect="explode"
+                           widgetVar="dlgRestablecer" modal="true" resizable="false" minWidth="200">
+                    <h:form id="formRestablecer">
+                        <h:outputText value="¿Esta seguro que desea restablecer la contraseña, de ser asi la nueva clave sera #{usuarioController.usuario.usuario} ?"/>
+                        <p:commandButton value="Si" actionListener="#{usuarioController.restablecerContrasena()}"
+                                         action="usuarios.xhtml?faces-redirect=true"
+                                         oncomplete="PF('dlgRestablecer').hide();"/>
+                        <p:commandButton value="No" onclick="PF('dlgRestablecer').hide()"/>
+                    </h:form>
+                </p:dialog> 
+
+            </ui:define>
+
+            <ui:define name="bottom">
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

@@ -1,0 +1,246 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../plantilla.xhtml">
+
+
+
+            <ui:define name="content">
+
+                <p:panel header="Registros de Profesores"  id="panel"
+                         style="width: 100%;margin: 0 auto; text-align:center;align-self: center ;
+                         padding: 5px; text-align: justify;font-size: 14px">
+                    <h:form id="frmMostrar" >
+                        <p:growl id="growl" sticky="true" />
+
+                        <p:growl  globalOnly="true" showDetail="true"/>
+                        <p:dataTable id="tblProfesores"  value="#{profesorController.lstProfesores}"
+                                     var="profesor" style="width: 80%;margin: 0 auto; text-align:center;
+                                     padding: 5px; text-align: justify;font-size: 14px" 
+                                     emptyMessage="No hay registros en la base de datos"
+                                     paginator="true" rows="5" paginatorPosition="bottom"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                     {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15" reflow="true" resizeMode="expand"  widgetVar="data" >
+
+
+                            <f:facet name="header" >
+                                <p:outputPanel style="height: available">
+                                    <h:outputText value="Buscar en todos los campos" style="padding-right: 20px"/>
+                                    <p:inputText  id="globalFilter" onkeyup= "PF('data').filter()" 
+                                                  placeholder="Ingrese cualquier palabra o numero"  style="width: 350px"/> 
+                                    <p:commandButton  
+                                        value="Registrar nuevo Profesor" icon="ui-icon-pencil"
+                                        onclick="PF('dlgRegistrar').show();">
+                                        <p:effect type="pulsate" event="click" />
+                                    </p:commandButton>
+                                </p:outputPanel>
+                                <p:separator/>
+                                <BR/>
+
+                            </f:facet>
+
+                            <p:column headerText="DUI" filterBy="#{profesor.dui}" filterMatchMode="contains" style="width: 30%; text-align:  center">
+                                <p:outputLabel value="#{profesor.dui} "/>
+                            </p:column>
+
+                            <p:column headerText="Escalafon(NIP)" filterBy="#{profesor.escalafon}" filterMatchMode="contains"  style="width: 30%; text-align:  center">
+                                <p:outputLabel value="#{profesor.escalafon} "/>
+                            </p:column>
+
+                            <p:column headerText="Nombre del Profesor" filterBy="#{profesor.idPersona.nombres} #{profesor.idPersona.apellidos}" filterMatchMode="contains" style="width: 65%; text-align:  center">
+                                <p:outputLabel value="#{profesor.idPersona.nombres} #{profesor.idPersona.apellidos}"/>
+                            </p:column>
+                            <p:column headerText="Sexo"  style="width: 25%; text-align:  center">
+                                <p:outputLabel value="#{profesor.idPersona.sexo} "/>
+                            </p:column>
+                            <p:column headerText="Fecha de Nacimiento"  filterMatchMode="contains" style="width: 30%; text-align:  center">
+                                <p:outputLabel value="#{profesor.idPersona.fechaNacimiento}" > 
+                                    <f:convertDateTime type="date"  pattern = "dd-M-yyyy"/> 
+                                </p:outputLabel>
+
+                            </p:column>
+
+                            <p:column headerText="Estado Civil" style="width: 25%; text-align:  center">
+                                <p:outputLabel value="#{profesor.estadoCivil} "/>
+                            </p:column>
+                            <p:column headerText="Direccion" style="width: 50%; text-align:  center">
+                                <p:outputLabel value="#{profesor.idPersona.direccion} "/>
+                            </p:column>
+                            <p:column headerText="Telefono" style="width: 25%; text-align:  center">
+                                <p:outputLabel value="#{profesor.idPersona.telefono} "/>
+                            </p:column>
+
+                            <p:column headerText="Operaciones" style=" width: 30%;text-align: center; padding-right: 10px">
+
+                                <p:commandButton title="Modificar Profesor" icon="ui-icon-pencil"
+                                                 oncomplete="PF('dlgModificar').show();"  
+                                                 update="dlgModificar"  >
+                                    <f:setPropertyActionListener target="#{profesorController.profesor}" value="#{profesor}"  />
+                                </p:commandButton>
+
+                                <p:commandButton title="Eliminar Profesor" icon="ui-icon-close" oncomplete="PF('dlgEliminar').show();">
+                                    <f:setPropertyActionListener target="#{profesorController.profesor}" value="#{profesor}"  />
+                                </p:commandButton>
+                            </p:column>
+
+                        </p:dataTable>
+
+                    </h:form>
+
+                </p:panel>
+
+                <p:dialog id="dlgRegistrar" header="Registrar Profesor" showEffect="fade" hideEffect="explode"
+                          widgetVar="dlgRegistrar" modal="true" draggable="false" resizable="false" minWidth="500" width="35%" >
+                    <h:form>
+                        <p:messages id="msgs" />
+                        <p:panelGrid columns="3" layout="grid" style="width: 100%;margin: 0 auto" id="pgDatos">
+
+                            <p:column/>
+                            <p:graphicImage value="/resources/image/icoProfesor.jpg" style="width: 100%; height: 100%; "/>
+                            <p:column/>
+
+                            <p:outputLabel for="txtNombres" value="Nombres"/>
+                            <p:inputText  required="true"  id="txtNombres" value="#{profesorController.persona.nombres}"/>
+                            <p:message for="txtNombres" display="icon" />
+
+                            <p:outputLabel for="txtApellidos"  value="Apellidos"/>
+                            <p:inputText  required="true"  id="txtApellidos" value="#{profesorController.persona.apellidos}"/>
+                            <p:message for="txtApellidos" display="icon" />
+
+                            <p:outputLabel for="rbdSexo"  value="Sexo"/>
+                            <p:selectOneRadio  required="true"  id="rbdSexo" value="#{profesorController.persona.sexo}" >
+                                <f:selectItem itemLabel="Masculino" itemValue="Masculino" />
+                                <f:selectItem itemLabel="Femenino" itemValue="Femenino" />
+                            </p:selectOneRadio>
+                            <p:message for="rbdSexo" display="icon" />
+
+                            <p:outputLabel for="txtFecha" value="Fecha de Nacimiento" />
+                            <p:calendar  required="true"  id="txtFecha" value="#{profesorController.persona.fechaNacimiento}"  locale="es" navigator="true" showTodayButton="true"/>
+                            <p:message for="txtFecha" display="icon"  />
+
+                            <p:outputLabel for="cboEstadoCivil" value="Estado civil"/>
+                            <p:selectOneMenu id="cboEstadoCivil" required="true" value="#{profesorController.profesor.estadoCivil}">
+                                <f:selectItem itemLabel="-- Seleccione --" noSelectionOption="true"/>
+                                <f:selectItem itemLabel="Soltero/a" itemValue="Soltero/a"/>
+                                <f:selectItem itemLabel="Casado/a" itemValue="Casado/a"/>
+                                <f:selectItem itemLabel="Divorciado/a" itemValue="Divorciado/a"/>
+                            </p:selectOneMenu>
+                            <p:message for="cboEstadoCivil" display="icon" />
+
+                            <p:outputLabel for="txtDui"  value="DUI"/>
+                            <p:inputMask  required="true"  id="txtDui" value="#{profesorController.profesor.dui}" mask="99999999-9"/>
+                            <p:message for="txtDui" display="icon" />
+
+                            <p:outputLabel for="txtNIP"  value="Escalafon(NIP): "/>
+                            <p:inputMask  required="true"  id="txtNIP" value="#{profesorController.profesor.escalafon}" mask="99999"/>
+                            <p:message for="txtNIP" display="icon" />
+
+                            <p:outputLabel for="txtTelefono"  value="Telefono"/>
+                            <p:inputMask  required="true"  id="txtTelefono" value="#{profesorController.persona.telefono}" mask="9999-9999"/>
+                            <p:message for="txtTelefono" display="icon" />
+
+
+                            <p:outputLabel for="rhDireccion"  value="Dirección"/>
+                            <p:inputTextarea maxlength="255" style="width: 100%" required="true"  id="rhDireccion" value="#{profesorController.persona.direccion}"/>
+                            <p:message for="rhDireccion"
+                                       display="icon" />
+                            <p:commandButton value="Registrar Profesor" actionListener="#{profesorController.operar()}"
+                                             action="profesores.xhtml?faces-redirect=true" onclick="PF('dlgRegistrar').hide();" 
+                                             update="panel"/>
+                        </p:panelGrid>
+
+                    </h:form>
+                </p:dialog>
+
+                <p:dialog id="dlgModificar" header="Modificar Profesor" showEffect="fade" hideEffect="explode"
+                          widgetVar="dlgModificar" modal="true" draggable="false" resizable="false" minWidth="400"  >
+                    <h:form>
+
+                        <p:panelGrid columns="3" layout="grid" style="width: 75%;margin: 0 auto" id="pgDatos">
+                            <p:column/>
+                            <p:graphicImage value="/resources/image/icoProfesor.jpg" style="width: 75%; height: 75%; "/>
+                            <p:column/>
+
+                            <p:outputLabel for="txtNombresM" value="Nombres"/>
+                            <p:inputText  required="true"  id="txtNombresM" value="#{profesorController.profesor.idPersona.nombres}"/>
+                            <p:message for="txtNombresM" display="icon" />
+
+                            <p:outputLabel for="txtApellidosM"  value="Apellidos"/>
+                            <p:inputText  required="true"  id="txtApellidosM" value="#{profesorController.profesor.idPersona.apellidos}"/>
+                            <p:message for="txtApellidosM" display="icon" />
+
+                            <p:outputLabel for="rbdSexoM"  value="Sexo"/>
+                            <p:selectOneRadio  required="true"  id="rbdSexoM" value="#{profesorController.profesor.idPersona.sexo}" >
+                                <f:selectItem itemLabel="Masculino" itemValue="Masculino" />
+                                <f:selectItem itemLabel="Femenino" itemValue="Femenino" />
+                            </p:selectOneRadio>
+                            <p:message for="rbdSexoM" display="icon"  />
+
+                            <p:outputLabel for="txtFechaM" value="Fecha de Nacimiento" />
+                            <p:calendar  required="true"  id="txtFechaM" value="#{profesorController.profesor.idPersona.fechaNacimiento}"  locale="es" navigator="true" showTodayButton="true"/>
+                            <p:message for="txtFechaM" display="icon"  />
+
+                            <p:outputLabel for="cboEstadoCivilM" value="Estado civil"/>
+                            <p:selectOneMenu id="cboEstadoCivilM" required="true" value="#{profesorController.profesor.estadoCivil}">
+                                <f:selectItem itemLabel="-- Seleccione --" noSelectionOption="true"/>
+                                <f:selectItem itemLabel="Soltero/a" itemValue="Soltero/a"/>
+                                <f:selectItem itemLabel="Casado/a" itemValue="Casado/a"/>
+                                <f:selectItem itemLabel="Divorciado/a" itemValue="Divorciado/a"/>
+                            </p:selectOneMenu>
+                            <p:message for="cboEstadoCivilM" display="icon" />
+
+                            <p:outputLabel for="txtDuiM"  value="DUI"/>
+                            <p:inputMask  required="true"  id="txtDuiM" value="#{profesorController.profesor.dui}" mask="99999999-9"/>
+                            <p:message for="txtDuiM" display="icon" />
+
+                            <p:outputLabel for="txtNIPM"  value="Escalafon(NIP): "/>
+                            <p:inputMask  required="true"  id="txtNIPM" value="#{profesorController.profesor.escalafon}" mask="99999"/>
+                            <p:message for="txtNIPM" display="icon" />
+
+                            <p:outputLabel for="txtTelefonoM"  value="Telefono"/>
+                            <p:inputMask  required="true"  id="txtTelefonoM" value="#{profesorController.profesor.idPersona.telefono}" mask="9999-9999"/>
+                            <p:message for="txtTelefonoM" display="icon" />
+
+
+                            <p:outputLabel for="rhDireccionM"  value="Dirección"/>
+                            <p:inputTextarea maxlength="255" style="width: 100%" required="true"  id="rhDireccionM" value="#{profesorController.profesor.idPersona.direccion}"/>
+                            <p:message for="rhDireccionM" display="icon" />
+                            <p:commandButton value="Modificar Profesor" actionListener="#{profesorController.operar()}"
+                                             action="profesores.xhtml?faces-redirect=true" onclick="PF('dlgRegistrar').hide();" 
+                                             update="panel"/>
+                        </p:panelGrid>
+
+                    </h:form>
+                </p:dialog>
+
+
+                <p:dialog  header="Eliminar Profesor"
+                           showEffect="explode" hideEffect="explode"
+                           widgetVar="dlgEliminar" modal="true" resizable="false" minWidth="200">
+                    <h:form id="formEliminar">
+                        <h:outputText value="¿Desea eliminar el registro de este Profesor?"/>
+                        <p:commandButton value="Si" actionListener="#{profesorController.eliminarProfesor()}"
+                                         action="profesores.xhtml?faces-redirect=true"
+                                         oncomplete="PF('dlgeliminar').hide();"/>
+                        <p:commandButton value="No" onclick="PF('dlgeliminar').hide()"/>
+                    </h:form>
+                </p:dialog> 
+
+            </ui:define>
+
+            <ui:define name="bottom">
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

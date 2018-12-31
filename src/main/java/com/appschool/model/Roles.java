@@ -6,6 +6,9 @@
 package com.appschool.model;
 
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,22 +16,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
-
+/**
+ *
+ * @author said
+ */
 @Entity
 @Table(name = "Roles")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Roles.findAll", query = "SELECT r FROM Roles r")
-    , @NamedQuery(name = "Roles.findByIdRol", query = "SELECT r FROM Roles r WHERE r.idRol = :idRol")
-    , @NamedQuery(name = "Roles.findByNombre", query = "SELECT r FROM Roles r WHERE r.nombre = :nombre")
-    , @NamedQuery(name = "Roles.findByDescripcion", query = "SELECT r FROM Roles r WHERE r.descripcion = :descripcion")})
+
 public class Roles implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_rol")
@@ -39,7 +41,10 @@ public class Roles implements Serializable {
     @Size(max = 30)
     @Column(name = "descripcion")
     private String descripcion;
-
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idRol")
+    private List<Menurol> menurolList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idRol")
+    private List<Rolesusuario> rolesusuarioList;
 
     public Roles() {
     }
@@ -72,7 +77,24 @@ public class Roles implements Serializable {
         this.descripcion = descripcion;
     }
 
- 
+    @XmlTransient
+    public List<Menurol> getMenurolList() {
+        return menurolList;
+    }
+
+    public void setMenurolList(List<Menurol> menurolList) {
+        this.menurolList = menurolList;
+    }
+
+    @XmlTransient
+    public List<Rolesusuario> getRolesusuarioList() {
+        return rolesusuarioList;
+    }
+
+    public void setRolesusuarioList(List<Rolesusuario> rolesusuarioList) {
+        this.rolesusuarioList = rolesusuarioList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
