@@ -16,12 +16,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -43,7 +40,7 @@ public class Profesores implements Serializable {
     @Column(name = "escalafon")
     private String escalafon;
     @Size(max = 10)
-    @Column(name = "dui")
+    @Column(name = "dui", unique = true)
     private String dui;
     @Size(max = 45)
     @Column(name = "estado_civil")

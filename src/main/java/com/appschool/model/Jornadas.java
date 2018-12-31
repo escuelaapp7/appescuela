@@ -18,6 +18,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -28,18 +29,23 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "Jornadas")
-
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Jornadas.findAll", query = "SELECT j FROM Jornadas j")})
 public class Jornadas implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Column(name = "id_jornada")
     private Integer idJornada;
     @Size(max = 45)
     @Column(name = "descripcion")
     private String descripcion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idJornada")
-    private List<Coordinadorgrado> coordinadorgradoList;
+    private List<Impartir> impartirList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idJornada")
+    private List<Coordinadorgrado> coordinadorGradoList;
 
     public Jornadas() {
     }
@@ -65,12 +71,21 @@ public class Jornadas implements Serializable {
     }
 
     @XmlTransient
-    public List<Coordinadorgrado> getCoordinadorgradoList() {
-        return coordinadorgradoList;
+    public List<Impartir> getImpartirList() {
+        return impartirList;
     }
 
-    public void setCoordinadorgradoList(List<Coordinadorgrado> coordinadorgradoList) {
-        this.coordinadorgradoList = coordinadorgradoList;
+    public void setImpartirList(List<Impartir> impartirList) {
+        this.impartirList = impartirList;
+    }
+
+    @XmlTransient
+    public List<Coordinadorgrado> getCoordinadorGradoList() {
+        return coordinadorGradoList;
+    }
+
+    public void setCoordinadorGradoList(List<Coordinadorgrado> coordinadorGradoList) {
+        this.coordinadorGradoList = coordinadorGradoList;
     }
 
     @Override
@@ -97,5 +112,5 @@ public class Jornadas implements Serializable {
     public String toString() {
         return "com.appschool.model.Jornadas[ idJornada=" + idJornada + " ]";
     }
-    
+
 }

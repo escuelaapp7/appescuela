@@ -6,6 +6,7 @@
 package com.appschool.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -20,6 +21,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -29,22 +32,33 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "Impartir")
-
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Impartir.findAll", query = "SELECT i FROM Impartir i")})
 public class Impartir implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_impartir")
     private Integer idImpartir;
+    @Column(name = "anio")
+    @Temporal(TemporalType.DATE)
+    private Date anio;
     @JoinColumn(name = "id_asignatura", referencedColumnName = "id_asignatura")
     @ManyToOne(optional = false)
     private Asignaturas idAsignatura;
-    @JoinColumn(name = "id_matricula", referencedColumnName = "id_matricula")
+    @JoinColumn(name = "id_grado", referencedColumnName = "id_grado")
     @ManyToOne(optional = false)
-    private Matriculas idMatricula;
+    private Grados idGrado;
+    @JoinColumn(name = "id_jornada", referencedColumnName = "id_jornada")
+    @ManyToOne(optional = false)
+    private Jornadas idJornada;
     @JoinColumn(name = "id_profesor", referencedColumnName = "id_profesor")
     @ManyToOne(optional = false)
     private Profesores idProfesor;
+    @JoinColumn(name = "id_seccion", referencedColumnName = "id_seccion")
+    @ManyToOne(optional = false)
+    private Secciones idSeccion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idImpartir")
     private List<Calificaciones> calificacionesList;
 
@@ -63,6 +77,14 @@ public class Impartir implements Serializable {
         this.idImpartir = idImpartir;
     }
 
+    public Date getAnio() {
+        return anio;
+    }
+
+    public void setAnio(Date anio) {
+        this.anio = anio;
+    }
+
     public Asignaturas getIdAsignatura() {
         return idAsignatura;
     }
@@ -71,12 +93,20 @@ public class Impartir implements Serializable {
         this.idAsignatura = idAsignatura;
     }
 
-    public Matriculas getIdMatricula() {
-        return idMatricula;
+    public Grados getIdGrado() {
+        return idGrado;
     }
 
-    public void setIdMatricula(Matriculas idMatricula) {
-        this.idMatricula = idMatricula;
+    public void setIdGrado(Grados idGrado) {
+        this.idGrado = idGrado;
+    }
+
+    public Jornadas getIdJornada() {
+        return idJornada;
+    }
+
+    public void setIdJornada(Jornadas idJornada) {
+        this.idJornada = idJornada;
     }
 
     public Profesores getIdProfesor() {
@@ -85,6 +115,14 @@ public class Impartir implements Serializable {
 
     public void setIdProfesor(Profesores idProfesor) {
         this.idProfesor = idProfesor;
+    }
+
+    public Secciones getIdSeccion() {
+        return idSeccion;
+    }
+
+    public void setIdSeccion(Secciones idSeccion) {
+        this.idSeccion = idSeccion;
     }
 
     @XmlTransient

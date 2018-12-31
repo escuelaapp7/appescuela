@@ -18,6 +18,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -28,17 +29,21 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "Evaluaciones")
-
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Evaluaciones.findAll", query = "SELECT e FROM Evaluaciones e")})
 public class Evaluaciones implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Column(name = "id_evaluacion")
     private Integer idEvaluacion;
     @Size(max = 25)
     @Column(name = "descripcion")
     private String descripcion;
-
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEvaluacion")
+    private List<Calificaciones> calificacionesList;
 
     public Evaluaciones() {
     }
@@ -63,7 +68,14 @@ public class Evaluaciones implements Serializable {
         this.descripcion = descripcion;
     }
 
-   
+    @XmlTransient
+    public List<Calificaciones> getCalificacionesList() {
+        return calificacionesList;
+    }
+
+    public void setCalificacionesList(List<Calificaciones> calificacionesList) {
+        this.calificacionesList = calificacionesList;
+    }
 
     @Override
     public int hashCode() {

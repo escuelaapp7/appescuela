@@ -40,7 +40,7 @@ public class Encargados implements Serializable {
     @Column(name = "id_encargado")
     private Integer idEncargado;
     @Size(max = 10)
-    @Column(name = "dui")
+    @Column(name = "dui", unique = true)
     private String dui;
     @Size(max = 45)
     @Column(name = "estado_civil")

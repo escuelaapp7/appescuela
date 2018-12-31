@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -25,11 +26,14 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "calificaciones")
-
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Calificaciones.findAll", query = "SELECT c FROM Calificaciones c")})
 public class Calificaciones implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Column(name = "id_calificacion")
     private Integer idCalificacion;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -43,6 +47,9 @@ public class Calificaciones implements Serializable {
     @JoinColumn(name = "id_impartir", referencedColumnName = "id_impartir")
     @ManyToOne(optional = false)
     private Impartir idImpartir;
+    @JoinColumn(name = "id_matricula", referencedColumnName = "id_matricula")
+    @ManyToOne(optional = false)
+    private Matriculas idMatricula;
     @JoinColumn(name = "id_periodo", referencedColumnName = "id_periodo")
     @ManyToOne(optional = false)
     private Periodos idPeriodo;
@@ -92,6 +99,14 @@ public class Calificaciones implements Serializable {
 
     public void setIdImpartir(Impartir idImpartir) {
         this.idImpartir = idImpartir;
+    }
+
+    public Matriculas getIdMatricula() {
+        return idMatricula;
+    }
+
+    public void setIdMatricula(Matriculas idMatricula) {
+        this.idMatricula = idMatricula;
     }
 
     public Periodos getIdPeriodo() {

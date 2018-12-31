@@ -1,0 +1,245 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../plantilla.xhtml">
+
+            <ui:define name="content">
+                <p:panel header="Asignar Materias por Maestro"  id="panel"
+                         style="width: 100%;margin: 0 auto; text-align:center;align-self: center ;
+                         padding: 5px; text-align: justify;font-size: 14px">
+                    <h:form id="frmMostrar" >
+                        <p:growl id="growl" sticky="true" />
+
+                        <p:growl  globalOnly="true" showDetail="true"/>
+                        <p:dataTable id="tblASignacionMaterias"  value="#{impartirController.lstImpartir}"
+                                     var="impartir" style="width: 80%;margin: 0 auto; text-align:center;
+                                     padding: 5px; text-align: justify;font-size: 14px" 
+                                     emptyMessage="No hay registros en la base de datos"
+                                     paginator="true" rows="5" paginatorPosition="bottom"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                     {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15" reflow="true" resizeMode="expand"  widgetVar="data" >
+
+
+                            <f:facet name="header" >
+                                <p:outputPanel style="height: available">
+                                    <h:outputText value="Buscar en todos los campos" style="padding-right: 20px"/>
+                                    <p:inputText  id="globalFilter" onkeyup= "PF('data').filter()" 
+                                                  placeholder="Ingrese cualquier palabra o numero"  style="width: 350px"/> 
+                                    <p:commandButton  
+                                        value="Asignar Materia a Profesor" icon="ui-icon-pencil"
+                                        onclick="PF('dlgRegistrar').show();">
+                                        <p:effect type="pulsate" event="click" />
+                                    </p:commandButton>
+                                </p:outputPanel>
+                                <p:separator/>
+                                <BR/>
+
+                            </f:facet>
+
+                            <p:column headerText="Nombre de Profesor" filterBy="#{impartir.idProfesor.idPersona.nombres} #{impartir.idProfesor.idPersona.apellidos}" filterMatchMode="contains"  style="width: 15%; text-align:  center">
+                                <p:outputLabel value="#{impartir.idProfesor.idPersona.nombres} #{impartir.idProfesor.idPersona.apellidos}"/>
+                            </p:column>
+
+                            <p:column headerText="Asignatura" filterBy="#{impartir.idAsignatura.descripcion}" filterMatchMode="contains"  style="width: 20%; text-align:  center">
+                                <p:outputLabel value="#{impartir.idAsignatura.descripcion}"/>
+                            </p:column>
+
+                            <p:column headerText="Grado" filterBy="#{impartir.idGrado.nombre}" filterMatchMode="contains" style="width: 15%; text-align:  center">
+                                <p:outputLabel value="#{impartir.idGrado.nombre}"/>
+                            </p:column>
+
+                            <p:column headerText="Seccion" style="width: 15%; text-align:  center">
+                                <p:outputLabel value="#{impartir.idSeccion.descripcion}"/>
+                            </p:column>
+
+                            <p:column headerText="Jornada" filterBy="#{impartir.idJornada.descripcion}" filterMatchMode="contains" style="width: 25%; text-align:  center">
+                                <p:outputLabel value="#{impartir.idJornada.descripcion}"/>
+                            </p:column>
+
+                            <p:column headerText="Operaciones" style=" width: 30%;text-align: center; padding-right: 10px">
+
+                                <p:commandButton title="Modificar Asignacion" icon="ui-icon-pencil"
+                                                 oncomplete="PF('dlgModificar').show();"  
+                                                 update="dlgModificar"  >
+                                    <f:setPropertyActionListener target="#{impartirController.impartir}" value="#{impartir}"  />
+                                </p:commandButton>
+
+                                <p:commandButton title="Eliminar Asignacion" icon="ui-icon-close" oncomplete="PF('dlgEliminar').show();">
+                                    <f:setPropertyActionListener target="#{impartirController.impartir}" value="#{impartir}"  />
+                                </p:commandButton>
+                            </p:column>
+
+                        </p:dataTable>
+                    </h:form>
+                </p:panel>
+
+                <p:dialog id="dlgRegistrar" header="Asignacion de Materias" showEffect="fade" hideEffect="explode"
+                          widgetVar="dlgRegistrar" modal="true" draggable="false" resizable="false" minWidth="500" width="35%" >
+                    <h:form>
+                        <p:messages id="msgs" />
+                        <p:panelGrid columns="3" layout="grid" style="width: 100%;margin: 0 auto" id="pgDatos">
+
+                            <p:column/>
+                            <p:graphicImage value="/resources/image/icoImpartir.jpg" style="width: 100%; height: 100%; "/>
+                            <p:column/>
+
+                            <p:outputLabel for="cboAsignatura" value="Seleccione Asignatura: "/>
+                            <p:selectOneMenu id="cboAsignatura" value="#{impartirController.asignatura}"  
+                                             effect="bounce" filterMatchMode="contains" converter="entityConverter" filter="true" >
+                                <f:selectItem itemLabel="-- Seleccione --" noSelectionOption="true"/>
+                                <f:selectItems value="#{impartirController.lstAsignaturas}" var="asignatura" 
+                                               itemValue="#{asignatura}" itemLabel="#{asignatura.descripcion}"/>
+                            </p:selectOneMenu>
+                            <p:message for="cboAsignatura"/>
+
+                            <p:outputLabel for="cboProfesor" value="Profesor que Impartira la Asignatura: "/>
+                            <p:selectOneMenu id="cboProfesor" value="#{impartirController.profesor}"  
+                                             effect="bounce" filterMatchMode="contains" converter="entityConverter" filter="true" >
+                                <f:selectItem itemLabel="-- Seleccione --" noSelectionOption="true"/>
+                                <f:selectItems value="#{impartirController.lstProfesores}" var="profesor" 
+                                               itemValue="#{profesor}" itemLabel="#{profesor.idPersona.nombres} #{profesor.idPersona.apellidos}"/>
+                            </p:selectOneMenu>
+                            <p:message for="cboProfesor"/>
+
+                            <p:outputLabel for="cboGrado" value="Seleccione Grado:"/>
+                            <p:selectOneMenu id="cboGrado" value="#{impartirController.grado}"  
+                                             effect="bounce" filterMatchMode="contains" converter="entityConverter" filter="true" >
+                                <f:selectItem itemLabel="-- Seleccione --" noSelectionOption="true"/>
+                                <f:selectItems value="#{impartirController.lstGrados}" var="grado" 
+                                               itemValue="#{grado}" itemLabel="#{grado.nombre}"/>
+                            </p:selectOneMenu>
+                            <p:message for="cboGrado"/>
+
+                            <p:outputLabel for="cboSeccion" value="Seleccione Seccion:"/>
+                            <p:selectOneMenu id="cboSeccion" value="#{impartirController.seccion}"  
+                                             effect="bounce" filterMatchMode="contains" converter="entityConverter" filter="true" >
+                                <f:selectItem itemLabel="-- Seleccione --" noSelectionOption="true"/>
+                                <f:selectItems value="#{impartirController.lstSecciones}" var="seccion" 
+                                               itemValue="#{seccion}" itemLabel="#{seccion.descripcion}"/>
+                            </p:selectOneMenu>
+                            <p:message for="cboSeccion"/>
+
+                            <p:outputLabel for="cboJornada" value="Seleccione Jornada: "/>
+                            <p:selectOneMenu id="cboJornada" value="#{impartirController.jornada}"  
+                                             effect="bounce" filterMatchMode="contains" converter="entityConverter" filter="true" >
+                                <f:selectItem itemLabel="-- Seleccione --" noSelectionOption="true"/>
+                                <f:selectItems value="#{impartirController.lstJornadas}" var="jornada" 
+                                               itemValue="#{jornada}" itemLabel="#{jornada.descripcion}"/>
+                            </p:selectOneMenu>
+                            <p:message for="cboJornada"/>
+
+                            <p:outputLabel for="cboAnio" value="Año"/>
+                            <p:selectOneMenu id="cboAnio"  value="#{impartirController.impartir.anio}">
+                                <f:selectItem itemLabel="-- Seleccione --" noSelectionOption="true"/>
+                                <f:selectItem itemLabel="2019" itemValue="2019"/>
+                                <f:selectItem itemLabel="2020" itemValue="2020"/>
+                                <f:selectItem itemLabel="2021" itemValue="2021"/>
+                            </p:selectOneMenu>
+                            <p:message for="cboAnio" display="icon" />
+
+                            <p:commandButton value="Guardar Asignacion " actionListener="#{impartirController.operarImpartir()}"
+                                             action="asignacionMaterias.xhtml?faces-redirect=true" onclick="PF('dlgRegistrar').hide();" 
+                                             />
+                        </p:panelGrid>
+                    </h:form>
+                </p:dialog>
+
+                <p:dialog id="dlgModificar" header="Modificar Asignacion de Materia" showEffect="fade" hideEffect="explode"
+                          widgetVar="dlgModificar" modal="true" draggable="false" resizable="false" minWidth="500" width="35%" >
+                    <h:form>
+                        <p:messages id="msgs" />
+                        <p:panelGrid columns="3" layout="grid" style="width: 100%;margin: 0 auto" id="pgDatos">
+
+                           <p:column/>
+                            <p:graphicImage value="/resources/image/icoImpartir.jpg" style="width: 100%; height: 100%; "/>
+                            <p:column/>
+
+                            <p:outputLabel for="cboAsignaturaM" value="Seleccione Asignatura: "/>
+                            <p:selectOneMenu id="cboAsignaturaM" value="#{impartirController.impartir.idAsignatura}"  
+                                             effect="bounce" filterMatchMode="contains" converter="entityConverter" filter="true" >
+                                <f:selectItem itemLabel="-- Seleccione --" noSelectionOption="true"/>
+                                <f:selectItems value="#{impartirController.lstAsignaturas}" var="asignatura" 
+                                               itemValue="#{asignatura}" itemLabel="#{asignatura.descripcion}"/>
+                            </p:selectOneMenu>
+                            <p:message for="cboAsignaturaM"/>
+
+                            <p:outputLabel for="cboProfesorM" value="Profesor que Impartira la Asignatura: "/>
+                            <p:selectOneMenu id="cboProfesorM" value="#{impartirController.impartir.idProfesor}"  
+                                             effect="bounce" filterMatchMode="contains" converter="entityConverter" filter="true" >
+                                <f:selectItem itemLabel="-- Seleccione --" noSelectionOption="true"/>
+                                <f:selectItems value="#{impartirController.lstProfesores}" var="profesor" 
+                                               itemValue="#{profesor}" itemLabel="#{profesor.idPersona.nombres} #{profesor.idPersona.apellidos}"/>
+                            </p:selectOneMenu>
+                            <p:message for="cboProfesorM"/>
+
+                            <p:outputLabel for="cboGradoM" value="Seleccione Grado:"/>
+                            <p:selectOneMenu id="cboGradoM" value="#{impartirController.impartir.idGrado}"  
+                                             effect="bounce" filterMatchMode="contains" converter="entityConverter" filter="true" >
+                                <f:selectItem itemLabel="-- Seleccione --" noSelectionOption="true"/>
+                                <f:selectItems value="#{impartirController.lstGrados}" var="grado" 
+                                               itemValue="#{grado}" itemLabel="#{grado.nombre}"/>
+                            </p:selectOneMenu>
+                            <p:message for="cboGradoM"/>
+
+                            <p:outputLabel for="cboSeccionM" value="Seleccione Seccion:"/>
+                            <p:selectOneMenu id="cboSeccionM" value="#{impartirController.impartir.idSeccion}"  
+                                             effect="bounce" filterMatchMode="contains" converter="entityConverter" filter="true" >
+                                <f:selectItem itemLabel="-- Seleccione --" noSelectionOption="true"/>
+                                <f:selectItems value="#{impartirController.lstSecciones}" var="seccion" 
+                                               itemValue="#{seccion}" itemLabel="#{seccion.descripcion}"/>
+                            </p:selectOneMenu>
+                            <p:message for="cboSeccionM"/>
+
+                            <p:outputLabel for="cboJornadaM" value="Seleccione Jornada: "/>
+                            <p:selectOneMenu id="cboJornadaM" value="#{impartirController.impartir.idJornada}"  
+                                             effect="bounce" filterMatchMode="contains" converter="entityConverter" filter="true" >
+                                <f:selectItem itemLabel="-- Seleccione --" noSelectionOption="true"/>
+                                <f:selectItems value="#{impartirController.lstJornadas}" var="jornada" 
+                                               itemValue="#{jornada}" itemLabel="#{jornada.descripcion}"/>
+                            </p:selectOneMenu>
+                            <p:message for="cboJornadaM"/>
+
+                            <p:outputLabel for="cboAnioM" value="Año"/>
+                            <p:selectOneMenu id="cboAnioM"  value="#{impartirController.impartir.anio}">
+                                <f:selectItem itemLabel="-- Seleccione --" noSelectionOption="true"/>
+                                <f:selectItem itemLabel="2019" itemValue="2019"/>
+                                <f:selectItem itemLabel="2020" itemValue="2020"/>
+                                <f:selectItem itemLabel="2021" itemValue="2021"/>
+                            </p:selectOneMenu>
+                            <p:message for="cboAnioM" display="icon" />
+
+                            <p:commandButton value="Modificar Asignacion " actionListener="#{impartirController.operarImpartir()}"
+                                             action="asignacionMaterias.xhtml?faces-redirect=true" onclick="PF('dlgRegistrar').hide();" 
+                                             />
+                        </p:panelGrid>
+                    </h:form>
+                </p:dialog>
+                <p:dialog  header="Eliminar Asignacion de Materia"
+                           showEffect="explode" hideEffect="explode"
+                           widgetVar="dlgEliminar" modal="true" resizable="false" minWidth="200">
+                    <h:form id="formEliminar">
+                        <h:outputText value="¿Esta seguro de  eliminar el registro de esta asignacion?"/>
+                        <p:commandButton value="Si" actionListener="#{impartirController.eliminarImpartir()}"
+                                         action="asignacionMaterias.xhtml?faces-redirect=true"
+                                         oncomplete="PF('dlgeliminar').hide();"/>
+                        <p:commandButton value="No" onclick="PF('dlgeliminar').hide()"/>
+                    </h:form>
+                </p:dialog> 
+            </ui:define>
+
+            <ui:define name="bottom">
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

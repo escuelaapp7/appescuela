@@ -23,6 +23,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -32,11 +33,15 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "Matriculas")
-
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Matriculas.findAll", query = "SELECT m FROM Matriculas m")})
 public class Matriculas implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Column(name = "id_matricula")
     private Integer idMatricula;
     @Column(name = "anio")
@@ -46,19 +51,19 @@ public class Matriculas implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date fechaMatricula;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMatricula")
-    private List<Impartir> impartirList;
+    private List<Calificaciones> calificacionesList;
     @JoinColumn(name = "id_alumno", referencedColumnName = "id_alumno")
     @ManyToOne(optional = false)
     private Alumnos idAlumno;
-    @JoinColumn(name = "id_coordinador_grado", referencedColumnName = "id_coordinador_grado")
-    @ManyToOne(optional = false)
-    private Coordinadorgrado idCoordinadorGrado;
     @JoinColumn(name = "id_encargado", referencedColumnName = "id_encargado")
     @ManyToOne(optional = false)
     private Encargados idEncargado;
     @JoinColumn(name = "id_parentezco", referencedColumnName = "id_parentezco")
     @ManyToOne(optional = false)
     private Parentezcos idParentezco;
+    @JoinColumn(name = "id_coordinador_grado", referencedColumnName = "id_coordinador_grado")
+    @ManyToOne(optional = false)
+    private Coordinadorgrado idCoordinadorGrado;
 
     public Matriculas() {
     }
@@ -92,12 +97,12 @@ public class Matriculas implements Serializable {
     }
 
     @XmlTransient
-    public List<Impartir> getImpartirList() {
-        return impartirList;
+    public List<Calificaciones> getCalificacionesList() {
+        return calificacionesList;
     }
 
-    public void setImpartirList(List<Impartir> impartirList) {
-        this.impartirList = impartirList;
+    public void setCalificacionesList(List<Calificaciones> calificacionesList) {
+        this.calificacionesList = calificacionesList;
     }
 
     public Alumnos getIdAlumno() {
@@ -106,14 +111,6 @@ public class Matriculas implements Serializable {
 
     public void setIdAlumno(Alumnos idAlumno) {
         this.idAlumno = idAlumno;
-    }
-
-    public Coordinadorgrado getIdCoordinadorGrado() {
-        return idCoordinadorGrado;
-    }
-
-    public void setIdCoordinadorGrado(Coordinadorgrado idCoordinadorGrado) {
-        this.idCoordinadorGrado = idCoordinadorGrado;
     }
 
     public Encargados getIdEncargado() {
@@ -130,6 +127,14 @@ public class Matriculas implements Serializable {
 
     public void setIdParentezco(Parentezcos idParentezco) {
         this.idParentezco = idParentezco;
+    }
+
+    public Coordinadorgrado getIdCoordinadorGrado() {
+        return idCoordinadorGrado;
+    }
+
+    public void setIdCoordinadorGrado(Coordinadorgrado idCoordinadorGrado) {
+        this.idCoordinadorGrado = idCoordinadorGrado;
     }
 
     @Override
