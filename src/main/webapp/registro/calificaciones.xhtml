@@ -1,7 +1,10 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
 
     <body>
 
@@ -10,7 +13,105 @@
 
 
             <ui:define name="content">
-                content
+                <p:panel header="Registros de Calificaciones por Asignatura"  id="panel"
+                         style="width: 80%;margin: 0 auto; text-align:center;align-self: center ;
+                         padding: 5px; text-align: justify;font-size: 14px">
+
+
+                    <p:growl  globalOnly="true" showDetail="true"/>
+                    <br/>
+                    <p:separator/>
+                    <br/>
+                    <p:panel header="Registar calificaciones por Asignatura">
+                        <h:form id="frmCalif">
+                            <h2 style="padding-left: 40%">Informacion de grado y Asignatura</h2>
+
+                            <p:panelGrid columns="3" layout="grid"  style="width: 60%;margin: 0 auto; " >
+                                <p:outputLabel value="Seleccione asignatura y grado que desea calificar"/>
+                                <p:commandButton value="Seleccionar"  oncomplete="PF('dlgImpartir').show();"  />
+                                <p:column/>
+
+                                <p:outputLabel value="Asignatura: "/>
+                                <p:outputLabel value="#{calificacionesController.impartir.idAsignatura.descripcion}" />
+                                <p:column/>
+                                <p:outputLabel value="Grado: "/>
+                                <p:outputLabel value="#{calificacionesController.impartir.idGrado.nombre}" />
+                                <p:column/>
+
+                                <p:outputLabel value="Seccion: "/>
+                                <p:outputLabel value="#{calificacionesController.impartir.idSeccion.descripcion}" />
+                                <p:column/>
+
+                                <p:outputLabel value="Jornada "/>
+                                <p:outputLabel value="#{calificacionesController.impartir.idJornada.descripcion}" />
+                                <p:column/>
+
+                            </p:panelGrid>
+
+                            <p:dataTable id="tblCalificaciones"  value="#{calificacionesController.lstMatriculas}"
+                                         var="matricula" style="width: 80%;margin: 0 auto; text-align:center;
+                                         padding: 5px; text-align: justify;font-size: 14px" 
+                                         emptyMessage="No hay registros en la base de datos"
+                                         paginator="true" rows="5" paginatorPosition="bottom"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                         {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15" reflow="true" resizeMode="expand"  widgetVar="data" >
+
+                                <p:column headerText="Nombre del Alumno" filterBy="#{matricula.idAlumno.idPersona.nombres}"  filterMatchMode="contains"  style="width: 20%; text-align:  center">
+                                    <p:outputLabel value="#{matricula.idAlumno.idPersona.nombres}"/>
+                                </p:column>
+
+                            </p:dataTable>
+
+                        </h:form>
+                    </p:panel>
+                    <br/>
+                    <p:separator/>
+                    <br/>
+
+                </p:panel>
+
+                <p:dialog id="dlgImpartir" header="Seleccionar Asignatura y Grado  a Calificar" showEffect="fade" hideEffect="explode"
+                          widgetVar="dlgImpartir" modal="true" draggable="false" resizable="false" minWidth="800" width="80%" >
+                    <h:form>
+                        <p:dataTable id="tblASignacionMaterias"  value="#{calificacionesController.lstImpartir}"
+                                     var="impartir" style="width: 80%;margin: 0 auto; text-align:center;
+                                     padding: 5px; text-align: justify;font-size: 14px" 
+                                     emptyMessage="No hay registros en la base de datos"
+                                     paginator="true" rows="5" paginatorPosition="bottom"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
+                                     {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15" reflow="true" resizeMode="expand"  widgetVar="data" >
+
+                            <p:column headerText="Asignatura" filterBy="#{impartir.idAsignatura.descripcion}" filterMatchMode="contains"  style="width: 20%; text-align:  center">
+                                <p:outputLabel value="#{impartir.idAsignatura.descripcion}"/>
+                            </p:column>
+
+                            <p:column headerText="Grado" filterBy="#{impartir.idGrado.nombre}" filterMatchMode="contains" style="width: 15%; text-align:  center">
+                                <p:outputLabel value="#{impartir.idGrado.nombre}"/>
+                            </p:column>
+
+                            <p:column headerText="Seccion" style="width: 15%; text-align:  center">
+                                <p:outputLabel value="#{impartir.idSeccion.descripcion}"/>
+                            </p:column>
+
+                            <p:column headerText="Jornada" filterBy="#{impartir.idJornada.descripcion}" filterMatchMode="contains" style="width: 25%; text-align:  center">
+                                <p:outputLabel value="#{impartir.idJornada.descripcion}"/>
+                            </p:column>
+
+                            <p:column headerText="Operaciones" style=" width: 30%;text-align: center; padding-right: 10px">
+
+
+
+                                <p:commandButton title="Seleccionar" value="Seleccionar"  icon="ui-icon-close" action="#{calificacionesController.alumnosPorMateria()}" oncomplete="PF('dlgImpartir').hide();" update="frmCalif">
+                                    <f:setPropertyActionListener target="#{calificacionesController.impartir}" value="#{impartir}"   />
+
+                                </p:commandButton>
+                            </p:column>
+
+                        </p:dataTable>
+                    </h:form>
+                </p:dialog>
             </ui:define>
 
             <ui:define name="bottom">
