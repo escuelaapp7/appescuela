@@ -18,7 +18,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -26,14 +25,12 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "calificaciones")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Calificaciones.findAll", query = "SELECT c FROM Calificaciones c")})
 public class Calificaciones implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     @Column(name = "id_calificacion")
     private Integer idCalificacion;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -41,18 +38,15 @@ public class Calificaciones implements Serializable {
     private Double porcentaje;
     @Column(name = "nota")
     private Double nota;
-    @JoinColumn(name = "id_evaluacion", referencedColumnName = "id_evaluacion")
-    @ManyToOne(optional = false)
-    private Evaluaciones idEvaluacion;
     @JoinColumn(name = "id_impartir", referencedColumnName = "id_impartir")
     @ManyToOne(optional = false)
     private Impartir idImpartir;
     @JoinColumn(name = "id_matricula", referencedColumnName = "id_matricula")
     @ManyToOne(optional = false)
     private Matriculas idMatricula;
-    @JoinColumn(name = "id_periodo", referencedColumnName = "id_periodo")
+    @JoinColumn(name = "id_porcentaje_evaluacion", referencedColumnName = "id_porcentaje_evaluacion")
     @ManyToOne(optional = false)
-    private Periodos idPeriodo;
+    private PorcentajeEvaluacion idPorcentajeEvaluacion;
 
     public Calificaciones() {
     }
@@ -85,14 +79,6 @@ public class Calificaciones implements Serializable {
         this.nota = nota;
     }
 
-    public Evaluaciones getIdEvaluacion() {
-        return idEvaluacion;
-    }
-
-    public void setIdEvaluacion(Evaluaciones idEvaluacion) {
-        this.idEvaluacion = idEvaluacion;
-    }
-
     public Impartir getIdImpartir() {
         return idImpartir;
     }
@@ -109,12 +95,12 @@ public class Calificaciones implements Serializable {
         this.idMatricula = idMatricula;
     }
 
-    public Periodos getIdPeriodo() {
-        return idPeriodo;
+    public PorcentajeEvaluacion getIdPorcentajeEvaluacion() {
+        return idPorcentajeEvaluacion;
     }
 
-    public void setIdPeriodo(Periodos idPeriodo) {
-        this.idPeriodo = idPeriodo;
+    public void setIdPorcentajeEvaluacion(PorcentajeEvaluacion idPorcentajeEvaluacion) {
+        this.idPorcentajeEvaluacion = idPorcentajeEvaluacion;
     }
 
     @Override
