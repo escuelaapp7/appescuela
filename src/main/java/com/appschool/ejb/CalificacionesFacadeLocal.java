@@ -8,6 +8,7 @@ package com.appschool.ejb;
 import com.appschool.model.Calificaciones;
 import com.appschool.model.Impartir;
 import com.appschool.model.Matriculas;
+import com.appschool.model.Usuarios;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -27,6 +28,8 @@ public interface CalificacionesFacadeLocal {
     List<Calificaciones> findRange(int[] range);
 
     List<Matriculas> alumnosPorAsignacion(Impartir impartir);
+    
+    List<Impartir> impartirPorUsuario(Usuarios usuario);
 
     int count();
 

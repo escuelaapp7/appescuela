@@ -8,6 +8,7 @@ package com.appschool.ejb;
 import com.appschool.model.Calificaciones;
 import com.appschool.model.Impartir;
 import com.appschool.model.Matriculas;
+import com.appschool.model.Usuarios;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -37,7 +38,7 @@ public class CalificacionesFacade extends AbstractFacade<Calificaciones> impleme
                     + " full outer join coordinador_grado on matriculas.id_coordinador_grado = coordinador_grado.id_coordinador_grado\n"
                     + "inner join grados on coordinador_grado.id_grado = grados.id_grado\n"
                     + "INNER join impartir on grados.id_grado = impartir.id_grado\n"
-                    + "where coordinador_grado.id_grado = ?1 and coordinador_grado.id_seccion = ?2", Matriculas.class);
+                    + "where coordinador_grado.id_grado = ?1 and coordinador_grado.id_seccion = ?2 group by  id_matricula", Matriculas.class);
             q.setParameter(1, impartir.getIdGrado().getIdGrado());
             q.setParameter(2, impartir.getIdSeccion().getIdSeccion());
 
@@ -47,6 +48,29 @@ public class CalificacionesFacade extends AbstractFacade<Calificaciones> impleme
         }
         return lstMatriculas;
 
+    }
+
+    @Override
+    public List<Impartir> impartirPorUsuario(Usuarios usuario) {
+        List<Impartir> lista = null;
+        try {
+            Query q = em.createNativeQuery("select  \n"
+                    + "impartir.id_profesor, id_asignatura, id_grado, \n"
+                    + "id_seccion, id_jornada, id_impartir\n"
+                    + "from \n"
+                    + "impartir \n"
+                    + "inner join profesores on profesores.id_profesor = impartir.id_profesor\n"
+                    + "inner join personas on profesores.id_persona = personas.id_persona \n"
+                    + "where\n"
+                    + "personas.id_persona = ?1", Impartir.class);
+            q.setParameter(1, usuario.getIdPersona().getIdPersona());
+            lista = q.getResultList();
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return lista;
     }
 
 }

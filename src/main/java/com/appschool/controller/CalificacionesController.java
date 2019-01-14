@@ -15,13 +15,17 @@ import com.appschool.model.Evaluaciones;
 import com.appschool.model.Impartir;
 import com.appschool.model.Matriculas;
 import com.appschool.model.Periodos;
+import com.appschool.model.Personas;
+import com.appschool.model.Usuarios;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import org.primefaces.component.contextmenu.ContextMenu;
 
 /**
  *
@@ -31,11 +35,13 @@ import javax.inject.Named;
 @ViewScoped
 public class CalificacionesController implements Serializable {
 
+    private Personas persona;
     private Impartir impartir;
     private Evaluaciones evaluacion;
     private Periodos periodo;
     private Matriculas matricula;
     private Calificaciones calificacion;
+    private Usuarios usuario;
 
     @EJB
     private ImpartirFacadeLocal impartirEJB;
@@ -53,20 +59,29 @@ public class CalificacionesController implements Serializable {
     private List<Periodos> lstPeriodos;
     private List<Matriculas> lstMatriculas;
     private List<Calificaciones> lstCalificaciones;
+    private List<Impartir> lstImpartirPorUsuario;
 
     @PostConstruct
     public void init() {
+        persona = new Personas();
         impartir = new Impartir();
         evaluacion = new Evaluaciones();
         periodo = new Periodos();
         matricula = new Matriculas();
         calificacion = new Calificaciones();
+        usuario = new Usuarios();
         lstImpartir = impartirEJB.findAll();
         lstEvaluaciones = evaluacionesEJB.findAll();
         lstPeriodos = periodosEJB.findAll();
         lstCalificaciones = calificaionesEJB.findAll();
         lstMatriculas = new ArrayList<>();
+        lstImpartirPorUsuario = new ArrayList<>();
+        impartirPorProfesor();
+    }
 
+    public void impartirPorProfesor() {
+       usuario=  (Usuarios) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
+        lstImpartirPorUsuario = calificaionesEJB.impartirPorUsuario(usuario);
     }
 
     public void alumnosPorMateria() {
@@ -107,6 +122,14 @@ public class CalificacionesController implements Serializable {
 
     public Calificaciones getCalificacion() {
         return calificacion;
+    }
+
+    public Personas getPersona() {
+        return persona;
+    }
+
+    public void setPersona(Personas persona) {
+        this.persona = persona;
     }
 
     public void setCalificacion(Calificaciones calificacion) {
@@ -152,5 +175,23 @@ public class CalificacionesController implements Serializable {
     public void setLstCalificaciones(List<Calificaciones> lstCalificaciones) {
         this.lstCalificaciones = lstCalificaciones;
     }
+
+    public Usuarios getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuarios usuario) {
+        this.usuario = usuario;
+    }
+
+    public List<Impartir> getLstImpartirPorUsuario() {
+        return lstImpartirPorUsuario;
+    }
+
+    public void setLstImpartirPorUsuario(List<Impartir> lstImpartirPorUsuario) {
+        this.lstImpartirPorUsuario = lstImpartirPorUsuario;
+    }
+    
+    
 
 }

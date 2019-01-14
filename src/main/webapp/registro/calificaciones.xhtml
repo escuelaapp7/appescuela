@@ -72,9 +72,9 @@
                 </p:panel>
 
                 <p:dialog id="dlgImpartir" header="Seleccionar Asignatura y Grado  a Calificar" showEffect="fade" hideEffect="explode"
-                          widgetVar="dlgImpartir" modal="true" draggable="false" resizable="false" minWidth="800" width="80%" >
+                          widgetVar="dlgImpartir" modal="true" draggable="false" resizable="false" minWidth="800" width="80%"  >
                     <h:form>
-                        <p:dataTable id="tblASignacionMaterias"  value="#{calificacionesController.lstImpartir}"
+                        <p:dataTable id="tblASignacionMaterias"  value="#{calificacionesController.lstImpartirPorUsuario}"
                                      var="impartir" style="width: 80%;margin: 0 auto; text-align:center;
                                      padding: 5px; text-align: justify;font-size: 14px" 
                                      emptyMessage="No hay registros en la base de datos"

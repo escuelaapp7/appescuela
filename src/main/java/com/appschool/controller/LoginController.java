@@ -15,9 +15,9 @@ import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 /**
@@ -25,7 +25,7 @@ import javax.inject.Named;
  * @author said
  */
 @Named
-@ViewScoped
+@SessionScoped
 public class LoginController implements Serializable {
 
     private Rolesusuario rolUsuario;
@@ -37,8 +37,7 @@ public class LoginController implements Serializable {
     private RolesusuarioFacadeLocal rolesUsuarioEJB;
     private List<Usuarios> lstUsuarios;
     private Personas persona;
-    
-    
+
     @PostConstruct
     public void init() {
         rol = new Roles();
@@ -106,15 +105,19 @@ public class LoginController implements Serializable {
 
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuario", us);
                 redireccion = "/plantilla.xhtml?faces-redirect=true";
-
+                usuario=us;
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Aviso", "Las credenciales no coinciden."));
-
             }
         } catch (Exception e) {
+
         }
 
         return redireccion;
+    }
+
+    public void cerrarSession() {
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
     }
 
     public void verificarSesion() {
@@ -172,8 +175,4 @@ public class LoginController implements Serializable {
         this.persona = persona;
     }
 
-    
-    
-    
-    
 }
