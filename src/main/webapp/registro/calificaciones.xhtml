@@ -58,7 +58,19 @@
                                          rowsPerPageTemplate="5,10,15" reflow="true" resizeMode="expand"  widgetVar="data" >
 
                                 <p:column headerText="Nombre del Alumno" filterBy="#{matricula.idAlumno.idPersona.nombres}"  filterMatchMode="contains"  style="width: 20%; text-align:  center">
-                                    <p:outputLabel value="#{matricula.idAlumno.idPersona.nombres}"/>
+                                    <p:outputLabel value="#{matricula.idAlumno.idPersona.nombres} #{matricula.idAlumno.idPersona.apellidos}"/>
+                                </p:column>
+                                <p:columns value="#{evaluacionesController.lstEvaluaciones}" var="column" >
+                                    <f:facet name="header">
+                                        <p:outputLabel value="#{column.descripcion}"/>
+
+                                    </f:facet>
+
+                                </p:columns>
+
+                                <p:column headerText="Operaciones">
+
+                                    <p:commandButton value="agregar nota"/>
                                 </p:column>
 
                             </p:dataTable>

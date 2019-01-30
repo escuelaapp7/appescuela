@@ -6,17 +6,21 @@
 package com.appschool.controller;
 
 import com.appschool.ejb.AlumnosFacadeLocal;
+import com.appschool.ejb.CalificacionesFacadeLocal;
 import com.appschool.ejb.CoordinadoresFacadeLocal;
 import com.appschool.ejb.EncargadosFacadeLocal;
 import com.appschool.ejb.MatriculasFacadeLocal;
 import com.appschool.ejb.ParentezcosFacadeLocal;
 import com.appschool.model.Alumnos;
+import com.appschool.model.Calificaciones;
 import com.appschool.model.Coordinadorgrado;
 import com.appschool.model.Encargados;
 import com.appschool.model.Matriculas;
 import com.appschool.model.Parentezcos;
 import com.appschool.model.Personas;
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -32,12 +36,16 @@ import javax.inject.Named;
 @Named
 @ViewScoped
 public class MatriculaController implements Serializable {
+
     private Personas persona;
     private Encargados encargado;
     private Parentezcos parentezco;
     private Alumnos alumno;
     private Coordinadorgrado coordinador;
     private Matriculas matricula;
+    private Calificaciones calificacion;
+    private Calendar cal = Calendar.getInstance();
+    private Date date = cal.getTime();
 
     @EJB
     private EncargadosFacadeLocal encargadosEJB;
@@ -49,6 +57,8 @@ public class MatriculaController implements Serializable {
     private CoordinadoresFacadeLocal coordinadoresEJB;
     @EJB
     private MatriculasFacadeLocal matriculaEJB;
+    @EJB
+    private CalificacionesFacadeLocal calificacionesEJB;
 
     List<Encargados> lstEncargados;
     List<Parentezcos> lstParentezcos;
@@ -63,7 +73,8 @@ public class MatriculaController implements Serializable {
         parentezco = new Parentezcos();
         alumno = new Alumnos();
         coordinador = new Coordinadorgrado();
-        matricula= new Matriculas();
+        matricula = new Matriculas();
+        calificacion = new Calificaciones();
         lstEncargados = encargadosEJB.findAll();
         lstParentezcos = parentezcosEJB.findAll();
         lstAlumnos = alumnosEJB.findAll();
@@ -78,8 +89,12 @@ public class MatriculaController implements Serializable {
                 matricula.setIdEncargado(encargado);
                 matricula.setIdParentezco(parentezco);
                 matricula.setIdAlumno(alumno);
+                matricula.setFechaMatricula(date);
+                matricula.setAnio(cal.get(Calendar.YEAR));
                 matricula.setIdCoordinadorGrado(coordinador);
                 matriculaEJB.create(matricula);
+                calificacion.setIdMatricula(matricula);
+                calificacionesEJB.create(calificacion);
                 FacesContext.getCurrentInstance().addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_INFO, "Aviso", "Se registro exitosamente"));
             } else {
@@ -189,8 +204,23 @@ public class MatriculaController implements Serializable {
     public void setPersona(Personas persona) {
         this.persona = persona;
     }
-    
-    
-    
+
+    public Calendar getCal() {
+        return cal;
+    }
+
+    public void setCal(Calendar cal) {
+        this.cal = cal;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+
 
 }

@@ -128,10 +128,8 @@
 
                             <p:outputLabel for="cboAnio" value="Año"/>
                             <p:selectOneMenu id="cboAnio" required="true" value="#{coordinadoresController.coordinador.anio}">
-                                <f:selectItem itemLabel="-- Seleccione --" noSelectionOption="true"/>
-                                <f:selectItem itemLabel="2019" itemValue="2019"/>
-                                <f:selectItem itemLabel="2020" itemValue="2020"/>
-                                <f:selectItem itemLabel="2021" itemValue="2021"/>
+                                <f:selectItems value="#{coordinadoresController.lstAnios}" var="anio" 
+                                               itemValue="#{anio}" itemLabel="#{anio} "/>
                             </p:selectOneMenu>
                             <p:message for="cboAnio" display="icon" />
 
@@ -189,10 +187,8 @@
 
                             <p:outputLabel for="cboAnioM" value="Año"/>
                             <p:selectOneMenu id="cboAnioM" required="true" value="#{coordinadoresController.coordinador.anio}">
-                                <f:selectItem itemLabel="-- Seleccione --" noSelectionOption="true"/>
-                                <f:selectItem itemLabel="2019" itemValue="2019"/>
-                                <f:selectItem itemLabel="2020" itemValue="2020"/>
-                                <f:selectItem itemLabel="2021" itemValue="2021"/>
+                                <f:selectItems value="#{coordinadoresController.lstAnios}" var="anio" 
+                                               itemValue="#{anio}" itemLabel="#{anio} "/>
                             </p:selectOneMenu>
                             <p:message for="cboAnioM" display="icon" />
 

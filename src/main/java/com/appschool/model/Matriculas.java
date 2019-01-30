@@ -45,8 +45,7 @@ public class Matriculas implements Serializable {
     @Column(name = "id_matricula")
     private Integer idMatricula;
     @Column(name = "anio")
-    @Temporal(TemporalType.DATE)
-    private Date anio;
+    private Integer anio;
     @Column(name = "fecha_matricula")
     @Temporal(TemporalType.DATE)
     private Date fechaMatricula;
@@ -80,11 +79,11 @@ public class Matriculas implements Serializable {
         this.idMatricula = idMatricula;
     }
 
-    public Date getAnio() {
+    public Integer getAnio() {
         return anio;
     }
 
-    public void setAnio(Date anio) {
+    public void setAnio(Integer anio) {
         this.anio = anio;
     }
 

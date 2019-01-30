@@ -42,8 +42,7 @@ public class Impartir implements Serializable {
     @Column(name = "id_impartir")
     private Integer idImpartir;
     @Column(name = "anio")
-    @Temporal(TemporalType.DATE)
-    private Date anio;
+    private Integer anio;
     @JoinColumn(name = "id_asignatura", referencedColumnName = "id_asignatura")
     @ManyToOne(optional = false)
     private Asignaturas idAsignatura;
@@ -77,11 +76,11 @@ public class Impartir implements Serializable {
         this.idImpartir = idImpartir;
     }
 
-    public Date getAnio() {
+    public Integer getAnio() {
         return anio;
     }
 
-    public void setAnio(Date anio) {
+    public void setAnio(Integer anio) {
         this.anio = anio;
     }
 

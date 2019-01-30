@@ -9,6 +9,7 @@ import com.appschool.model.Calificaciones;
 import com.appschool.model.Impartir;
 import com.appschool.model.Matriculas;
 import com.appschool.model.Usuarios;
+import java.util.Calendar;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -53,8 +54,10 @@ public class CalificacionesFacade extends AbstractFacade<Calificaciones> impleme
     @Override
     public List<Impartir> impartirPorUsuario(Usuarios usuario) {
         List<Impartir> lista = null;
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
         try {
-            Query q = em.createNativeQuery("select  \n"
+            Query q = em.createNativeQuery("select \n"
                     + "impartir.id_profesor, id_asignatura, id_grado, \n"
                     + "id_seccion, id_jornada, id_impartir\n"
                     + "from \n"
@@ -62,14 +65,14 @@ public class CalificacionesFacade extends AbstractFacade<Calificaciones> impleme
                     + "inner join profesores on profesores.id_profesor = impartir.id_profesor\n"
                     + "inner join personas on profesores.id_persona = personas.id_persona \n"
                     + "where\n"
-                    + "personas.id_persona = ?1", Impartir.class);
+                    + "personas.id_persona = ?1 and impartir.anio=" + year +" or impartir.anio="+(year+1)+"", Impartir.class);
             q.setParameter(1, usuario.getIdPersona().getIdPersona());
             lista = q.getResultList();
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         return lista;
     }
 

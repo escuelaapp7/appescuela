@@ -35,7 +35,7 @@ public class Coordinadorgrado implements Serializable {
     @Column(name = "id_coordinador_grado")
     private Integer idCoordinadorGrado;
     @Column(name = "anio")
-    private String anio;
+    private Integer anio;
     @JoinColumn(name = "id_grado", referencedColumnName = "id_grado")
     @ManyToOne(optional = false)
     private Grados idGrado;
@@ -66,11 +66,11 @@ public class Coordinadorgrado implements Serializable {
         this.idCoordinadorGrado = idCoordinadorGrado;
     }
 
-    public String getAnio() {
+    public Integer getAnio() {
         return anio;
     }
 
-    public void setAnio(String anio) {
+    public void setAnio(Integer anio) {
         this.anio = anio;
     }
 

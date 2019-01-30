@@ -18,6 +18,8 @@ import com.appschool.model.Secciones;
 import java.io.Serializable;
 import java.time.Month;
 import java.time.Year;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.ManagedBean;
@@ -59,6 +61,7 @@ public class CoordinadoresController implements Serializable {
     private List<Jornadas> lstJornadas;
     private List<Profesores> lstProfesores;
     private List<Coordinadorgrado> lstCoordinadores;
+    private List<Integer> lstAnios;
 
     @PostConstruct
     public void init() {
@@ -72,6 +75,8 @@ public class CoordinadoresController implements Serializable {
         lstJornadas = jornadasEJB.findAll();
         lstProfesores = profesoresEJB.findAll();
         lstCoordinadores = coordinadoresEJB.findAll();
+        lstAnios = new ArrayList<>();
+        llenarAnios();
 
     }
 
@@ -92,6 +97,16 @@ public class CoordinadoresController implements Serializable {
             }
         } catch (Exception e) {
         }
+    }
+
+    public List<Integer> llenarAnios() {
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        for (int i = 0; i < 2; i++) {
+            lstAnios.add(year + i);
+        }
+        return lstAnios;
+
     }
 
     public void eliminarCoordinador() {
@@ -184,4 +199,13 @@ public class CoordinadoresController implements Serializable {
         this.lstCoordinadores = lstCoordinadores;
     }
 
+    public List<Integer> getLstAnios() {
+        return lstAnios;
+    }
+
+    public void setLstAnios(List<Integer> lstAnios) {
+        this.lstAnios = lstAnios;
+    }
+
+    
 }

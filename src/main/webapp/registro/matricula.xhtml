@@ -27,6 +27,11 @@
                             <h2 style="padding-left: 40%">Datos de Alumno a Matricular</h2>
 
                             <p:panelGrid columns="3" layout="grid"  style="width: 60%;margin: 0 auto; " >
+                                <p:outputLabel value="Fecha de Matricula: "/>
+                                <p:inputText value="#{matriculaController.date}" readonly="true">
+                                    <f:convertDateTime type="date"  pattern = "dd-MM-yyyy"/> 
+                                </p:inputText>
+                                <p:column/>
                                 <p:outputLabel value="Seleccione el Alumno a matricular"/>
                                 <p:commandButton value="Seleccionar"  oncomplete="PF('dlgAlumnos').show();"  />
                                 <p:commandButton value="Registrar Nuevo Alumno"  action="alumnos.xhtml?faces-redirect=true" />
@@ -125,13 +130,11 @@
                                      rowsPerPageTemplate="5,10,15" reflow="true" resizeMode="expand"  widgetVar="data" >
 
 
-                            <p:column headerText="Año" filterBy="#{matricula.anio}" filterMatchMode="contains" style="width: 15%; text-align:  center">
-                                <p:outputLabel value="#{matricula.anio}"/>
-                            </p:column>
 
-                            <p:column headerText="Fecha de Matricula" filterBy="#{matricula.fechaMatricula}" filterMatchMode="contains"  style="width: 15%; text-align:  center">
+
+                            <p:column headerText="Fecha de Matricula" filterBy="#{matricula.fechaMatricula}" filterMatchMode="contains"  style="width: 20%; text-align:  center">
                                 <p:outputLabel value="#{matricula.fechaMatricula}">
-                                    <f:convertDateTime type="date"  pattern = "dd-M-yyyy"/> 
+                                    <f:convertDateTime type="date"  pattern = "dd-MM-yyyy"/> 
                                 </p:outputLabel>
                             </p:column>
 
@@ -247,6 +250,9 @@
                             </p:column>
                             <p:column headerText="Jornada" filterBy="#{coordinador.idJornada.descripcion}" filterMatchMode="contains" style="width: 25%; text-align:  center">
                                 <p:outputLabel value="#{coordinador.idJornada.descripcion}"/>
+                            </p:column>
+                            <p:column headerText="Alumnos matriculados" style="width: 25%; text-align:  center">
+                                <p:outputLabel value="#{coordinador.matriculasList.size()}"/>
                             </p:column>
 
                             <p:column headerText="Operaciones" style=" width: 30%;text-align: center; padding-right: 10px">
