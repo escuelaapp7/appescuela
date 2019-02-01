@@ -80,12 +80,18 @@ public class CalificacionesController implements Serializable {
     }
 
     public void impartirPorProfesor() {
-       usuario=  (Usuarios) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
+        usuario = (Usuarios) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
         lstImpartirPorUsuario = calificaionesEJB.impartirPorUsuario(usuario);
     }
 
     public void alumnosPorMateria() {
         lstMatriculas = calificaionesEJB.alumnosPorAsignacion(impartir);
+        for (Matriculas matricula : lstMatriculas) {
+            matricula.setCalificacionesList(calificaionesEJB.obtenerCalificacionesPorMateria(matricula, impartir));
+            if (matricula.getCalificacionesList().size() <= 0) {
+                matricula.setCalificacionesList(new ArrayList<Calificaciones>());
+            }
+        }
     }
 
     public Impartir getImpartir() {
@@ -191,7 +197,5 @@ public class CalificacionesController implements Serializable {
     public void setLstImpartirPorUsuario(List<Impartir> lstImpartirPorUsuario) {
         this.lstImpartirPorUsuario = lstImpartirPorUsuario;
     }
-    
-    
 
 }

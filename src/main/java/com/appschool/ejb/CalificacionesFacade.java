@@ -65,7 +65,7 @@ public class CalificacionesFacade extends AbstractFacade<Calificaciones> impleme
                     + "inner join profesores on profesores.id_profesor = impartir.id_profesor\n"
                     + "inner join personas on profesores.id_persona = personas.id_persona \n"
                     + "where\n"
-                    + "personas.id_persona = ?1 and impartir.anio=" + year +" or impartir.anio="+(year+1)+"", Impartir.class);
+                    + "personas.id_persona = ?1 and impartir.anio=" + year + " or impartir.anio=" + (year + 1) + "", Impartir.class);
             q.setParameter(1, usuario.getIdPersona().getIdPersona());
             lista = q.getResultList();
 
@@ -73,6 +73,26 @@ public class CalificacionesFacade extends AbstractFacade<Calificaciones> impleme
             e.printStackTrace();
         }
 
+        return lista;
+    }
+
+    @Override
+    public List<Calificaciones> obtenerCalificacionesPorMateria(Matriculas matricula, Impartir impartir) {
+        List<Calificaciones> lista = null;
+        try {
+            Query q = em.createNativeQuery("select \n"
+                    + "*\n"
+                    + "from \n"
+                    + "(select * from calificaciones where id_matricula=?1) as notas\n"
+                    + "where \n"
+                    + "id_impartir=?2 or id_impartir is null", Calificaciones.class);
+            q.setParameter(1, matricula.getIdMatricula());
+            q.setParameter(2, impartir.getIdImpartir());
+            lista = q.getResultList();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return lista;
     }
 

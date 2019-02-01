@@ -28,8 +28,10 @@ public interface CalificacionesFacadeLocal {
     List<Calificaciones> findRange(int[] range);
 
     List<Matriculas> alumnosPorAsignacion(Impartir impartir);
-    
+
     List<Impartir> impartirPorUsuario(Usuarios usuario);
+
+    List<Calificaciones> obtenerCalificacionesPorMateria(Matriculas matricula, Impartir impartir);
 
     int count();
 

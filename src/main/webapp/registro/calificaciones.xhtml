@@ -14,7 +14,7 @@
 
             <ui:define name="content">
                 <p:panel header="Registros de Calificaciones por Asignatura"  id="panel"
-                         style="width: 80%;margin: 0 auto; text-align:center;align-self: center ;
+                         style="width: 100%;margin: 0 auto; text-align:center;align-self: center ;
                          padding: 5px; text-align: justify;font-size: 14px">
 
 
@@ -49,7 +49,7 @@
                             </p:panelGrid>
 
                             <p:dataTable id="tblCalificaciones"  value="#{calificacionesController.lstMatriculas}"
-                                         var="matricula" style="width: 80%;margin: 0 auto; text-align:center;
+                                         var="matricula" style="width: 100%;margin: 0 auto; text-align:center;
                                          padding: 5px; text-align: justify;font-size: 14px" 
                                          emptyMessage="No hay registros en la base de datos"
                                          paginator="true" rows="5" paginatorPosition="bottom"
@@ -57,19 +57,81 @@
                                          {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                          rowsPerPageTemplate="5,10,15" reflow="true" resizeMode="expand"  widgetVar="data" >
 
+                                <f:facet name="header">
+
+                                    <p:outputLabel value="Calificaciones de Alumnos Asignatura:   "  style="font-size: 14px"/>
+                                    <p:outputLabel value="#{calificacionesController.impartir.idAsignatura.descripcion}" style="font-size: 16px"/>
+
+                                </f:facet>
+
+                                <p:columnGroup type="header">
+                                    <p:row>
+                                        <p:column rowspan="2" headerText="Alumnos" style="width: 20%" />
+                                        <p:column colspan="4" headerText="Trimestre 1" style="width: 20%"  />
+                                        <p:column colspan="4" headerText="Trimestre 2" style="width: 20%" />
+                                        <p:column colspan="4" headerText="Trimestre 3" style="width: 20%"  />
+                                    </p:row>
+                                    <p:row>
+                                        <p:column headerText="Nota 1" style="width: 10%" />
+                                        <p:column headerText="Nota 2" style="width: 10%" />
+                                        <p:column headerText="Nota 3"  style="width: 10%" />
+                                        <p:column headerText="Promedio"  style="width: 10%" />
+                                        <p:column headerText="Nota 1" style="width: 10%" />
+                                        <p:column headerText="Nota 2" style="width: 10%" />
+                                        <p:column headerText="Nota 3" style="width: 10%" />
+                                        <p:column headerText="Promedio" style="width: 10%" />
+                                        <p:column headerText="Nota 1"  style="width: 10%" />
+                                        <p:column headerText="Nota 2" style="width: 10%" />
+                                        <p:column headerText="Nota 3" style="width: 10%" />
+                                        <p:column headerText="Promedio" style="width: 10%" />                                        
+                                        <p:column headerText="Operaciones" style="width: 10%" />
+
+                                    </p:row>
+
+                                </p:columnGroup>
                                 <p:column headerText="Nombre del Alumno" filterBy="#{matricula.idAlumno.idPersona.nombres}"  filterMatchMode="contains"  style="width: 20%; text-align:  center">
                                     <p:outputLabel value="#{matricula.idAlumno.idPersona.nombres} #{matricula.idAlumno.idPersona.apellidos}"/>
                                 </p:column>
-                                <p:columns value="#{evaluacionesController.lstEvaluaciones}" var="column" >
-                                    <f:facet name="header">
-                                        <p:outputLabel value="#{column.descripcion}"/>
 
-                                    </f:facet>
+                                <p:column>
+                                    <p:outputLabel value="#{matricula.calificacionesList[0].nota}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="#{matricula.calificacionesList[1].nota}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="#{matricula.calificacionesList[2].nota}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="#{matricula.calificacionesList[3].nota}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="#{matricula.calificacionesList[4].nota}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="#{matricula.calificacionesList[5].nota}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="#{matricula.calificacionesList[6].nota}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="#{matricula.calificacionesList[7].nota}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="#{matricula.calificacionesList[8].nota}"/>
+                                </p:column>                                
+                                <p:column>
+                                    <p:outputLabel value="#{matricula.calificacionesList[9].nota}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="#{matricula.calificacionesList[10].nota}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="#{matricula.calificacionesList[5].nota}"/>
+                                </p:column>
 
-                                </p:columns>
 
                                 <p:column headerText="Operaciones">
-
                                     <p:commandButton value="agregar nota"/>
                                 </p:column>
 
