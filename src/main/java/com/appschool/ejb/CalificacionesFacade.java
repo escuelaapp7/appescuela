@@ -85,7 +85,7 @@ public class CalificacionesFacade extends AbstractFacade<Calificaciones> impleme
                     + "from \n"
                     + "(select * from calificaciones where id_matricula=?1) as notas\n"
                     + "where \n"
-                    + "id_impartir=?2 or id_impartir is null", Calificaciones.class);
+                    + "id_impartir=?2 or id_impartir is null order by id_calificacion asc", Calificaciones.class);
             q.setParameter(1, matricula.getIdMatricula());
             q.setParameter(2, impartir.getIdImpartir());
             lista = q.getResultList();

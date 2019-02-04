@@ -25,7 +25,9 @@ import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import org.primefaces.component.contextmenu.ContextMenu;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.CellEditEvent;
 
 /**
  *
@@ -73,7 +75,7 @@ public class CalificacionesController implements Serializable {
         lstImpartir = impartirEJB.findAll();
         lstEvaluaciones = evaluacionesEJB.findAll();
         lstPeriodos = periodosEJB.findAll();
-        lstCalificaciones = calificaionesEJB.findAll();
+        lstCalificaciones = new ArrayList<>();
         lstMatriculas = new ArrayList<>();
         lstImpartirPorUsuario = new ArrayList<>();
         impartirPorProfesor();
@@ -86,12 +88,329 @@ public class CalificacionesController implements Serializable {
 
     public void alumnosPorMateria() {
         lstMatriculas = calificaionesEJB.alumnosPorAsignacion(impartir);
-        for (Matriculas matricula : lstMatriculas) {
-            matricula.setCalificacionesList(calificaionesEJB.obtenerCalificacionesPorMateria(matricula, impartir));
-            if (matricula.getCalificacionesList().size() <= 0) {
-                matricula.setCalificacionesList(new ArrayList<Calificaciones>());
+
+        for (Matriculas matri : lstMatriculas) {
+            matri.setCalificacionesList(calificaionesEJB.obtenerCalificacionesPorMateria(matri, impartir));
+            if (matri.getCalificacionesList().size() <= 0) {
+                matri.setCalificacionesList(new ArrayList<Calificaciones>());
             }
         }
+    }
+
+    public void registrarNota() {
+        calificaionesEJB.create(calificacion);
+        for (Matriculas matricula : lstMatriculas) {
+            matricula.setCalificacionesList(calificaionesEJB.obtenerCalificacionesPorMateria(matricula, impartir));
+        }
+
+    }
+
+    public void onCellEdit(CellEditEvent event) {
+        Double i;
+
+        String header = event.getColumn().getHeaderText();
+        Double oldValue = (Double) event.getOldValue();
+        Double newValue = (Double) event.getNewValue();
+        switch (header) {
+            case "Nota 1 P1":
+                matricula = (Matriculas) ((DataTable) event.getComponent()).getRowData();
+                if (newValue != 0 && !newValue.equals(oldValue)) {
+                    calificacion = new Calificaciones();
+                    if (matricula.getCalificacionesList().get(0).getIdCalificacion() != null) {
+                        calificacion = matricula.getCalificacionesList().get(0);
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota(newValue);
+                        calificaionesEJB.edit(calificacion);
+                        calificacion = matricula.getCalificacionesList().get(3);
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota((double) Math.round((matricula.getCalificacionesList().get(0).getNota() + matricula.getCalificacionesList().get(1).getNota() + matricula.getCalificacionesList().get(2).getNota()) / 3));
+                        calificaionesEJB.edit(calificacion);
+                        calificacion = matricula.getCalificacionesList().get(13);
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota((matricula.getCalificacionesList().get(3).getNota() + matricula.getCalificacionesList().get(7).getNota() + matricula.getCalificacionesList().get(11).getNota()) / 3);
+                        calificaionesEJB.edit(calificacion);
+                        for (Matriculas matri : lstMatriculas) {
+                            matri.setCalificacionesList(calificaionesEJB.obtenerCalificacionesPorMateria(matri, impartir));
+                        }
+                        calificacion = new Calificaciones();
+                    } else {
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota(newValue);
+                        calificaionesEJB.edit(calificacion);
+                    }
+
+                    for (Matriculas matri : lstMatriculas) {
+                        matri.setCalificacionesList(calificaionesEJB.obtenerCalificacionesPorMateria(matri, impartir));
+                    }
+                    calificacion = new Calificaciones();
+                }
+                break;
+
+            case "Nota 2 P1":
+                matricula = (Matriculas) ((DataTable) event.getComponent()).getRowData();
+                if (newValue != 0 && !newValue.equals(oldValue)) {
+                    calificacion = new Calificaciones();
+                    if (matricula.getCalificacionesList().get(1).getIdCalificacion() != null) {
+                        calificacion = matricula.getCalificacionesList().get(1);
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota(newValue);
+                        calificaionesEJB.edit(calificacion);
+                        calificacion = matricula.getCalificacionesList().get(3);
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota((matricula.getCalificacionesList().get(0).getNota() + matricula.getCalificacionesList().get(1).getNota() + matricula.getCalificacionesList().get(2).getNota()) / 3);
+                        calificaionesEJB.edit(calificacion);
+                        calificacion = matricula.getCalificacionesList().get(13);
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota((matricula.getCalificacionesList().get(3).getNota() + matricula.getCalificacionesList().get(7).getNota() + matricula.getCalificacionesList().get(11).getNota()) / 3);
+                        calificaionesEJB.edit(calificacion);
+                    } else {
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota(newValue);
+                        calificaionesEJB.edit(calificacion);
+                    }
+
+                    for (Matriculas matri : lstMatriculas) {
+                        matri.setCalificacionesList(calificaionesEJB.obtenerCalificacionesPorMateria(matri, impartir));
+                    }
+                    calificacion = new Calificaciones();
+                }
+                break;
+            case "Nota 3 P1":
+                matricula = (Matriculas) ((DataTable) event.getComponent()).getRowData();
+                if (newValue != 0 && !newValue.equals(oldValue)) {
+                    calificacion = new Calificaciones();
+                    if (matricula.getCalificacionesList().get(2).getIdCalificacion() != null) {
+                        calificacion = matricula.getCalificacionesList().get(2);
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota(newValue);
+                        calificaionesEJB.edit(calificacion);
+                        calificacion = matricula.getCalificacionesList().get(3);
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota((matricula.getCalificacionesList().get(0).getNota() + matricula.getCalificacionesList().get(1).getNota() + matricula.getCalificacionesList().get(2).getNota()) / 3);
+                        calificaionesEJB.edit(calificacion);
+                        calificacion = matricula.getCalificacionesList().get(13);
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota((matricula.getCalificacionesList().get(3).getNota() + matricula.getCalificacionesList().get(7).getNota() + matricula.getCalificacionesList().get(11).getNota()) / 3);
+                        calificaionesEJB.edit(calificacion);
+                    } else {
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota(newValue);
+                        calificaionesEJB.edit(calificacion);
+                    }
+
+                    for (Matriculas matri : lstMatriculas) {
+                        matri.setCalificacionesList(calificaionesEJB.obtenerCalificacionesPorMateria(matri, impartir));
+                    }
+                    calificacion = new Calificaciones();
+                }
+                break;
+
+            case "Nota 1 P2":
+                matricula = (Matriculas) ((DataTable) event.getComponent()).getRowData();
+                if (newValue != 0 && !newValue.equals(oldValue)) {
+                    calificacion = new Calificaciones();
+                    if (matricula.getCalificacionesList().get(4).getIdCalificacion() != null) {
+                        calificacion = matricula.getCalificacionesList().get(4);
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota(newValue);
+                        calificaionesEJB.edit(calificacion);
+                        calificacion = matricula.getCalificacionesList().get(7);
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota((matricula.getCalificacionesList().get(4).getNota() + matricula.getCalificacionesList().get(5).getNota() + matricula.getCalificacionesList().get(6).getNota()) / 3);
+                        calificaionesEJB.edit(calificacion);
+                        calificacion = matricula.getCalificacionesList().get(13);
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota((matricula.getCalificacionesList().get(3).getNota() + matricula.getCalificacionesList().get(7).getNota() + matricula.getCalificacionesList().get(11).getNota()) / 3);
+                        calificaionesEJB.edit(calificacion);
+                    } else {
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota(newValue);
+                        calificaionesEJB.edit(calificacion);
+                    }
+
+                    for (Matriculas matri : lstMatriculas) {
+                        matri.setCalificacionesList(calificaionesEJB.obtenerCalificacionesPorMateria(matri, impartir));
+                    }
+                    calificacion = new Calificaciones();
+                }
+                break;
+
+            case "Nota 2 P2":
+                matricula = (Matriculas) ((DataTable) event.getComponent()).getRowData();
+                if (newValue != 0 && !newValue.equals(oldValue)) {
+                    calificacion = new Calificaciones();
+                    if (matricula.getCalificacionesList().get(5).getIdCalificacion() != null) {
+                        calificacion = matricula.getCalificacionesList().get(5);
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota(newValue);
+                        calificaionesEJB.edit(calificacion);
+                        calificacion = matricula.getCalificacionesList().get(7);
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota((matricula.getCalificacionesList().get(4).getNota() + matricula.getCalificacionesList().get(5).getNota() + matricula.getCalificacionesList().get(6).getNota()) / 3);
+                        calificaionesEJB.edit(calificacion);
+                        calificacion = matricula.getCalificacionesList().get(13);
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota((matricula.getCalificacionesList().get(3).getNota() + matricula.getCalificacionesList().get(7).getNota() + matricula.getCalificacionesList().get(11).getNota()) / 3);
+                        calificaionesEJB.edit(calificacion);
+                    } else {
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota(newValue);
+                        calificaionesEJB.edit(calificacion);
+                    }
+
+                    for (Matriculas matri : lstMatriculas) {
+                        matri.setCalificacionesList(calificaionesEJB.obtenerCalificacionesPorMateria(matri, impartir));
+                    }
+                    calificacion = new Calificaciones();
+                }
+                break;
+
+            case "Nota 3 P2":
+                matricula = (Matriculas) ((DataTable) event.getComponent()).getRowData();
+                if (newValue != 0 && !newValue.equals(oldValue)) {
+                    calificacion = new Calificaciones();
+                    if (matricula.getCalificacionesList().get(6).getIdCalificacion() != null) {
+                        calificacion = matricula.getCalificacionesList().get(6);
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota(newValue);
+                        calificaionesEJB.edit(calificacion);
+                        calificacion = matricula.getCalificacionesList().get(7);
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota((matricula.getCalificacionesList().get(4).getNota() + matricula.getCalificacionesList().get(5).getNota() + matricula.getCalificacionesList().get(6).getNota()) / 3);
+                        calificaionesEJB.edit(calificacion);
+                        calificacion = matricula.getCalificacionesList().get(13);
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota((matricula.getCalificacionesList().get(3).getNota() + matricula.getCalificacionesList().get(7).getNota() + matricula.getCalificacionesList().get(11).getNota()) / 3);
+                        calificaionesEJB.edit(calificacion);
+                    } else {
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota(newValue);
+                        calificaionesEJB.edit(calificacion);
+                    }
+
+                    for (Matriculas matri : lstMatriculas) {
+                        matri.setCalificacionesList(calificaionesEJB.obtenerCalificacionesPorMateria(matri, impartir));
+                    }
+                    calificacion = new Calificaciones();
+                }
+                break;
+            case "Nota 1 P3":
+                matricula = (Matriculas) ((DataTable) event.getComponent()).getRowData();
+                if (newValue != 0 && !newValue.equals(oldValue)) {
+                    calificacion = new Calificaciones();
+                    if (matricula.getCalificacionesList().get(8).getIdCalificacion() != null) {
+                        calificacion = matricula.getCalificacionesList().get(8);
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota(newValue);
+                        calificaionesEJB.edit(calificacion);
+                        calificacion = matricula.getCalificacionesList().get(11);
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota((matricula.getCalificacionesList().get(8).getNota() + matricula.getCalificacionesList().get(9).getNota() + matricula.getCalificacionesList().get(10).getNota()) / 3);
+                        calificaionesEJB.edit(calificacion);
+                        calificacion = matricula.getCalificacionesList().get(13);
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota((matricula.getCalificacionesList().get(3).getNota() + matricula.getCalificacionesList().get(7).getNota() + matricula.getCalificacionesList().get(11).getNota()) / 3);
+                        calificaionesEJB.edit(calificacion);
+                    } else {
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota(newValue);
+                        calificaionesEJB.edit(calificacion);
+                    }
+
+                    for (Matriculas matri : lstMatriculas) {
+                        matri.setCalificacionesList(calificaionesEJB.obtenerCalificacionesPorMateria(matri, impartir));
+                    }
+                    calificacion = new Calificaciones();
+                }
+                break;
+            case "Nota 2 P3":
+                matricula = (Matriculas) ((DataTable) event.getComponent()).getRowData();
+                if (newValue != 0 && !newValue.equals(oldValue)) {
+                    calificacion = new Calificaciones();
+                    if (matricula.getCalificacionesList().get(9).getIdCalificacion() != null) {
+                        calificacion = matricula.getCalificacionesList().get(9);
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota(newValue);
+                        calificaionesEJB.edit(calificacion);
+                        calificacion = matricula.getCalificacionesList().get(11);
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota((matricula.getCalificacionesList().get(8).getNota() + matricula.getCalificacionesList().get(9).getNota() + matricula.getCalificacionesList().get(10).getNota()) / 3);
+                        calificaionesEJB.edit(calificacion);
+                        calificacion = matricula.getCalificacionesList().get(13);
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota((matricula.getCalificacionesList().get(3).getNota() + matricula.getCalificacionesList().get(7).getNota() + matricula.getCalificacionesList().get(11).getNota()) / 3);
+                        calificaionesEJB.edit(calificacion);
+                    } else {
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota(newValue);
+                        calificaionesEJB.edit(calificacion);
+                    }
+
+                    for (Matriculas matri : lstMatriculas) {
+                        matri.setCalificacionesList(calificaionesEJB.obtenerCalificacionesPorMateria(matri, impartir));
+                    }
+                    calificacion = new Calificaciones();
+                }
+                break;
+            case "Nota 3 P3":
+                matricula = (Matriculas) ((DataTable) event.getComponent()).getRowData();
+                if (newValue != 0 && !newValue.equals(oldValue)) {
+                    calificacion = new Calificaciones();
+                    if (matricula.getCalificacionesList().get(10).getIdCalificacion() != null) {
+                        calificacion = matricula.getCalificacionesList().get(10);
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota(newValue);
+                        calificaionesEJB.edit(calificacion);
+                        calificacion = matricula.getCalificacionesList().get(11);
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota((matricula.getCalificacionesList().get(8).getNota() + matricula.getCalificacionesList().get(9).getNota() + matricula.getCalificacionesList().get(10).getNota()) / 3);
+                        calificaionesEJB.edit(calificacion);
+                        calificacion = matricula.getCalificacionesList().get(13);
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota((matricula.getCalificacionesList().get(3).getNota() + matricula.getCalificacionesList().get(7).getNota() + matricula.getCalificacionesList().get(11).getNota()) / 3);
+                        calificaionesEJB.edit(calificacion);
+                    } else {
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota(newValue);
+                        calificaionesEJB.edit(calificacion);
+                    }
+
+                    for (Matriculas matri : lstMatriculas) {
+                        matri.setCalificacionesList(calificaionesEJB.obtenerCalificacionesPorMateria(matri, impartir));
+                    }
+                    calificacion = new Calificaciones();
+                }
+                break;
+
+            case "Nota Reposicion":
+                matricula = (Matriculas) ((DataTable) event.getComponent()).getRowData();
+                if ( !newValue.equals(oldValue)) {
+                    calificacion = new Calificaciones();
+                    if (matricula.getCalificacionesList().get(12).getIdCalificacion() != null) {
+                        calificacion = matricula.getCalificacionesList().get(12);
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota(newValue);
+                        calificaionesEJB.edit(calificacion);
+                        calificacion = matricula.getCalificacionesList().get(13);
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota((calificacion.getNota() + newValue) / 2);
+                        calificaionesEJB.edit(calificacion);
+                    } else {
+                        calificacion.setIdImpartir(impartir);
+                        calificacion.setNota(newValue);
+                        calificaionesEJB.edit(calificacion);
+                    }
+
+                    for (Matriculas matri : lstMatriculas) {
+                        matri.setCalificacionesList(calificaionesEJB.obtenerCalificacionesPorMateria(matri, impartir));
+                    }
+                    calificacion = new Calificaciones();
+                }
+                break;
+            default:
+                throw new AssertionError();
+        }
+
     }
 
     public Impartir getImpartir() {

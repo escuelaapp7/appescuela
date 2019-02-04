@@ -5,10 +5,10 @@
  */
 package com.appschool.ejb;
 
+import com.appschool.model.Alumnos;
 import com.appschool.model.Matriculas;
 import java.util.List;
 import javax.ejb.Local;
-
 
 @Local
 public interface MatriculasFacadeLocal {
@@ -25,6 +25,8 @@ public interface MatriculasFacadeLocal {
 
     List<Matriculas> findRange(int[] range);
 
+    List<Matriculas> validarMismoAlumnoEnElAnio(Alumnos alumno, Integer anio);
+
     int count();
-    
+
 }

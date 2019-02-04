@@ -6,12 +6,14 @@
 package com.appschool.controller;
 
 import com.appschool.ejb.AlumnosFacadeLocal;
+import com.appschool.ejb.AsignaturasFacadeLocal;
 import com.appschool.ejb.CalificacionesFacadeLocal;
 import com.appschool.ejb.CoordinadoresFacadeLocal;
 import com.appschool.ejb.EncargadosFacadeLocal;
 import com.appschool.ejb.MatriculasFacadeLocal;
 import com.appschool.ejb.ParentezcosFacadeLocal;
 import com.appschool.model.Alumnos;
+import com.appschool.model.Asignaturas;
 import com.appschool.model.Calificaciones;
 import com.appschool.model.Coordinadorgrado;
 import com.appschool.model.Encargados;
@@ -19,6 +21,7 @@ import com.appschool.model.Matriculas;
 import com.appschool.model.Parentezcos;
 import com.appschool.model.Personas;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -59,12 +62,16 @@ public class MatriculaController implements Serializable {
     private MatriculasFacadeLocal matriculaEJB;
     @EJB
     private CalificacionesFacadeLocal calificacionesEJB;
+    @EJB
+    private AsignaturasFacadeLocal asignaturasEJB;
 
     List<Encargados> lstEncargados;
     List<Parentezcos> lstParentezcos;
     List<Alumnos> lstAlumnos;
     List<Coordinadorgrado> lstCoordinadores;
     List<Matriculas> lstMatriculas;
+    List<Asignaturas> lstAsignaturas;
+    List<Matriculas> lstValidaAlumno;
 
     @PostConstruct
     public void init() {
@@ -80,6 +87,8 @@ public class MatriculaController implements Serializable {
         lstAlumnos = alumnosEJB.findAll();
         lstCoordinadores = coordinadoresEJB.findAll();
         lstMatriculas = matriculaEJB.findAll();
+        lstAsignaturas = asignaturasEJB.findAll();
+        lstValidaAlumno = new ArrayList<>();
     }
 
     public void matricularOperar() {
@@ -92,11 +101,24 @@ public class MatriculaController implements Serializable {
                 matricula.setFechaMatricula(date);
                 matricula.setAnio(cal.get(Calendar.YEAR));
                 matricula.setIdCoordinadorGrado(coordinador);
-                matriculaEJB.create(matricula);
-                calificacion.setIdMatricula(matricula);
-                calificacionesEJB.create(calificacion);
-                FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, "Aviso", "Se registro exitosamente"));
+                lstValidaAlumno = matriculaEJB.validarMismoAlumnoEnElAnio(alumno, cal.get(Calendar.YEAR));
+                if (lstValidaAlumno.size() > 1) {
+                    FacesContext.getCurrentInstance().addMessage(null,
+                            new FacesMessage(FacesMessage.SEVERITY_INFO, "Aviso", "Este alumno ya se encuentra matriculado en  "
+                                    + lstValidaAlumno.get(0).getIdCoordinadorGrado().getIdGrado().getNombre() + " Grado" + "  Seccion: "
+                                    + lstValidaAlumno.get(0).getIdCoordinadorGrado().getIdSeccion().getDescripcion()));
+                } else {
+                    matriculaEJB.create(matricula);
+                    FacesContext.getCurrentInstance().addMessage(null,
+                            new FacesMessage(FacesMessage.SEVERITY_INFO, "Aviso", "Se registro exitosamente"));
+                    for (int i = 0; i < 13 * lstAsignaturas.size(); i++) {
+                        calificacion.setNota(0.0);
+                        calificacion.setIdMatricula(matricula);
+                        calificacionesEJB.create(calificacion);
+                    }
+
+                }
+
             } else {
                 matriculaEJB.edit(matricula);
                 FacesContext.getCurrentInstance().addMessage(null,
@@ -220,7 +242,5 @@ public class MatriculaController implements Serializable {
     public void setDate(Date date) {
         this.date = date;
     }
-
-
 
 }

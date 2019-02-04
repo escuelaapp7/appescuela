@@ -13,137 +13,197 @@
 
 
             <ui:define name="content">
-                <p:panel header="Registros de Calificaciones por Asignatura"  id="panel"
-                         style="width: 100%;margin: 0 auto; text-align:center;align-self: center ;
-                         padding: 5px; text-align: justify;font-size: 14px">
+                <h:form id="frmCalif">
+                    <p:panel header="Registros de Calificaciones por Asignatura"  id="panel"
+                             style="width: 100%;margin: 0 auto; text-align:center;align-self: center ;
+                             padding: 5px; text-align: justify;font-size: 14px">
 
 
-                    <p:growl  globalOnly="true" showDetail="true"/>
-                    <br/>
-                    <p:separator/>
-                    <br/>
-                    <p:panel header="Registar calificaciones por Asignatura">
-                        <h:form id="frmCalif">
-                            <h2 style="padding-left: 40%">Informacion de grado y Asignatura</h2>
+                        <p:growl  globalOnly="true" showDetail="true"/>
+                        <br/>
+                        <p:separator/>
+                        <br/>
 
-                            <p:panelGrid columns="3" layout="grid"  style="width: 60%;margin: 0 auto; " >
-                                <p:outputLabel value="Seleccione asignatura y grado que desea calificar"/>
-                                <p:commandButton value="Seleccionar"  oncomplete="PF('dlgImpartir').show();"  />
-                                <p:column/>
+                        <h2 style="padding-left: 40%">Informacion de grado y Asignatura</h2>
 
-                                <p:outputLabel value="Asignatura: "/>
-                                <p:outputLabel value="#{calificacionesController.impartir.idAsignatura.descripcion}" />
-                                <p:column/>
-                                <p:outputLabel value="Grado: "/>
-                                <p:outputLabel value="#{calificacionesController.impartir.idGrado.nombre}" />
-                                <p:column/>
+                        <p:panelGrid columns="3" layout="grid"  style="width: 60%;margin: 0 auto; " >
+                            <p:outputLabel value="Seleccione asignatura y grado que desea calificar"/>
+                            <p:commandButton value="Seleccionar"  oncomplete="PF('dlgImpartir').show();"  />
+                            <p:column/>
 
-                                <p:outputLabel value="Seccion: "/>
-                                <p:outputLabel value="#{calificacionesController.impartir.idSeccion.descripcion}" />
-                                <p:column/>
+                            <p:outputLabel value="Asignatura: "/>
+                            <p:outputLabel value="#{calificacionesController.impartir.idAsignatura.descripcion}" />
+                            <p:column/>
+                            <p:outputLabel value="Grado: "/>
+                            <p:outputLabel value="#{calificacionesController.impartir.idGrado.nombre}" />
+                            <p:column/>
 
-                                <p:outputLabel value="Jornada "/>
-                                <p:outputLabel value="#{calificacionesController.impartir.idJornada.descripcion}" />
-                                <p:column/>
+                            <p:outputLabel value="Seccion: "/>
+                            <p:outputLabel value="#{calificacionesController.impartir.idSeccion.descripcion}" />
+                            <p:column/>
 
-                            </p:panelGrid>
+                            <p:outputLabel value="Jornada "/>
+                            <p:outputLabel value="#{calificacionesController.impartir.idJornada.descripcion}" />
+                            <p:column/>
 
-                            <p:dataTable id="tblCalificaciones"  value="#{calificacionesController.lstMatriculas}"
-                                         var="matricula" style="width: 100%;margin: 0 auto; text-align:center;
-                                         padding: 5px; text-align: justify;font-size: 14px" 
-                                         emptyMessage="No hay registros en la base de datos"
-                                         paginator="true" rows="5" paginatorPosition="bottom"
-                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
-                                         {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                         rowsPerPageTemplate="5,10,15" reflow="true" resizeMode="expand"  widgetVar="data" >
+                        </p:panelGrid>
+                        <p:dataTable id="tblCalificaciones"  value="#{calificacionesController.lstMatriculas}"
+                                     var="matricula" 
+                                     editable="true" editMode="cell" widgetVar="tblCalificaciones"
+                                     >
 
-                                <f:facet name="header">
+                            <f:facet name="header">
 
-                                    <p:outputLabel value="Calificaciones de Alumnos Asignatura:   "  style="font-size: 14px"/>
-                                    <p:outputLabel value="#{calificacionesController.impartir.idAsignatura.descripcion}" style="font-size: 16px"/>
+                                <p:outputLabel value="Calificaciones de Alumnos Asignatura:   "  style="font-size: 14px"/>
+                                <p:outputLabel value="#{calificacionesController.impartir.idAsignatura.descripcion}" style="font-size: 16px"/>
 
-                                </f:facet>
+                            </f:facet>
+                            <p:ajax event="cellEdit"  listener="#{calificacionesController.onCellEdit}"  process="@form"   update=":frmCalif:tblCalificaciones"  >
 
-                                <p:columnGroup type="header">
-                                    <p:row>
-                                        <p:column rowspan="2" headerText="Alumnos" style="width: 20%" />
-                                        <p:column colspan="4" headerText="Trimestre 1" style="width: 20%"  />
-                                        <p:column colspan="4" headerText="Trimestre 2" style="width: 20%" />
-                                        <p:column colspan="4" headerText="Trimestre 3" style="width: 20%"  />
-                                    </p:row>
-                                    <p:row>
-                                        <p:column headerText="Nota 1" style="width: 10%" />
-                                        <p:column headerText="Nota 2" style="width: 10%" />
-                                        <p:column headerText="Nota 3"  style="width: 10%" />
-                                        <p:column headerText="Promedio"  style="width: 10%" />
-                                        <p:column headerText="Nota 1" style="width: 10%" />
-                                        <p:column headerText="Nota 2" style="width: 10%" />
-                                        <p:column headerText="Nota 3" style="width: 10%" />
-                                        <p:column headerText="Promedio" style="width: 10%" />
-                                        <p:column headerText="Nota 1"  style="width: 10%" />
-                                        <p:column headerText="Nota 2" style="width: 10%" />
-                                        <p:column headerText="Nota 3" style="width: 10%" />
-                                        <p:column headerText="Promedio" style="width: 10%" />                                        
-                                        <p:column headerText="Operaciones" style="width: 10%" />
+                            </p:ajax>
+                            <p:columnGroup type="header">
+                                <p:row>
+                                    <p:column rowspan="2" headerText="Alumnos" style="width: 20%" />
+                                    <p:column colspan="4" headerText="Trimestre 1" style="width: 20%"  />
+                                    <p:column colspan="4" headerText="Trimestre 2" style="width: 20%" />
+                                    <p:column colspan="4" headerText="Trimestre 3" style="width: 20%"  />
+                                    <p:column colspan="2" headerText="Resultados " style="width: 20%"  />
 
-                                    </p:row>
-
-                                </p:columnGroup>
-                                <p:column headerText="Nombre del Alumno" filterBy="#{matricula.idAlumno.idPersona.nombres}"  filterMatchMode="contains"  style="width: 20%; text-align:  center">
-                                    <p:outputLabel value="#{matricula.idAlumno.idPersona.nombres} #{matricula.idAlumno.idPersona.apellidos}"/>
-                                </p:column>
-
-                                <p:column>
-                                    <p:outputLabel value="#{matricula.calificacionesList[0].nota}"/>
-                                </p:column>
-                                <p:column>
-                                    <p:outputLabel value="#{matricula.calificacionesList[1].nota}"/>
-                                </p:column>
-                                <p:column>
-                                    <p:outputLabel value="#{matricula.calificacionesList[2].nota}"/>
-                                </p:column>
-                                <p:column>
-                                    <p:outputLabel value="#{matricula.calificacionesList[3].nota}"/>
-                                </p:column>
-                                <p:column>
-                                    <p:outputLabel value="#{matricula.calificacionesList[4].nota}"/>
-                                </p:column>
-                                <p:column>
-                                    <p:outputLabel value="#{matricula.calificacionesList[5].nota}"/>
-                                </p:column>
-                                <p:column>
-                                    <p:outputLabel value="#{matricula.calificacionesList[6].nota}"/>
-                                </p:column>
-                                <p:column>
-                                    <p:outputLabel value="#{matricula.calificacionesList[7].nota}"/>
-                                </p:column>
-                                <p:column>
-                                    <p:outputLabel value="#{matricula.calificacionesList[8].nota}"/>
-                                </p:column>                                
-                                <p:column>
-                                    <p:outputLabel value="#{matricula.calificacionesList[9].nota}"/>
-                                </p:column>
-                                <p:column>
-                                    <p:outputLabel value="#{matricula.calificacionesList[10].nota}"/>
-                                </p:column>
-                                <p:column>
-                                    <p:outputLabel value="#{matricula.calificacionesList[5].nota}"/>
-                                </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column  headerText="Nota 1"  style="width: 10%" />
+                                    <p:column headerText="Nota 2" style="width: 10%" />
+                                    <p:column headerText="Nota 3"  style="width: 10%" />
+                                    <p:column  headerText="T1 Promedio"  style="width: 10%" />
+                                    <p:column headerText="Nota 1" style="width: 10%" />
+                                    <p:column headerText="Nota 2" style="width: 10%" />
+                                    <p:column headerText="Nota 3" style="width: 10%" />
+                                    <p:column headerText="T2 Promedio" style="width: 10%" />
+                                    <p:column headerText="Nota 1"  style="width: 10%" />
+                                    <p:column headerText="Nota 2" style="width: 10%" />
+                                    <p:column headerText="Nota 3" style="width: 10%" />
+                                    <p:column headerText="T3 Promedio" style="width: 10%" />               
+                                    <p:column headerText="Nota Reposicion" style="width: 10%" />   
+                                    <p:column headerText="Promedio Final" style="width: 10%" />                                        
 
 
-                                <p:column headerText="Operaciones">
-                                    <p:commandButton value="agregar nota"/>
-                                </p:column>
 
-                            </p:dataTable>
+                                </p:row>
 
-                        </h:form>
+                            </p:columnGroup>
+                            <p:column headerText="Nombre del Alumno" filterBy="#{matricula.idAlumno.idPersona.nombres}"  filterMatchMode="contains"  style="width: 20%; text-align:  center">
+                                <p:outputLabel value="#{matricula.idMatricula} - #{matricula.idAlumno.idPersona.nombres} #{matricula.idAlumno.idPersona.apellidos}"/>
+                            </p:column>
+
+                            <p:column headerText="Nota 1 P1">
+                                <p:cellEditor  >
+                                    <f:facet name="output"><h:outputText value="#{matricula.calificacionesList[0].nota}" /></f:facet>
+                                    <f:facet name="input"><p:inputNumber id="modelInput"    value="#{matricula.calificacionesList[0].nota}"  style="width:96%" minValue="0.00" maxValue="10.00" >
+                                        </p:inputNumber>
+
+                                    </f:facet>
+
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Nota 2 P1">
+                                <p:cellEditor  >
+                                    <f:facet name="output"><h:outputText value="#{matricula.calificacionesList[1].nota}" /></f:facet>
+                                    <f:facet name="input"><p:inputNumber    value="#{matricula.calificacionesList[1].nota}"  style="width:96%" minValue="0.00" maxValue="10.00" >
+                                        </p:inputNumber>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Nota 3 P1">
+                                <p:cellEditor  >
+                                    <f:facet name="output"><h:outputText value="#{matricula.calificacionesList[2].nota}" /></f:facet>
+                                    <f:facet name="input"><p:inputNumber    value="#{matricula.calificacionesList[2].nota}"  style="width:96%" minValue="0.00" maxValue="10.00" >
+                                        </p:inputNumber>
+                                    </f:facet>
+
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column id="prom1" headerText="Promedio 1 P1">
+                                <p:outputLabel id="col1" value="#{matricula.calificacionesList[3].nota}"/>
+                            </p:column>
+                            <p:column headerText="Nota 1 P2">
+                                <p:cellEditor  >
+                                    <f:facet name="output"><h:outputText value="#{matricula.calificacionesList[4].nota}" /></f:facet>
+                                    <f:facet name="input"><p:inputNumber    value="#{matricula.calificacionesList[4].nota}"  style="width:96%" minValue="0.00" maxValue="10.00" >
+                                        </p:inputNumber>
+                                    </f:facet>
+
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Nota 2 P2">
+                                <p:cellEditor  >
+                                    <f:facet name="output"><h:outputText value="#{matricula.calificacionesList[5].nota}" /></f:facet>
+                                    <f:facet name="input"><p:inputNumber    value="#{matricula.calificacionesList[5].nota}"  style="width:96%" minValue="0.00" maxValue="10.00" >
+                                        </p:inputNumber>
+                                    </f:facet>
+
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Nota 3 P2">
+                                <p:cellEditor  >
+                                    <f:facet name="output"><h:outputText value="#{matricula.calificacionesList[6].nota}" /></f:facet>
+                                    <f:facet name="input"><p:inputNumber    value="#{matricula.calificacionesList[6].nota}"  style="width:96%" minValue="0.00" maxValue="10.00" >
+                                        </p:inputNumber>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column >
+                            <p:column headerText="Promedio 2 P2">
+                                <p:outputLabel value="#{matricula.calificacionesList[7].nota}"/>
+                            </p:column>
+
+                            <p:column headerText="Nota 1 P3">
+                                <p:cellEditor  >
+                                    <f:facet name="output"><h:outputText value="#{matricula.calificacionesList[8].nota}" /></f:facet>
+                                    <f:facet name="input"><p:inputNumber    value="#{matricula.calificacionesList[8].nota}"  style="width:96%" minValue="0.00" maxValue="10.00" >
+                                        </p:inputNumber>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>                                
+                            <p:column headerText="Nota 2 P3">
+                                <p:cellEditor  >
+                                    <f:facet name="output"><h:outputText value="#{matricula.calificacionesList[9].nota}" /></f:facet>
+                                    <f:facet name="input"><p:inputNumber    value="#{matricula.calificacionesList[9].nota}"  style="width:96%" minValue="0.00" maxValue="10.00" >
+                                        </p:inputNumber>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Nota 3 P3">
+                                <p:cellEditor  >
+                                    <f:facet name="output"><h:outputText value="#{matricula.calificacionesList[10].nota}" /></f:facet>
+                                    <f:facet name="input"><p:inputNumber    value="#{matricula.calificacionesList[10].nota}"  style="width:96%" minValue="0.00" maxValue="10.00" >
+                                        </p:inputNumber>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Promedio P3">
+                                <p:outputLabel value="#{matricula.calificacionesList[11].nota}"/>
+                            </p:column>
+                            <p:column headerText="Nota Reposicion">
+                                <p:cellEditor  >
+                                    <f:facet name="output"><h:outputText value="#{matricula.calificacionesList[12].nota}" /></f:facet>
+                                    <f:facet name="input"><p:inputNumber    value="#{matricula.calificacionesList[12].nota}"  style="width:96%" minValue="0.00" maxValue="10.00" >
+                                        </p:inputNumber>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+
+                            <p:column headerText="Promedio Final">
+                                <p:outputLabel value="#{matricula.calificacionesList[13].nota}"/>
+                            </p:column>
+                        </p:dataTable>
+
+
+                        <br/>
+                        <p:separator/>
+                        <br/>
+
                     </p:panel>
-                    <br/>
-                    <p:separator/>
-                    <br/>
+                </h:form>
 
-                </p:panel>
 
                 <p:dialog id="dlgImpartir" header="Seleccionar Asignatura y Grado  a Calificar" showEffect="fade" hideEffect="explode"
                           widgetVar="dlgImpartir" modal="true" draggable="false" resizable="false" minWidth="800" width="80%"  >
@@ -185,7 +245,9 @@
 
                         </p:dataTable>
                     </h:form>
-                </p:dialog>
+                </p:dialog >
+
+
             </ui:define>
 
             <ui:define name="bottom">

@@ -105,7 +105,10 @@ public class LoginController implements Serializable {
 
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuario", us);
                 redireccion = "/plantilla.xhtml?faces-redirect=true";
-                usuario=us;
+                usuario = us;
+
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Aviso", "Bienvenido" + usuario.getIdPersona().getNombres()));
+
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Aviso", "Las credenciales no coinciden."));
             }

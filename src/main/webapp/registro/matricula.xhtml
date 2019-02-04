@@ -9,22 +9,18 @@
     <body>
 
         <ui:composition template="./../plantilla.xhtml">
-
-
-
             <ui:define name="content">
                 <p:panel header="Registros de Matriculas"  id="panel"
                          style="width: 80%;margin: 0 auto; text-align:center;align-self: center ;
                          padding: 5px; text-align: justify;font-size: 14px">
-
-
-                    <p:growl  globalOnly="true" showDetail="true"/>
                     <br/>
                     <p:separator/>
                     <br/>
                     <p:panel header="Matricular Alumno">
                         <h:form id="frmMatri">
-                            <h2 style="padding-left: 40%">Datos de Alumno a Matricular</h2>
+                            <p:growl  globalOnly="true" showDetail="true" life="5000"/>
+
+                            <h2 style="padding-left: 40%">Datos de Alumnos a Matricular</h2>
 
                             <p:panelGrid columns="3" layout="grid"  style="width: 60%;margin: 0 auto; " >
                                 <p:outputLabel value="Fecha de Matricula: "/>
@@ -112,14 +108,15 @@
                             </p:panelGrid>
 
                             <p:commandButton value="Registrar Matricula" actionListener="#{matriculaController.matricularOperar()}"
-                                             action="matricula.xhtml?faces-redirect=true" 
-                                             update="frmMatri"/>                        
+                                             update="frmMatri, frmMostrar" />                        
                         </h:form>
                     </p:panel>
                     <br/>
                     <p:separator/>
                     <br/>
                     <h:form id="frmMostrar" >
+                        <p:growl  globalOnly="true" showDetail="true"/>
+
                         <p:dataTable id="tblMatriculas"  value="#{matriculaController.lstMatriculas}"
                                      var="matricula" style="width: 100%;margin: 0 auto; text-align:center;
                                      padding: 5px; text-align: justify;font-size: 14px" 
@@ -331,7 +328,7 @@
             </ui:define>
 
             <ui:define name="bottom">
-                bottom
+                
             </ui:define>
 
         </ui:composition>
