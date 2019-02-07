@@ -21,7 +21,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import org.primefaces.model.DualListModel;
 
 /**
  *
@@ -58,7 +57,7 @@ public class UsuarioController implements Serializable {
         lstUsuarios = usuariosEJB.findAll();
         lstRoles = rolesEJB.findAll();
         lstUsuarioRoles= new ArrayList<>();
-
+            
     }
 
     public void operarUsuario() {

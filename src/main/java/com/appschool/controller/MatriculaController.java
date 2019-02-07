@@ -32,10 +32,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-/**
- *
- * @author said
- */
+
 @Named
 @ViewScoped
 public class MatriculaController implements Serializable {

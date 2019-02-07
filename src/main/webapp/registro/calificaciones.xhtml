@@ -58,7 +58,7 @@
                                 <p:outputLabel value="#{calificacionesController.impartir.idAsignatura.descripcion}" style="font-size: 16px"/>
 
                             </f:facet>
-                            <p:ajax event="cellEdit"  listener="#{calificacionesController.onCellEdit}"  process="@form"   update=":frmCalif:tblCalificaciones"  >
+                            <p:ajax event="cellEdit"  listener="#{calificacionesController.onCellEdit}"  process="@form"   update=":frmCalif:tblCalificaciones" oncomplete="PF('tblCalificaciones').filter()" >
 
                             </p:ajax>
                             <p:columnGroup type="header">
@@ -74,7 +74,7 @@
                                     <p:column  headerText="Nota 1"  style="width: 10%" />
                                     <p:column headerText="Nota 2" style="width: 10%" />
                                     <p:column headerText="Nota 3"  style="width: 10%" />
-                                    <p:column  headerText="T1 Promedio"  style="width: 10%" />
+                                    <p:column headerText="T1 Promedio"  style="width: 10%" />
                                     <p:column headerText="Nota 1" style="width: 10%" />
                                     <p:column headerText="Nota 2" style="width: 10%" />
                                     <p:column headerText="Nota 3" style="width: 10%" />
@@ -237,7 +237,8 @@
 
 
 
-                                <p:commandButton title="Seleccionar" value="Seleccionar"  icon="ui-icon-close" action="#{calificacionesController.alumnosPorMateria()}" oncomplete="PF('dlgImpartir').hide();" update="frmCalif">
+                                <p:commandButton title="Seleccionar" value="Seleccionar"  icon="ui-icon-close" onclick="PF('tblCalificaciones').filter()" onsuccess="PF('tblCalificaciones').filter()" action="#{calificacionesController.alumnosPorMateria()}"
+                                                 oncomplete="PF('dlgImpartir').hide();" update="frmCalif,:frmCalif:tblCalificaciones">
                                     <f:setPropertyActionListener target="#{calificacionesController.impartir}" value="#{impartir}"   />
 
                                 </p:commandButton>

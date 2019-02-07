@@ -18,6 +18,8 @@ import com.appschool.model.Periodos;
 import com.appschool.model.Personas;
 import com.appschool.model.Usuarios;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -26,7 +28,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import org.primefaces.component.datatable.DataTable;
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.CellEditEvent;
 
 /**
@@ -123,11 +124,11 @@ public class CalificacionesController implements Serializable {
                         calificaionesEJB.edit(calificacion);
                         calificacion = matricula.getCalificacionesList().get(3);
                         calificacion.setIdImpartir(impartir);
-                        calificacion.setNota((double) Math.round((matricula.getCalificacionesList().get(0).getNota() + matricula.getCalificacionesList().get(1).getNota() + matricula.getCalificacionesList().get(2).getNota()) / 3));
+                        calificacion.setNota(new BigDecimal((matricula.getCalificacionesList().get(0).getNota() + matricula.getCalificacionesList().get(1).getNota() + matricula.getCalificacionesList().get(2).getNota()) / 3).setScale(2, RoundingMode.HALF_UP).doubleValue());
                         calificaionesEJB.edit(calificacion);
                         calificacion = matricula.getCalificacionesList().get(13);
                         calificacion.setIdImpartir(impartir);
-                        calificacion.setNota((matricula.getCalificacionesList().get(3).getNota() + matricula.getCalificacionesList().get(7).getNota() + matricula.getCalificacionesList().get(11).getNota()) / 3);
+                        calificacion.setNota(new BigDecimal((matricula.getCalificacionesList().get(3).getNota() + matricula.getCalificacionesList().get(7).getNota() + matricula.getCalificacionesList().get(11).getNota()) / 3).setScale(2, RoundingMode.HALF_UP).doubleValue());
                         calificaionesEJB.edit(calificacion);
                         for (Matriculas matri : lstMatriculas) {
                             matri.setCalificacionesList(calificaionesEJB.obtenerCalificacionesPorMateria(matri, impartir));
@@ -143,6 +144,7 @@ public class CalificacionesController implements Serializable {
                         matri.setCalificacionesList(calificaionesEJB.obtenerCalificacionesPorMateria(matri, impartir));
                     }
                     calificacion = new Calificaciones();
+
                 }
                 break;
 
@@ -157,11 +159,11 @@ public class CalificacionesController implements Serializable {
                         calificaionesEJB.edit(calificacion);
                         calificacion = matricula.getCalificacionesList().get(3);
                         calificacion.setIdImpartir(impartir);
-                        calificacion.setNota((matricula.getCalificacionesList().get(0).getNota() + matricula.getCalificacionesList().get(1).getNota() + matricula.getCalificacionesList().get(2).getNota()) / 3);
+                        calificacion.setNota(new BigDecimal((matricula.getCalificacionesList().get(0).getNota() + matricula.getCalificacionesList().get(1).getNota() + matricula.getCalificacionesList().get(2).getNota()) / 3).setScale(2, RoundingMode.HALF_UP).doubleValue());
                         calificaionesEJB.edit(calificacion);
                         calificacion = matricula.getCalificacionesList().get(13);
                         calificacion.setIdImpartir(impartir);
-                        calificacion.setNota((matricula.getCalificacionesList().get(3).getNota() + matricula.getCalificacionesList().get(7).getNota() + matricula.getCalificacionesList().get(11).getNota()) / 3);
+                        calificacion.setNota(new BigDecimal((matricula.getCalificacionesList().get(3).getNota() + matricula.getCalificacionesList().get(7).getNota() + matricula.getCalificacionesList().get(11).getNota()) / 3).setScale(2, RoundingMode.HALF_UP).doubleValue());
                         calificaionesEJB.edit(calificacion);
                     } else {
                         calificacion.setIdImpartir(impartir);
@@ -186,11 +188,11 @@ public class CalificacionesController implements Serializable {
                         calificaionesEJB.edit(calificacion);
                         calificacion = matricula.getCalificacionesList().get(3);
                         calificacion.setIdImpartir(impartir);
-                        calificacion.setNota((matricula.getCalificacionesList().get(0).getNota() + matricula.getCalificacionesList().get(1).getNota() + matricula.getCalificacionesList().get(2).getNota()) / 3);
+                        calificacion.setNota(new BigDecimal((matricula.getCalificacionesList().get(0).getNota() + matricula.getCalificacionesList().get(1).getNota() + matricula.getCalificacionesList().get(2).getNota()) / 3).setScale(2, RoundingMode.HALF_UP).doubleValue());
                         calificaionesEJB.edit(calificacion);
                         calificacion = matricula.getCalificacionesList().get(13);
                         calificacion.setIdImpartir(impartir);
-                        calificacion.setNota((matricula.getCalificacionesList().get(3).getNota() + matricula.getCalificacionesList().get(7).getNota() + matricula.getCalificacionesList().get(11).getNota()) / 3);
+                        calificacion.setNota(new BigDecimal((matricula.getCalificacionesList().get(3).getNota() + matricula.getCalificacionesList().get(7).getNota() + matricula.getCalificacionesList().get(11).getNota()) / 3).setScale(2, RoundingMode.HALF_UP).doubleValue());
                         calificaionesEJB.edit(calificacion);
                     } else {
                         calificacion.setIdImpartir(impartir);
@@ -216,11 +218,11 @@ public class CalificacionesController implements Serializable {
                         calificaionesEJB.edit(calificacion);
                         calificacion = matricula.getCalificacionesList().get(7);
                         calificacion.setIdImpartir(impartir);
-                        calificacion.setNota((matricula.getCalificacionesList().get(4).getNota() + matricula.getCalificacionesList().get(5).getNota() + matricula.getCalificacionesList().get(6).getNota()) / 3);
+                        calificacion.setNota(new BigDecimal((matricula.getCalificacionesList().get(4).getNota() + matricula.getCalificacionesList().get(5).getNota() + matricula.getCalificacionesList().get(6).getNota()) / 3).setScale(2, RoundingMode.HALF_UP).doubleValue());
                         calificaionesEJB.edit(calificacion);
                         calificacion = matricula.getCalificacionesList().get(13);
                         calificacion.setIdImpartir(impartir);
-                        calificacion.setNota((matricula.getCalificacionesList().get(3).getNota() + matricula.getCalificacionesList().get(7).getNota() + matricula.getCalificacionesList().get(11).getNota()) / 3);
+                        calificacion.setNota(new BigDecimal((matricula.getCalificacionesList().get(3).getNota() + matricula.getCalificacionesList().get(7).getNota() + matricula.getCalificacionesList().get(11).getNota()) / 3).setScale(2, RoundingMode.HALF_UP).doubleValue());
                         calificaionesEJB.edit(calificacion);
                     } else {
                         calificacion.setIdImpartir(impartir);
@@ -246,11 +248,11 @@ public class CalificacionesController implements Serializable {
                         calificaionesEJB.edit(calificacion);
                         calificacion = matricula.getCalificacionesList().get(7);
                         calificacion.setIdImpartir(impartir);
-                        calificacion.setNota((matricula.getCalificacionesList().get(4).getNota() + matricula.getCalificacionesList().get(5).getNota() + matricula.getCalificacionesList().get(6).getNota()) / 3);
+                        calificacion.setNota(new BigDecimal((matricula.getCalificacionesList().get(4).getNota() + matricula.getCalificacionesList().get(5).getNota() + matricula.getCalificacionesList().get(6).getNota()) / 3).setScale(2, RoundingMode.HALF_UP).doubleValue());
                         calificaionesEJB.edit(calificacion);
                         calificacion = matricula.getCalificacionesList().get(13);
                         calificacion.setIdImpartir(impartir);
-                        calificacion.setNota((matricula.getCalificacionesList().get(3).getNota() + matricula.getCalificacionesList().get(7).getNota() + matricula.getCalificacionesList().get(11).getNota()) / 3);
+                        calificacion.setNota(new BigDecimal((matricula.getCalificacionesList().get(3).getNota() + matricula.getCalificacionesList().get(7).getNota() + matricula.getCalificacionesList().get(11).getNota()) / 3).setScale(2, RoundingMode.HALF_UP).doubleValue());
                         calificaionesEJB.edit(calificacion);
                     } else {
                         calificacion.setIdImpartir(impartir);
@@ -276,11 +278,11 @@ public class CalificacionesController implements Serializable {
                         calificaionesEJB.edit(calificacion);
                         calificacion = matricula.getCalificacionesList().get(7);
                         calificacion.setIdImpartir(impartir);
-                        calificacion.setNota((matricula.getCalificacionesList().get(4).getNota() + matricula.getCalificacionesList().get(5).getNota() + matricula.getCalificacionesList().get(6).getNota()) / 3);
+                        calificacion.setNota(new BigDecimal((matricula.getCalificacionesList().get(4).getNota() + matricula.getCalificacionesList().get(5).getNota() + matricula.getCalificacionesList().get(6).getNota()) / 3).setScale(2, RoundingMode.HALF_UP).doubleValue());
                         calificaionesEJB.edit(calificacion);
                         calificacion = matricula.getCalificacionesList().get(13);
                         calificacion.setIdImpartir(impartir);
-                        calificacion.setNota((matricula.getCalificacionesList().get(3).getNota() + matricula.getCalificacionesList().get(7).getNota() + matricula.getCalificacionesList().get(11).getNota()) / 3);
+                        calificacion.setNota(new BigDecimal((matricula.getCalificacionesList().get(3).getNota() + matricula.getCalificacionesList().get(7).getNota() + matricula.getCalificacionesList().get(11).getNota()) / 3).setScale(2, RoundingMode.HALF_UP).doubleValue());
                         calificaionesEJB.edit(calificacion);
                     } else {
                         calificacion.setIdImpartir(impartir);
@@ -305,11 +307,11 @@ public class CalificacionesController implements Serializable {
                         calificaionesEJB.edit(calificacion);
                         calificacion = matricula.getCalificacionesList().get(11);
                         calificacion.setIdImpartir(impartir);
-                        calificacion.setNota((matricula.getCalificacionesList().get(8).getNota() + matricula.getCalificacionesList().get(9).getNota() + matricula.getCalificacionesList().get(10).getNota()) / 3);
+                        calificacion.setNota(new BigDecimal((matricula.getCalificacionesList().get(8).getNota() + matricula.getCalificacionesList().get(9).getNota() + matricula.getCalificacionesList().get(10).getNota()) / 3).setScale(2, RoundingMode.HALF_UP).doubleValue());
                         calificaionesEJB.edit(calificacion);
                         calificacion = matricula.getCalificacionesList().get(13);
                         calificacion.setIdImpartir(impartir);
-                        calificacion.setNota((matricula.getCalificacionesList().get(3).getNota() + matricula.getCalificacionesList().get(7).getNota() + matricula.getCalificacionesList().get(11).getNota()) / 3);
+                        calificacion.setNota(new BigDecimal((matricula.getCalificacionesList().get(3).getNota() + matricula.getCalificacionesList().get(7).getNota() + matricula.getCalificacionesList().get(11).getNota()) / 3).setScale(2, RoundingMode.HALF_UP).doubleValue());
                         calificaionesEJB.edit(calificacion);
                     } else {
                         calificacion.setIdImpartir(impartir);
@@ -334,11 +336,11 @@ public class CalificacionesController implements Serializable {
                         calificaionesEJB.edit(calificacion);
                         calificacion = matricula.getCalificacionesList().get(11);
                         calificacion.setIdImpartir(impartir);
-                        calificacion.setNota((matricula.getCalificacionesList().get(8).getNota() + matricula.getCalificacionesList().get(9).getNota() + matricula.getCalificacionesList().get(10).getNota()) / 3);
+                        calificacion.setNota(new BigDecimal((matricula.getCalificacionesList().get(8).getNota() + matricula.getCalificacionesList().get(9).getNota() + matricula.getCalificacionesList().get(10).getNota()) / 3).setScale(2, RoundingMode.HALF_UP).doubleValue());
                         calificaionesEJB.edit(calificacion);
                         calificacion = matricula.getCalificacionesList().get(13);
                         calificacion.setIdImpartir(impartir);
-                        calificacion.setNota((matricula.getCalificacionesList().get(3).getNota() + matricula.getCalificacionesList().get(7).getNota() + matricula.getCalificacionesList().get(11).getNota()) / 3);
+                        calificacion.setNota(new BigDecimal((matricula.getCalificacionesList().get(3).getNota() + matricula.getCalificacionesList().get(7).getNota() + matricula.getCalificacionesList().get(11).getNota()) / 3).setScale(2, RoundingMode.HALF_UP).doubleValue());
                         calificaionesEJB.edit(calificacion);
                     } else {
                         calificacion.setIdImpartir(impartir);
@@ -363,11 +365,11 @@ public class CalificacionesController implements Serializable {
                         calificaionesEJB.edit(calificacion);
                         calificacion = matricula.getCalificacionesList().get(11);
                         calificacion.setIdImpartir(impartir);
-                        calificacion.setNota((matricula.getCalificacionesList().get(8).getNota() + matricula.getCalificacionesList().get(9).getNota() + matricula.getCalificacionesList().get(10).getNota()) / 3);
+                        calificacion.setNota(new BigDecimal((matricula.getCalificacionesList().get(8).getNota() + matricula.getCalificacionesList().get(9).getNota() + matricula.getCalificacionesList().get(10).getNota()) / 3).setScale(2, RoundingMode.HALF_UP).doubleValue());
                         calificaionesEJB.edit(calificacion);
                         calificacion = matricula.getCalificacionesList().get(13);
                         calificacion.setIdImpartir(impartir);
-                        calificacion.setNota((matricula.getCalificacionesList().get(3).getNota() + matricula.getCalificacionesList().get(7).getNota() + matricula.getCalificacionesList().get(11).getNota()) / 3);
+                        calificacion.setNota(new BigDecimal((matricula.getCalificacionesList().get(3).getNota() + matricula.getCalificacionesList().get(7).getNota() + matricula.getCalificacionesList().get(11).getNota()) / 3).setScale(2, RoundingMode.HALF_UP).doubleValue());
                         calificaionesEJB.edit(calificacion);
                     } else {
                         calificacion.setIdImpartir(impartir);
@@ -384,7 +386,7 @@ public class CalificacionesController implements Serializable {
 
             case "Nota Reposicion":
                 matricula = (Matriculas) ((DataTable) event.getComponent()).getRowData();
-                if ( !newValue.equals(oldValue)) {
+                if (!newValue.equals(oldValue)) {
                     calificacion = new Calificaciones();
                     if (matricula.getCalificacionesList().get(12).getIdCalificacion() != null) {
                         calificacion = matricula.getCalificacionesList().get(12);
@@ -393,6 +395,8 @@ public class CalificacionesController implements Serializable {
                         calificaionesEJB.edit(calificacion);
                         calificacion = matricula.getCalificacionesList().get(13);
                         calificacion.setIdImpartir(impartir);
+                        calificacion.setNota(new BigDecimal((calificacion.getNota() + newValue) / 2).setScale(2, RoundingMode.HALF_UP).doubleValue());
+
                         calificacion.setNota((calificacion.getNota() + newValue) / 2);
                         calificaionesEJB.edit(calificacion);
                     } else {
