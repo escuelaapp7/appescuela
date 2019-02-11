@@ -28,13 +28,15 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-
-@Named
 @ViewScoped
+@ManagedBean(name = "matriculaController")
+@Named
+
 public class MatriculaController implements Serializable {
 
     private Personas persona;
@@ -91,20 +93,20 @@ public class MatriculaController implements Serializable {
     public void matricularOperar() {
         try {
             if (matricula.getIdMatricula() == null) {
-                encargado.setIdPersona(persona);
-                matricula.setIdEncargado(encargado);
-                matricula.setIdParentezco(parentezco);
-                matricula.setIdAlumno(alumno);
-                matricula.setFechaMatricula(date);
-                matricula.setAnio(cal.get(Calendar.YEAR));
-                matricula.setIdCoordinadorGrado(coordinador);
+
                 lstValidaAlumno = matriculaEJB.validarMismoAlumnoEnElAnio(alumno, cal.get(Calendar.YEAR));
-                if (lstValidaAlumno.size() > 1) {
+                if (lstValidaAlumno.size() >= 1) {
                     FacesContext.getCurrentInstance().addMessage(null,
                             new FacesMessage(FacesMessage.SEVERITY_INFO, "Aviso", "Este alumno ya se encuentra matriculado en  "
                                     + lstValidaAlumno.get(0).getIdCoordinadorGrado().getIdGrado().getNombre() + " Grado" + "  Seccion: "
                                     + lstValidaAlumno.get(0).getIdCoordinadorGrado().getIdSeccion().getDescripcion()));
                 } else {
+                    matricula.setIdEncargado(encargado);
+                    matricula.setIdParentezco(parentezco);
+                    matricula.setIdAlumno(alumno);
+                    matricula.setFechaMatricula(date);
+                    matricula.setAnio(cal.get(Calendar.YEAR));
+                    matricula.setIdCoordinadorGrado(coordinador);
                     matriculaEJB.create(matricula);
                     FacesContext.getCurrentInstance().addMessage(null,
                             new FacesMessage(FacesMessage.SEVERITY_INFO, "Aviso", "Se registro exitosamente"));
@@ -131,8 +133,12 @@ public class MatriculaController implements Serializable {
             matriculaEJB.remove(matricula);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, "Aviso", "Se elimino exitosamente"));
+
         } catch (Exception e) {
             e.printStackTrace();
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Aviso", e.getMessage()));
+
         }
     }
 

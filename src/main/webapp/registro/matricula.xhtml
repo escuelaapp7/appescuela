@@ -108,7 +108,7 @@
                             </p:panelGrid>
 
                             <p:commandButton value="Registrar Matricula" actionListener="#{matriculaController.matricularOperar()}"
-                                             update="frmMatri, frmMostrar" />                        
+                                             update="@form,frmMatri,frmMostrar:tblMatriculas" />                        
                         </h:form>
                     </p:panel>
                     <br/>
