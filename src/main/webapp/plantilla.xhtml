@@ -9,49 +9,44 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
         <title>Aplicacion Escuela</title>
-        <style type="text/css">
-            i {
-                margin-right: 10px;
-            }
 
-            .ui-grid-col-3 {
-                padding: 4px 10px;
-            }
-        </style>
+        <h:outputStylesheet library="webjars" name="font-awesome/5.7.2/css/all-jsf.css" />
+        <link rel="shortcut icon" href="#{resource['image/favicon.ico']}" type="image/x-icon" />   
+
     </h:head>
 
     <h:body style="background-color: #4D77B3">
 
         <div id="top">
             <ui:insert name="top">
+
+
                 <h:form>  
                     <p:growl id="messages"/>
 
-                    <p:menubar>
+                    <p:menubar >
                         <p:submenu label="Administracion" >
 
-                            <p:menuitem value="Registro de Usuarios" url="/administracion/usuarios.xhtml" />
-                            <p:menuitem value="Creacion de Roles para Usuario" url="/administracion/roles.xhtml"  />
-                            <p:menuitem value="Asignar Rol a Usuarios" url="/administracion/asignarRoles.xhtml" />
-                            <p:menuitem value="Registrar Menu" url="/administracion/menus.xhtml" />
-                            <p:menuitem value="Asignar Accesos por roles" url="/administracion/asignarAccesos.xhtml" />
+                            <p:menuitem value="Registro de Usuarios" icon="fa fa-w fas fa-users" url="/administracion/usuarios.xhtml" />
+                            <p:menuitem value="Registro de roles"  icon="fa fa-w fas fa-project-diagram" url="/administracion/roles.xhtml"  />
+                            <p:menuitem value="Rol por Usuarios" icon="fa fa-w fas fa-universal-access"   url="/administracion/asignarRoles.xhtml" />
+                            <p:menuitem value="Registrar Menu" icon="fa fa-w fas fa-desktop"   url="/administracion/menus.xhtml" />
+                            <p:menuitem value="Accesos por roles" icon="fa fa-w fas fa-lock"  url="/administracion/asignarMenuRol.xhtml" />
                         </p:submenu>
                         <p:submenu label="Catalogos" icon="fa-archive">
-                            <p:menuitem value="Asignaturas" url="/catalogos/asignaturas.xhtml" />
-                            <p:menuitem value="Evaluaciones" url="/catalogos/evaluaciones.xhtml" />
-                            <p:menuitem value="Grados" url="/catalogos/grados.xhtml" />
-                            <p:menuitem value="Parentezcos" url="/catalogos/parentezcos.xhtml" />
-                            <p:menuitem value="Periodos de Evaluacion" url="/catalogos/periodosEvaluacion.xhtml" />
-                            <p:menuitem value="Secciones" url="/catalogos/secciones.xhtml" />
-                            <p:menuitem value="Jornadas" url="/catalogos/jornadas.xhtml" />
+                            <p:menuitem value="Asignaturas" icon="fa fa-w fas fa-atlas"  url="/catalogos/asignaturas.xhtml" />
+                            <p:menuitem value="Grados" icon="fa fa-w fas fa-spinner"  url="/catalogos/grados.xhtml" />
+                            <p:menuitem value="Parentezcos" icon="fa fa-w far fa-handshake" url="/catalogos/parentezcos.xhtml" />
+                            <p:menuitem value="Secciones" icon="fa fa-w fas fa-audio-description"  url="/catalogos/secciones.xhtml" />
+                            <p:menuitem value="Jornadas" icon="fa fa-w far fa-sun"  url="/catalogos/jornadas.xhtml" />
                         </p:submenu>
                         <p:submenu label="Registro" icon="fa-archive">
-                            <p:menuitem value="Registro de Profesores" url="/registro/profesores.xhtml"/>
-                            <p:menuitem value="Registro de Alumnos" url="/registro/alumnos.xhtml"/>
-                            <p:menuitem value="Registro de Coordinadores" url="/registro/coordinadores.xhtml"/>
-                            <p:menuitem value="Matricula" url="/registro/matriculaW.xhtml"/>
-                            <p:menuitem value="Asignar Materias por Maestro" url="/registro/asignacionMaterias.xhtml"/>
-                            <p:menuitem value="Registro de Calificaciones" url="/registro/calificaciones.xhtml"/>
+                            <p:menuitem value="Profesores" icon="fa fa-w fa-chalkboard-teacher" url="/registro/profesores.xhtml"/>
+                            <p:menuitem value="Alumnos" icon="fa fa-w fas fa-child" url="/registro/alumnos.xhtml"/>
+                            <p:menuitem value="Coordinadores" icon="fa fa-w fas fa-diagnoses" url="/registro/coordinadores.xhtml"/>
+                            <p:menuitem value="Matricula" icon="fa fa-w fas fa-file-alt" url="/registro/matriculaW.xhtml"/>
+                            <p:menuitem value="Materias por Maestro" icon="fa fa-w fa-book" url="/registro/asignacionMaterias.xhtml"/>
+                            <p:menuitem value="Calificaciones" icon="fa fa-w fas fa-grip-vertical" url="/registro/calificaciones.xhtml"/>
                         </p:submenu>
                         <f:facet name="options">
                             <p:outputLabel value="Bienvenido       "/> 
@@ -73,7 +68,9 @@
         </div>
 
         <div id="bottom">
-            <ui:insert name="bottom">Bottom</ui:insert>
+            <ui:insert name="bottom">
+
+            </ui:insert>
         </div>
 
     </h:body>

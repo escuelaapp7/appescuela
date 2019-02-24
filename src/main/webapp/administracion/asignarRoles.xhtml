@@ -13,55 +13,83 @@
 
 
             <ui:define name="content">                  
-                <p:growl id="msg" showDetail="true" escape="false" />
+                <h:form id="frm">
+                    <p:growl id="growl"  showSummary="true" showDetail="true"/>
+                    <p:panel header="Asignacion de Roles por Usuario">
+                        <p:dataTable id="tblUsuarios"  value="#{usuarioController.lstUsuarios}"
+                                     var="usuario" style="width: 100%;margin: 0 auto; text-align:center;
+                                     padding: 5px; text-align: justify;font-size: 14px" 
+                                     emptyMessage="No hay registros en la base de datos"
+                                     paginator="true" rows="5" paginatorPosition="bottom"
 
-                <p:panel header="Registros de Usuarios" 
-                         style="width: 80%;margin: 0 auto; text-align:center;align-self: center ;
-                         padding: 5px; text-align: justify;font-size: 14px">
-                    <p:layout  style="width: 80%; padding-left: 10%">
-                        <p:layoutUnit position="center" 
-                                      style="padding: 5px; text-align: justify;font-size: 14px; align-content: center" 
-                                      >
-                            <h:form id="frmRoles">
-                                <h:panelGrid id="gridBuscarDatosProveedor" style="layout" columns="2" title="Datos Generales">
+                                     >
 
-                                    <p:outputLabel value="Seleccione usuario para asignar roles: " />
-                                    <p:commandButton value="Seleccionar" oncomplete="PF('dlgUsuarios').show();"/>
 
-                                    <p:outputLabel value="Nombre del usuario: "/>
-                                    <p:outputLabel style="font-size: 16px; font-style: italic" value="- #{usuarioController.usuario.idPersona.nombres} #{usuarioController.usuario.idPersona.apellidos}"/>
-                                    <p:outputLabel value="Usuario: "/>
-                                    <p:outputLabel value="#{usuarioController.usuario.usuario}"/>
-                                    <p:outputLabel value="Asignar roles" />
-                                    <p:commandButton value="Asignar" oncomplete="PF('dlgRoles').show();"/>
-                                </h:panelGrid>
-                                <p:dataTable id="roles" var="rol" value="#{usuarioController.lstUsuarioRoles}">
-                                    <p:column headerText="Rol">
-                                        <p:outputLabel value="#{rol.nombre}"/>
-                                    </p:column>
-                                </p:dataTable>
+                            <f:facet name="header" >
+                                <p:outputPanel style="height: available">
+                                    <h:outputText value="Usuarios Registrados" style="padding-right: 20px"/>
+                                </p:outputPanel>
+                                <p:separator/>
+                            </f:facet>
 
-                            </h:form>
-                        </p:layoutUnit>
-                    </p:layout>
-                </p:panel>
-                <p:separator/>
-
-                <p:dialog id="dlgRoles" widgetVar="dlgRoles" modal="true" 
-                          resizable="false" showEffect="explode" hideEffect="explode" width="60%"> 
-                    <h:form>
-                        <p:dataTable id="tblRoles" var="rol" value="#{usuarioController.lstRoles}" selection="#{usuarioController.lstUsuarioRoles}" rowKey="#{rol.idRol}" style="margin-bottom:0">
-                            <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
-                            <p:column headerText="Rol">
-                                <h:outputText value="#{rol.nombre}" />
+                            <p:column headerText="Nombre del usuario" filterBy="#{usuario.idPersona.nombres} #{usuario.idPersona.apellidos}" filterMatchMode="contains" style="width: 15%; text-align:  center">
+                                <p:outputLabel value="#{usuario.idPersona.nombres} #{usuario.idPersona.apellidos}"/>
                             </p:column>
 
-                            <f:facet name="footer">
-                                <p:commandButton value="Seleccionar"  process="tblRoles" oncomplete="PF('dlgRoles').hide()" update="frmRoles"/>
-                            </f:facet>
+                            <p:column headerText="Usuario"  style="width: 15%; text-align:  center">
+                                <p:outputLabel value="#{usuario.usuario}"/>
+                            </p:column>
+                            <p:column headerText="Operaciones" style="width: 5%">
+
+                                <p:commandButton title="Asignar Rol" update="dlgAsignarRol"  value="Asignar Rol" icon="ui-icon-pencil" oncomplete="PF('dlgAsignarRol').show();"  >
+                                    <f:setPropertyActionListener target="#{rolesController.rolUsuario.idUsuario}" value="#{usuario}"  />
+                                </p:commandButton>
+
+                            </p:column>
+
+                        </p:dataTable>
+                    </p:panel>
+                </h:form>
+
+                <p:dialog id="dlgAsignarRol" header="Asignar Roles" widgetVar="dlgAsignarRol" showEffect="explode" hideEffect="bounce" resizable="false" responsive="true" modal="true" minWidth="500" width="35%" >
+                    <h:form>
+                        <h3 style="margin-top:0">Informacion de Usuario</h3>
+                        <p:panelGrid columns="2">
+
+
+                            <h:outputText value="Nombre de Usuario: " />
+                            <h:outputText value="#{usuarioController.rolUsuario.idUsuario.idPersona.nombres}" />
+
+                            <h:outputText value="Usuario:" />
+                            <h:outputText value="#{rolesController.rolUsuario.idUsuario.usuario}" />
+
+                            <h:outputText value="Seleccione Rol:" />
+                            <p:selectOneMenu id="cboRol" value="#{rolesController.rolUsuario.idRol}"  
+                                             effect="bounce" filterMatchMode="contains" converter="entityConverter" filter="true" >
+                                <f:selectItem itemLabel="-- Seleccione --" noSelectionOption="true"/>
+                                <f:selectItems value="#{rolesController.lstRoles}" var="rol" 
+                                               itemValue="#{rol}" itemLabel="#{rol.nombre}"/>
+                            </p:selectOneMenu>
+
+                            <p:commandButton value="Agregar Rol" actionListener="#{rolesController.agregarRolUsuario()}" update="frm:growl,tblRoles" />
+                        </p:panelGrid>
+
+
+                        <p:dataTable id="tblRoles" style="width: 50%" var="roles" value="#{rolesController.rolUsuario.idUsuario.rolesusuarioList}">
+                            <p:column headerText="Nombre del Rol">
+                                <h:outputText value="#{roles.idRol.nombre}" />
+                            </p:column>
+
+                            <p:column headerText="Eliminar rol" >
+                                <p:commandButton  actionListener="#{rolesController.eliminarRolUsuario()}" update="frm:growl,tblRoles"   icon="ui-icon-close">
+                                    <f:setPropertyActionListener target="#{rolesController.rolUsuarioEliminar}" value="#{roles}"  />
+                                </p:commandButton>
+                            </p:column>
+
+
                         </p:dataTable>
                     </h:form>
-                </p:dialog>
+                </p:dialog>   
             </ui:define>
 
             <ui:define name="bottom">

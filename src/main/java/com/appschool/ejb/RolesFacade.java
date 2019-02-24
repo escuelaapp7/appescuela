@@ -6,10 +6,13 @@
 package com.appschool.ejb;
 
 import com.appschool.model.Roles;
+import com.appschool.model.Rolesusuario;
+import com.appschool.model.Usuarios;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
+import javax.persistence.Query;
 
 @Stateless
 public class RolesFacade extends AbstractFacade<Roles> implements RolesFacadeLocal {
@@ -25,5 +28,7 @@ public class RolesFacade extends AbstractFacade<Roles> implements RolesFacadeLoc
     public RolesFacade() {
         super(Roles.class);
     }
-    
+
+
+
 }

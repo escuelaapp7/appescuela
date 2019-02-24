@@ -6,9 +6,10 @@
 package com.appschool.ejb;
 
 import com.appschool.model.Roles;
+import com.appschool.model.Rolesusuario;
+import com.appschool.model.Usuarios;
 import java.util.List;
 import javax.ejb.Local;
-
 
 @Local
 public interface RolesFacadeLocal {
@@ -25,6 +26,7 @@ public interface RolesFacadeLocal {
 
     List<Roles> findRange(int[] range);
 
+
     int count();
-    
+
 }

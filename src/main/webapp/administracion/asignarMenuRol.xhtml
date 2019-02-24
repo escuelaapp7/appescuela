@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../plantilla.xhtml">
+
+
+            <ui:define name="content">
+                <h:form id="frm">
+                    <p:growl id="growl"  showSummary="true" showDetail="true"/>
+                    <p:panel header="Asignacion de Accesos por Rol">
+                        <p:dataTable id="tblPerfiles"  value="#{rolesController.lstRoles}"
+                                     var="rol" style="width: 80%;margin: 0 auto; text-align:center;
+                                     padding: 5px; text-align: justify;font-size: 14px" 
+                                     emptyMessage="No hay registros en la base de datos"
+                                     paginator="true" rows="5" paginatorPosition="bottom" 
+
+                                     >
+                            <p:column headerText="Nombre del Rol">
+                                <p:outputLabel value="#{rol.nombre}"/>
+                            </p:column>
+
+                            <p:column headerText="Descripcion del Rol">
+                                <p:outputLabel value="#{rol.descripcion}"/>
+                            </p:column>
+
+                            <p:column headerText="Asignar Accceso" width="10%">
+                                <p:commandButton icon="ui-icon-pencil" update="dlgAsignarMenu" oncomplete="PF('dlgAsignarMenu').show();">
+
+                                    <f:setPropertyActionListener target="#{menusController.menuRol.idRol}" value="#{rol}"  />
+
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </h:form>
+
+                <p:dialog id="dlgAsignarMenu" header="Asignar Menu" widgetVar="dlgAsignarMenu" showEffect="explode" hideEffect="bounce" resizable="false" responsive="true" modal="true" minWidth="500" width="35%" >
+                    <h:form>
+                        <h3 style="margin-top:0">Informacion de Perfil</h3>
+                        <p:panelGrid columns="2">
+
+
+                            <h:outputText value="Nombre del perfil: " />
+                            <h:outputText value="#{menusController.menuRol.idRol.nombre}" />
+
+                            <h:outputText value="Seleccione pantalla a la que dara acceso:" />
+                            <p:selectOneMenu id="cboMenu" value="#{menusController.menuRol.idMenu}"  
+                                             effect="bounce" filterMatchMode="contains" converter="entityConverter" filter="true" >
+                                <f:selectItem itemLabel="-- Seleccione --" noSelectionOption="true"/>
+                                <f:selectItems value="#{menusController.lstMenus}" var="menu" 
+                                               itemValue="#{menu}" itemLabel="#{menu.nombre}"/>
+                            </p:selectOneMenu>
+
+                            <p:commandButton value="Agregar Acceso" actionListener="#{menusController.agregarAcceso()}" update="frm:growl,tblMenus" />
+                        </p:panelGrid>
+
+                        
+                        
+
+                        <p:dataTable id="tblMenus" style="width: 50%" var="menu" value="#{menusController.menuRol.idRol.menurolList}">
+                            <p:column headerText="Nombre de la pantalla">
+                                <h:outputText value="#{menu.idMenu.nombre}" />
+                            </p:column>
+
+                            <p:column headerText="Eliminar Acceso" >
+                                <p:commandButton  actionListener="#{rolesController.eliminarRolUsuario()}" update="frm:growl,tblMenus"   icon="ui-icon-close">
+                                    <f:setPropertyActionListener target="#{rolesController.rolUsuarioEliminar}" value="#{roles}"  />
+                                </p:commandButton>
+                            </p:column>
+
+
+                        </p:dataTable>
+                    </h:form>
+                </p:dialog>
+            </ui:define>
+
+
+        </ui:composition>
+
+    </body>
+</html>

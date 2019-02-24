@@ -6,10 +6,12 @@
 package com.appschool.ejb;
 
 import com.appschool.model.Rolesusuario;
+import com.appschool.model.Usuarios;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
+import javax.persistence.Query;
 
 @Stateless
 public class RolesusuarioFacade extends AbstractFacade<Rolesusuario> implements RolesusuarioFacadeLocal {
@@ -25,5 +27,20 @@ public class RolesusuarioFacade extends AbstractFacade<Rolesusuario> implements 
     public RolesusuarioFacade() {
         super(Rolesusuario.class);
     }
-    
+
+    @Override
+    public List<Rolesusuario> rolesPorUsuario(Usuarios usuario) {
+        List<Rolesusuario> lista = null;
+        try {
+
+            Query q = em.createNativeQuery("select * "
+                    + "from roles_usuario \n"
+                    + "where roles_usuario.id_usuario = ?1", Rolesusuario.class);
+            q.setParameter(1, usuario.getIdUsuario());
+            lista = q.getResultList();
+        } catch (Exception e) {
+        }
+        return lista;
+    }
+
 }

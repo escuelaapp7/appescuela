@@ -54,6 +54,13 @@
             <artifactId> bluesky</artifactId>
             <version>1.0.10</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.webjars/font-awesome -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>font-awesome</artifactId>
+            <version>5.7.2</version>
+        </dependency>
+
 
 
     </dependencies>
