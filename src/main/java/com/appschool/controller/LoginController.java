@@ -5,8 +5,10 @@
  */
 package com.appschool.controller;
 
-import com.appschool.ejb.RolesusuarioFacadeLocal;
+import com.appschool.ejb.MenurolFacadeLocal;
 import com.appschool.ejb.UsuariosFacadeLocal;
+import com.appschool.model.Menurol;
+import com.appschool.model.Menus;
 import com.appschool.model.Personas;
 import com.appschool.model.Roles;
 import com.appschool.model.Rolesusuario;
@@ -19,6 +21,10 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import org.primefaces.model.menu.DefaultMenuItem;
+import org.primefaces.model.menu.DefaultMenuModel;
+import org.primefaces.model.menu.DefaultSubMenu;
+import org.primefaces.model.menu.MenuModel;
 
 /**
  *
@@ -31,11 +37,13 @@ public class LoginController implements Serializable {
     private Rolesusuario rolUsuario;
     private Usuarios usuario;
     private Roles rol;
+    private MenuModel model;
     @EJB
     private UsuariosFacadeLocal usuariosEJB;
     @EJB
-    private RolesusuarioFacadeLocal rolesUsuarioEJB;
+    private MenurolFacadeLocal menuRolEJB;
     private List<Usuarios> lstUsuarios;
+    private List<Menurol> lstMenuRol;
     private Personas persona;
 
     @PostConstruct
@@ -43,7 +51,9 @@ public class LoginController implements Serializable {
         rol = new Roles();
         persona = new Personas();
         usuario = new Usuarios();
+        model = new DefaultMenuModel();
         lstUsuarios = usuariosEJB.findAll();
+        lstMenuRol = menuRolEJB.findAll();
     }
 
     public void registarUsuario() {
@@ -85,7 +95,6 @@ public class LoginController implements Serializable {
     public void registarRolUsuario() {
         try {
             rolUsuario.setIdRol(rol);
-            rolesUsuarioEJB.create(rolUsuario);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, "Aviso", "Se registro exitosamente"));
         } catch (Exception e) {
@@ -108,7 +117,7 @@ public class LoginController implements Serializable {
                 usuario = us;
 
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Aviso", "Bienvenido" + usuario.getIdPersona().getNombres()));
-
+                verificarPermisos(usuario);
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Aviso", "Las credenciales no coinciden."));
             }
@@ -135,6 +144,40 @@ public class LoginController implements Serializable {
             }
 
         } catch (Exception e) {
+        }
+    }
+
+    public void verificarPermisos(Usuarios usuario) {
+        usuario = (Usuarios) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
+
+        for (Rolesusuario roles : usuario.getRolesusuarioList()) {
+
+            for (Menurol menurol : roles.getIdRol().getMenurolList()) {
+
+                if (menurol.getIdMenu().getTipo().equals("S")) {
+                    DefaultSubMenu firstSubmenu = new DefaultSubMenu(menurol.getIdMenu().getNombre());
+
+                    for (Menurol item1 : roles.getIdRol().getMenurolList()) {
+                        Menus submenu = item1.getIdMenu();
+                        if (submenu != null) {
+                            if (submenu.getIdMenu().equals(menurol.getIdMenu().getIdMenu())) {
+                                DefaultMenuItem item = new DefaultMenuItem(menurol.getIdMenu().getNombre());
+                                item.setUrl(menurol.getIdMenu().getUrl());
+                                item.setIcon(menurol.getIdMenu().getIcono());
+
+                            }
+                        }
+                    }
+                    model.addElement(firstSubmenu);
+                } else {
+                    if ((menurol.getIdMenu().getCodigoSubmenu().getCodigoSubmenu()) == null) {
+                        DefaultMenuItem item = new DefaultMenuItem(menurol.getIdMenu().getNombre());
+                        model.addElement(item);
+                        item.setUrl(menurol.getIdMenu().getUrl());
+                        item.setIcon(menurol.getIdMenu().getIcono());
+                    }
+                }
+            }
         }
     }
 
@@ -176,6 +219,14 @@ public class LoginController implements Serializable {
 
     public void setPersona(Personas persona) {
         this.persona = persona;
+    }
+
+    public MenuModel getModel() {
+        return model;
+    }
+
+    public void setModel(MenuModel model) {
+        this.model = model;
     }
 
 }

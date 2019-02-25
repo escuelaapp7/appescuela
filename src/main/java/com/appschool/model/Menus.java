@@ -14,6 +14,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -44,6 +46,12 @@ public class Menus implements Serializable {
     @Size(max = 50)
     @Column(name = "url")
     private String url;
+    @Size(max = 2)
+    @Column(name = "tipo")
+    private String tipo = null;
+    @JoinColumn(name = "codigo_submenu", referencedColumnName = "id_menu")
+    @ManyToOne
+    private Menus codigoSubmenu = null;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idMenu")
     private List<Menurol> menurolList;
 
@@ -95,6 +103,22 @@ public class Menus implements Serializable {
         this.menurolList = menurolList;
     }
 
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public Menus getCodigoSubmenu() {
+        return codigoSubmenu;
+    }
+
+    public void setCodigoSubmenu(Menus codigoSubmenu) {
+        this.codigoSubmenu = codigoSubmenu;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -119,5 +143,5 @@ public class Menus implements Serializable {
     public String toString() {
         return "com.appschool.model.Menus[ idMenu=" + idMenu + " ]";
     }
-    
+
 }

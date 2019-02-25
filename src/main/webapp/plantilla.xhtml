@@ -24,39 +24,8 @@
                 <h:form>  
                     <p:growl id="messages"/>
 
-                    <p:menubar >
-                        <p:submenu label="Administracion" >
-
-                            <p:menuitem value="Registro de Usuarios" icon="fa fa-w fas fa-users" url="/administracion/usuarios.xhtml" />
-                            <p:menuitem value="Registro de roles"  icon="fa fa-w fas fa-project-diagram" url="/administracion/roles.xhtml"  />
-                            <p:menuitem value="Rol por Usuarios" icon="fa fa-w fas fa-universal-access"   url="/administracion/asignarRoles.xhtml" />
-                            <p:menuitem value="Registrar Menu" icon="fa fa-w fas fa-desktop"   url="/administracion/menus.xhtml" />
-                            <p:menuitem value="Accesos por roles" icon="fa fa-w fas fa-lock"  url="/administracion/asignarMenuRol.xhtml" />
-                        </p:submenu>
-                        <p:submenu label="Catalogos" icon="fa-archive">
-                            <p:menuitem value="Asignaturas" icon="fa fa-w fas fa-atlas"  url="/catalogos/asignaturas.xhtml" />
-                            <p:menuitem value="Grados" icon="fa fa-w fas fa-spinner"  url="/catalogos/grados.xhtml" />
-                            <p:menuitem value="Parentezcos" icon="fa fa-w far fa-handshake" url="/catalogos/parentezcos.xhtml" />
-                            <p:menuitem value="Secciones" icon="fa fa-w fas fa-audio-description"  url="/catalogos/secciones.xhtml" />
-                            <p:menuitem value="Jornadas" icon="fa fa-w far fa-sun"  url="/catalogos/jornadas.xhtml" />
-                        </p:submenu>
-                        <p:submenu label="Registro" icon="fa-archive">
-                            <p:menuitem value="Profesores" icon="fa fa-w fa-chalkboard-teacher" url="/registro/profesores.xhtml"/>
-                            <p:menuitem value="Alumnos" icon="fa fa-w fas fa-child" url="/registro/alumnos.xhtml"/>
-                            <p:menuitem value="Coordinadores" icon="fa fa-w fas fa-diagnoses" url="/registro/coordinadores.xhtml"/>
-                            <p:menuitem value="Matricula" icon="fa fa-w fas fa-file-alt" url="/registro/matriculaW.xhtml"/>
-                            <p:menuitem value="Materias por Maestro" icon="fa fa-w fa-book" url="/registro/asignacionMaterias.xhtml"/>
-                            <p:menuitem value="Calificaciones" icon="fa fa-w fas fa-grip-vertical" url="/registro/calificaciones.xhtml"/>
-                        </p:submenu>
-                        <f:facet name="options">
-                            <p:outputLabel value="Bienvenido       "/> 
-                            <p:column/>
-
-                            <p:outputLabel value="#{loginController.usuario.idPersona.nombres}    #{loginController.usuario.idPersona.apellidos}    "/> 
-                            <p:outputLabel value="     "/> 
-
-                            <p:commandButton value="Cerrar sesion" icon="ui-icon-power" actionListener="#{loginController.cerrarSession()}" action="/login.xhtml?faces-redirect=true" title="Cerrar sesion"/>
-                        </f:facet>
+                    <p:menubar model="#{loginController.model}">
+                
                     </p:menubar>
 
                 </h:form>
