@@ -5,10 +5,12 @@
  */
 package com.appschool.ejb;
 
+import com.appschool.model.Menurol;
+import com.appschool.model.Roles;
+import com.appschool.model.Rolesusuario;
 import com.appschool.model.Usuarios;
 import java.util.List;
 import javax.ejb.Local;
-
 
 @Local
 public interface UsuariosFacadeLocal {
@@ -26,6 +28,10 @@ public interface UsuariosFacadeLocal {
     List<Usuarios> findRange(int[] range);
 
     public Usuarios iniciarSesion(Usuarios us);
+
+    List<Rolesusuario> rolesPorUsuario(Usuarios usuario);
+
+    List<Menurol> menuPorRoles(Roles rol);
 
     int count();
 

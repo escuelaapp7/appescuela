@@ -25,7 +25,13 @@
                     <p:growl id="messages"/>
 
                     <p:menubar model="#{loginController.model}">
-                
+                        <f:facet name="options">
+                            <p:outputLabel value="Bienvenido       "/> 
+                            <p:column/>
+                            <p:outputLabel value="#{loginController.usuario.idPersona.nombres}    #{loginController.usuario.idPersona.apellidos}    "/> 
+                            <p:outputLabel value="     "/> 
+                            <p:commandButton value="Cerrar sesion" icon="ui-icon-power" actionListener="#{loginController.cerrarSession()}" action="/login.xhtml?faces-redirect=true" title="Cerrar sesion"/>
+                        </f:facet>
                     </p:menubar>
 
                 </h:form>

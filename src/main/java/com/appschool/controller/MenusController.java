@@ -56,6 +56,7 @@ public class MenusController implements Serializable {
 
     public void agregarAcceso() {
         menuRolEJB.create(menuRol);
+
     }
 
     public Menus getMenu() {

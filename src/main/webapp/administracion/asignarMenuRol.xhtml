@@ -58,11 +58,13 @@
                                                itemValue="#{menu}" itemLabel="#{menu.nombre}"/>
                             </p:selectOneMenu>
 
-                            <p:commandButton value="Agregar Acceso" actionListener="#{menusController.agregarAcceso()}" update="frm:growl,tblMenus" />
+                            <p:commandButton value="Agregar Acceso" actionListener="#{menusController.agregarAcceso()}" update="frm:growl,tblMenus" >
+
+                            </p:commandButton>
                         </p:panelGrid>
 
-                        
-                        
+
+
 
                         <p:dataTable id="tblMenus" style="width: 50%" var="menu" value="#{menusController.menuRol.idRol.menurolList}">
                             <p:column headerText="Nombre de la pantalla">
