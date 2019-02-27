@@ -13,7 +13,7 @@
     <h:body>
 
 
-        <p:growl id="growl" autoUpdate="true" showDetail="true" life="3000"/>
+        <p:growl id="growl"  showDetail="true" life="3000"/>
 
         <p:panel  style="height: 100%; width: 80%;margin: 0 auto; text-align:center;align-content: center ;
                   padding: 5px; text-align: justify;font-size: 32px;font-style: italic; ">
@@ -41,7 +41,7 @@
                         <p:inputText id="txtClave" placeholder="Contraseña" required="true" value="#{loginController.usuario.password}"/>
 
                         <h:column/>
-                        <p:commandButton value="Iniciar sesion" icon="ui-icon-key"
+                        <p:commandButton value="Iniciar sesion" icon="ui-icon-key" update="growl"
                                          action="#{loginController.iniciarSesion()}"/>
                     </h:panelGrid>
                 </p:panel>

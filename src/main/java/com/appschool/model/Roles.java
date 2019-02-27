@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -28,11 +29,17 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "Roles")
+@SequenceGenerator(
+        name = "roles_id_rol_seq",
+        sequenceName = "roles_id_rol_seq",
+        initialValue = 2,
+        allocationSize = 1
+)
 
 public class Roles implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator ="roles_id_rol_seq")
     @Column(name = "id_rol")
     private Integer idRol;
     @Size(max = 16)

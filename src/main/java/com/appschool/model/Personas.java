@@ -18,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -30,12 +31,17 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author said
  */
 @Entity
-@Table(name = "Personas")
-
+@Table(name = "Personas") 
+@SequenceGenerator(
+        name = "personas_id_persona_seq",
+        sequenceName = "personas_id_persona_seq",
+        initialValue = 2,
+        allocationSize = 1
+)
 public class Personas implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator ="personas_id_persona_seq")
     @Column(name = "id_persona")
     private Integer idPersona;
     @Size(max = 45)

@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -25,13 +26,16 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "Roles_usuario")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Rolesusuario.findAll", query = "SELECT r FROM Rolesusuario r")})
+@SequenceGenerator(
+        name = "roles_usuario_id_rol_usuario_seq",
+        sequenceName = "roles_usuario_id_rol_usuario_seq",
+        initialValue = 2,
+        allocationSize = 1
+)
 public class Rolesusuario implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator ="roles_usuario_id_rol_usuario_seq")
     @Basic(optional = false)
     @Column(name = "id_rol_usuario")
     private Integer idRolUsuario;

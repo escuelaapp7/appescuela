@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlTransient;
@@ -27,12 +28,18 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "Profesores")
+@SequenceGenerator(
+        name = "profesores_id_profesor_seq",
+        sequenceName = "profesores_id_profesor_seq",
+        initialValue = 1,
+        allocationSize = 1
+)
 
 public class Profesores implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator ="profesores_id_profesor_seq")
     @Basic(optional = false)
     @Column(name = "id_profesor")
     private Integer idProfesor;
@@ -142,5 +149,5 @@ public class Profesores implements Serializable {
     public String toString() {
         return "com.appschool.model.Profesores[ idProfesor=" + idProfesor + " ]";
     }
-    
+
 }
