@@ -32,6 +32,8 @@ public interface UsuariosFacadeLocal {
     List<Rolesusuario> rolesPorUsuario(Usuarios usuario);
 
     List<Menurol> menuPorRoles(Roles rol);
+    
+    void crearMenusPrimeraVez();
 
     int count();
 

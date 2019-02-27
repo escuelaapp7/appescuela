@@ -6,8 +6,10 @@
 package com.appschool.controller;
 
 import com.appschool.ejb.MenurolFacadeLocal;
+import com.appschool.ejb.MenusFacadeLocal;
 import com.appschool.ejb.UsuariosFacadeLocal;
 import com.appschool.model.Menurol;
+import com.appschool.model.Menus;
 import com.appschool.model.Personas;
 import com.appschool.model.Roles;
 import com.appschool.model.Rolesusuario;
@@ -33,7 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Named
 @SessionScoped
 public class LoginController implements Serializable {
-    
+
     private Rolesusuario rolUsuario;
     @Autowired
     private Usuarios usuario;
@@ -43,10 +45,12 @@ public class LoginController implements Serializable {
     private UsuariosFacadeLocal usuariosEJB;
     @EJB
     private MenurolFacadeLocal menuRolEJB;
+    @EJB
+    private MenusFacadeLocal menuEJB;
     private List<Usuarios> lstUsuarios;
     private List<Menurol> lstMenuRol;
     private Personas persona;
-    
+
     @PostConstruct
     public void init() {
         rol = new Roles();
@@ -55,8 +59,9 @@ public class LoginController implements Serializable {
         model = new DefaultMenuModel();
         lstUsuarios = usuariosEJB.findAll();
         lstMenuRol = menuRolEJB.findAll();
+        insertarMenusPrimeravez();
     }
-    
+
     public void registarUsuario() {
         try {
             usuario.setIdPersona(persona);
@@ -68,10 +73,10 @@ public class LoginController implements Serializable {
                     new FacesMessage(FacesMessage.SEVERITY_FATAL, "Aviso", e.getMessage().concat(" Comuniquese con el administrador de la aplicación.")));
         }
     }
-    
+
     public void modificarUsuario() {
         try {
-            
+
             usuariosEJB.edit(usuario);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, "Aviso", "Se midifico exitosamente"));
@@ -80,7 +85,7 @@ public class LoginController implements Serializable {
                     new FacesMessage(FacesMessage.SEVERITY_FATAL, "Aviso", e.getMessage().concat(" Comuniquese con el administrador de la aplicación.")));
         }
     }
-    
+
     public void eliminarUsuario() {
         try {
             usuariosEJB.remove(usuario);
@@ -88,11 +93,11 @@ public class LoginController implements Serializable {
             FacesContext context = FacesContext.getCurrentInstance();
             context.getExternalContext().getFlash().setKeepMessages(true);
         } catch (Exception e) {
-            
+
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Aviso", "Error!" + e.getMessage()));
         }
     }
-    
+
     public void registarRolUsuario() {
         try {
             rolUsuario.setIdRol(rol);
@@ -103,20 +108,20 @@ public class LoginController implements Serializable {
                     new FacesMessage(FacesMessage.SEVERITY_FATAL, "Aviso", e.getMessage().concat(" Comuniquese con el administrador de la aplicación.")));
         }
     }
-    
+
     public String iniciarSesion() {
         String redireccion = null;
-        
+
         try {
-            Usuarios us ;
+            Usuarios us;
             us = usuariosEJB.iniciarSesion(usuario);
-            
+
             if (us != null) {
-                
+
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuario", us);
                 redireccion = "/plantilla.xhtml?faces-redirect=true";
                 usuario = us;
-                
+
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Aviso", "Bienvenido" + usuario.getIdPersona().getNombres()));
                 usuario.setRolesusuarioList(usuariosEJB.rolesPorUsuario(us));
                 for (Rolesusuario rolesusuario : usuario.getRolesusuarioList()) {
@@ -127,36 +132,36 @@ public class LoginController implements Serializable {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Aviso", "Las credenciales no coinciden."));
             }
         } catch (Exception e) {
-            
+
         }
-        
+
         return redireccion;
     }
-    
+
     public void cerrarSession() {
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
     }
-    
+
     public void verificarSesion() {
         try {
-            
+
             FacesContext contexto = FacesContext.getCurrentInstance();
             Usuarios us = (Usuarios) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
             if (us == null) {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("/login.xhtml?faces-redirect=true");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informacion", "Usted no ha iniciado sesión"));
-                
+
             }
-            
+
         } catch (Exception e) {
         }
     }
-    
+
     public void verificarPermisos(Usuarios usuario) {
         usuario = (Usuarios) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
-        
+
         for (Rolesusuario rolesusuario : usuario.getRolesusuarioList()) {
-            
+
             for (Menurol menurol : rolesusuario.getIdRol().getMenurolList()) {
                 if (menurol.getIdMenu().getTipo().equals("S")) {
                     DefaultSubMenu firstSubmenu = new DefaultSubMenu(menurol.getIdMenu().getNombre());
@@ -169,7 +174,7 @@ public class LoginController implements Serializable {
                         }
                     }
                     model.addElement(firstSubmenu);
-                    
+
                 }
             }
         }
@@ -205,53 +210,61 @@ public class LoginController implements Serializable {
 //            }
 //        }
     }
-    
+
+    public void insertarMenusPrimeravez() {
+        List<Menus> lista = null;
+        lista= menuEJB.findAll();
+        if (lista.size()<=0) {
+            usuariosEJB.crearMenusPrimeraVez(); 
+        } 
+    }
+
     public Rolesusuario getRolUsuario() {
         return rolUsuario;
     }
-    
+
     public void setRolUsuario(Rolesusuario rolUsuario) {
         this.rolUsuario = rolUsuario;
     }
-    
+
     public Usuarios getUsuario() {
         return usuario;
     }
-    
+
     public void setUsuario(Usuarios usuario) {
         this.usuario = usuario;
     }
-    
+
     public Roles getRol() {
         return rol;
     }
-    
+
     public void setRol(Roles rol) {
         this.rol = rol;
     }
-    
+
     public List<Usuarios> getLstUsuarios() {
         return lstUsuarios;
     }
-    
+
     public void setLstUsuarios(List<Usuarios> lstUsuarios) {
         this.lstUsuarios = lstUsuarios;
     }
-    
+
     public Personas getPersona() {
         return persona;
     }
-    
+
     public void setPersona(Personas persona) {
         this.persona = persona;
     }
-    
+
     public MenuModel getModel() {
         return model;
     }
-    
+
     public void setModel(MenuModel model) {
         this.model = model;
     }
-    
+
 }
